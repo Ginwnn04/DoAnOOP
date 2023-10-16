@@ -25,8 +25,8 @@ public class Genarate {
     public Genarate() {
     }
 
-    public String genarateIdProduct(int type) {
-        return "";
+    public String genarateIdProduct(String type) {
+        return type + (int)(Math.random() * 100000);
     }
     public String genarateDiscountCode(String firstCode, int moneyDiscount) {
         arrayDiscountCode = Arrays.copyOf(arrayDiscountCode, sizeDiscountCode + 1);
