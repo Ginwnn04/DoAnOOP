@@ -1,22 +1,28 @@
 package DoAnOOP.Entity;
 public class Voucher {
-    String idVoucher;
-    String startDate;
-    String endDate;
-    float moneyOff;
+    private String idVoucher;
+    private String startDate;
+    private String endDate;
+    private double moneyOff;
 
     public Voucher(){
-        this.idVoucher="";
-        this.startDate="";
-        this.endDate="";
-        this.moneyOff=0;
+        this.idVoucher = "";
+        this.startDate = "";
+        this.endDate = "";
+        this.moneyOff = 0;
     }
-    public Voucher(String idVoucher, String startDate, String endDate, float moneyOff){
-        this.idVoucher=idVoucher;
-        this.startDate=startDate;
-        this.endDate=endDate;
-        this.moneyOff=moneyOff;
+    public Voucher(String startDate, String endDate, double moneyOff){
+        this.idVoucher = creatKey();
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.moneyOff = moneyOff;
     }
+    public String creatKey() {
+        String randomKey =  "-" +  (int)(Math.random() * 100000000);
+        return randomKey;
+    }
+
+
     public String getidVoucher() {
         return idVoucher;
     }
@@ -35,7 +41,7 @@ public class Voucher {
     public void setendDate(String endDate){
         this.endDate=endDate;
     }
-    public float getmoneyOff(){
+    public double getmoneyOff(){
         return moneyOff;
     }
     public void setmoneyOff(float moneyOff){
