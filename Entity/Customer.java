@@ -1,5 +1,4 @@
-package Entity;
-
+package DoAnOOP.Entity;
 public class Customer extends Account{
     private String idCustomer;
     private String fullName;

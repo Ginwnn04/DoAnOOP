@@ -1,3 +1,4 @@
+package DoAnOOP.Entity;
 public class Voucher {
     String idVoucher;
     String startDate;

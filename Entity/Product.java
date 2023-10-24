@@ -1,4 +1,4 @@
-package Entity;
+package DoAnOOP.Entity;
 
 public abstract class Product {
     String ID;

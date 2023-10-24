@@ -1,15 +1,17 @@
-package Entity;
+package DoAnOOP.Entity;
 
-public class Food extends Product{
+public class Foods extends Product{
     private String typeProduct;
+    private float amount;
 
-    public Food() {
+    public Foods() {
         super();
     }
 
-    public Food(String ID, String nameProduct,  String typeProduct, String unit, int quantity, String importDate, String productDate, int price) {
+    public Foods(String ID, String nameProduct, String unit, int quantity, String importDate, String productDate, int price, String typeProduct, float amount) {
         super(ID, nameProduct, unit, quantity, importDate, productDate, price);
         this.typeProduct = typeProduct;
+        this.amount = amount;
     }
 
     @Override
@@ -19,8 +21,9 @@ public class Food extends Product{
                 + colSpace + "s %-"
                 + colSpace + "s %-"
                 + colSpace + "s %-"
+                + colSpace + "s %-"
                 + colSpace + "d %-"
                 + colSpace + "s %-"
-                + colSpace + "d\n", ID, nameProduct, typeProduct , unit, quantity, productDate, price);
+                + colSpace + "d\n", ID, nameProduct, amount + " gram" ,typeProduct , unit, quantity, productDate, price);
     }
 }
