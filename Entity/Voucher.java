@@ -1,50 +1,34 @@
 package DoAnOOP.Entity;
-public class Voucher {
-    private String idVoucher;
-    private String startDate;
-    private String endDate;
-    private double moneyOff;
+import java.util.Scanner;
 
-    public Voucher(){
-        this.idVoucher = "";
-        this.startDate = "";
-        this.endDate = "";
-        this.moneyOff = 0;
+public class Voucher {
+    public static Scanner in= new Scanner(System.in);
+    String idVoucher;
+    int discountRate;
+
+    public String getidVoucher(){
+        return idVoucher;
     }
-    public Voucher(String startDate, String endDate, double moneyOff){
-        this.idVoucher = creatKey();
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.moneyOff = moneyOff;
+    public void setidvoucher(String idVoucher){
+        this.idVoucher=idVoucher;
     }
-    public String creatKey() {
-        String randomKey =  "-" +  (int)(Math.random() * 100000000);
+
+    public int getdiscountRate(){
+        return discountRate;
+    }
+
+    public String creaKey(){
+        String randomKey= "-"+ (int)(Math.random()*100000000);
         return randomKey;
     }
 
+    public void nhap(){
+        System.out.print("Nhập mã voucher : ");
+        idVoucher=in.nextLine();
+        System.out.print("Nhập phần trăm giảm : ");
+        discountRate=in.nextInt();in.nextLine();
+    }
 
-    public String getidVoucher() {
-        return idVoucher;
+    public void xuat(){
+        System.out.println(idVoucher+" "+discountRate+"%");
     }
-    public void setidVoucher(String idVoucher) {
-        this.idVoucher=idVoucher;
-    }
-    public String getstartDate(){
-        return startDate;
-    }
-    public void setstartDate(String startDate){
-        this.startDate=startDate;
-    }
-    public String getsendDate(){
-        return endDate;
-    }
-    public void setendDate(String endDate){
-        this.endDate=endDate;
-    }
-    public double getmoneyOff(){
-        return moneyOff;
-    }
-    public void setmoneyOff(float moneyOff){
-        this.moneyOff=moneyOff;
-    }
-}
