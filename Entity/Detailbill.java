@@ -1,35 +1,39 @@
 package DoAnOOP.Entity;
-public class Detailbill {
-    String idBill;
+import java.util.Scanner;
+
+public class detailBill {
+    public static Scanner in= new Scanner(System.in);
     String idProduct;
+    String nameProduct;
     int quantity;
-    int price;
-    float total;
+    float price;
 
-    public Detailbill(){
+    public detailBill(){
         this.idProduct="";
+        this.nameProduct="";
         this.quantity=0;
-        this.total=0;
+        this.price=0;
     }
 
-    public Detailbill(String idProduct, int quantity, float total){
+    public detailBill(String idProduct, String nameProduct, int quantity, float price){
         this.idProduct=idProduct;
+        this.nameProduct=nameProduct;
         this.quantity=quantity;
-        this.total=total;
-    }
-
-    public String getidBill(){
-        return idBill;
-    }
-    public void setidBill(String idBill){
-        this.idBill=idBill;
-    }
+        this.price=price;
+     }
 
     public String getidProduct(){
         return idProduct;
     }
     public void setidProduct(String idProduct){
         this.idProduct=idProduct;
+    }
+
+    public String getnameProduct(){
+        return nameProduct;
+    }
+    public void setnameProduct(String nameProduct){
+        this.nameProduct=nameProduct;
     }
 
     public int getquantity(){
@@ -39,17 +43,29 @@ public class Detailbill {
         this.quantity=quantity;
     }
 
-    public int getprice(){
+    public float getprice(){
         return price;
     }
     public void setprice(int price){
         this.price=price;
     }
 
-    public float gettotal(){
-        return total;
+    public float total(){
+        return price*quantity;
     }
-    public void settotal(float tolal){
-        this.total=tolal;
+    
+    public void xuat(){
+        System.out.println(nameProduct+" "+quantity+" : "+(quantity*price));
+    }
+
+    public void nhap(){
+        System.out.print("Nhap ma san pham : ");
+        idProduct=in.nextLine();
+        System.out.print("Nhap ten san pham : ");
+        nameProduct=in.nextLine();
+        System.out.print("Nhap so luong san pham : ");
+        quantity=in.nextInt();
+        System.out.print("Nhap gia san pham : ");
+        price=in.nextFloat();in.nextLine();
     }
 }
