@@ -1,15 +1,13 @@
 import java.util.Arrays;
-import java.util.Scanner;
 
-public class listBill {
-    public static Scanner in= new Scanner(System.in);
+public class ListBill {
     int n;
     int chon;
     Bill dshd[]= new Bill[1];
     Promotions dskm[]= new Promotions[1];
 
-    public listBill(){}
-    public listBill(int n, listBill ds2[]){
+    public ListBill(){}
+    public ListBill(int n, ListBill ds2[]){
         this.n=n;
     }
 
@@ -44,43 +42,37 @@ public class listBill {
     
 
     public void timkiem(){
-        String a;
         System.out.println("1.Tim kiem theo ma hoa don.");
         System.out.println("2.Tim kiem theo ma nhan vien.");
         System.out.println("3.Tim kiem theo ma khach hang.");
         System.out.println("4.Tim kiem theo ten khach hang.");
-        System.out.print("Moi nhap lua chon : ");
-        chon=in.nextInt();in.nextLine();
+        int chon =new Validate().checkIntUser("Moi nhap lua chon");
         switch (chon) {
             case 1:
-                System.out.print("Moi nhap ma hoa don : ");
-                a=in.nextLine();
+                String b =new Validate().checkStringUser("Moi nhap ma hoa don : ");
                 for(int i=0;i<n;i++){
-                if((dshd[i].getidBill()).equals(a)){
+                if((dshd[i].getidBill()).equals(b)){
                 dshd[i].xuat();
                 }
             }break;
             case 2:
-                System.out.print("Moi nhap ma nhan vien : ");
-                a=in.nextLine();
+                String c =new Validate().checkStringUser("Moi nhap ma nhan vien : ");
                 for(int i=0;i<n;i++){
-                if((dshd[i].getidEmployee()).equals(a)){
+                if((dshd[i].getidEmployee()).equals(c)){
                 dshd[i].xuat();
                 }
             }break;
             case 3:
-                System.out.print("Moi nhap ma khach hang : ");
-                a=in.nextLine();
+                String d =new Validate().checkStringUser("Moi nhap ma khach hang : ");
                 for(int i=0;i<n;i++){
-                if((dshd[i].getidCustomer()).equals(a)){
+                if((dshd[i].getidCustomer()).equals(d)){
                 dshd[i].xuat();
                 }
             }break;
             case 4:
-                System.out.print("Moi nhap ten khach hang : ");
-                a=in.nextLine();
+                String e =new Validate().checkStringUser("Moi nhap ten khach hang : ");
                 for(int i=0;i<n;i++){
-                if((dshd[i].getnameCustomer()).equals(a)){
+                if((dshd[i].getnameCustomer()).equals(e)){
                 dshd[i].xuat();
                 }
             }break;
@@ -110,12 +102,10 @@ public class listBill {
             System.out.println("2.Thong ke hoa don theo thang");
             System.out.println("3.Thong ke hoa don theo nam");
             System.out.println("4.Thong ke hoa don theo gia tien");
-            System.out.println("Nhap lua chon");
-            chon=in.nextInt();in.nextLine();
+            int chon =new Validate().checkIntUser("Nhap lua chon");;
             switch(chon){
                 case 1: {
-                System.out.print("\nNhap ngay :");
-                String a=in.nextLine();
+                String a =new  Validate().checkStringUser("\nNhap ngay :");
                 System.out.println("\n---------HOA DON IN NGAY "+a+"--------");
                 for(int i=0;i<n;i++){
                     if((dshd[i].getprintDate()).equals(a)){
@@ -127,9 +117,8 @@ public class listBill {
                 System.out.println("1.Thong ke hoa don duoi 100.000dong.");
                 System.out.println("2.Thong ke hoa don tu 100.000dong den 500.000dong");
                 System.out.println("3.Thong ke hoa don tren 500.000dong");
-                System.out.println("Nhap lua chon");
-                chon=in.nextInt();in.nextLine();
-                switch(chon){
+                int lc =new Validate().checkIntUser("Nhap lua chon");
+                switch(lc){
                     case 1:{
                          System.out.println("\n---------HOA DON DUOI 100.000dong--------");
                          for(int i=0;i<n;i++){
