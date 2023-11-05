@@ -1,9 +1,6 @@
 package DoAnOOP.Entity;
-import java.util.Arrays;
-import java.util.Scanner;
-
+package DoAnOOP.Entity;
 public class Bill {
-    public static Scanner in= new Scanner(System.in);
     String idBill;
     String idEmployee;
     String idCustomer;
@@ -91,35 +88,30 @@ public class Bill {
     public void settotalBill(float totalBill){
         this.totalBill=totalBill;
     }
+    
+    public String taoidBill(){
+        String firtID="HD";
+        return firtID+"-"+(int)(Math.random()*10000000);
+    }
 
-    public void nhap(){
-        System.out.print("\nNhap ngay in hoa don : ");
-        printDate=in.nextLine();
-        System.out.print("Nhap ma hoa don : ");
-        idBill=in.nextLine();
-        System.out.print("Nhap ma nhan vien : ");
-        idEmployee=in.nextLine();
-        System.out.print("Nhap ma khach hang : ");
-        idCustomer=in.nextLine();
-        System.out.print("Nhap ten khach hang : ");
-        nameCustomer=in.nextLine();
+     public void nhap(){
+        printDate = new Validate().checkStringUser("\nNhap ngay in hoa don : ");
+        idBill = taoidBill();
+        idEmployee = new Validate().checkStringUser("Nhap ma nhan vien : ");
+        idCustomer = new Validate().checkStringUser("Nhap ma khach hang : ");
+        nameCustomer = new Validate().checkStringUser("Nhap ten khach hang : ");
         System.out.println("Nhap chi tiet hoa don.");
-        System.out.print("So chi tiet hoa don : ");
-        n=in.nextInt();in.nextLine();
-            dsdb=new detailBill[n];
+        n = new Validate().checkIntUser("So chi tiet hoa don : ");
+            dsdb=new detailBill[n];/*... */
             for(int i=0;i<n;i++){
                     System.out.println("\nNhap chi tiet san pham thu "+(i+1));
                     dsdb[i]= new detailBill();
                     dsdb[i].nhap();
                 }
-        System.out.println("Khach hang co su dung voucher khong ?");
-            System.out.println("1.Co.");
-            System.out.println("2.khong.");
-            int chon=in.nextInt();in.nextLine();
+        int chon = new Validate().checkIntUser("Khach hang co su dung voucher khong ? (y/n)");
             switch (chon) {
             case 1:{
-                System.out.println("\nNhap ten chuong trinh khuyen mai : ");
-                String a=in.nextLine();
+                String a= new Validate().checkStringUser("\nNhap ten chuong trinh khuyen mai : ");
                 for(int i=0;i<n;i++){
                 if((dskm[i].namePromotion).equals(a)){
                     moneyOff=dskm[i].discountrate()*total();
@@ -155,9 +147,7 @@ public class Bill {
 
 
     public void xoachitiet(){
-        String a;
-        System.out.print("Nhap ma san pham can xoa cua hoa don "+idBill+" : ");
-        a=in.nextLine();
+        String a= new Validate().checkStringUser("Nhap ma san pham can xoa cua hoa don "+idBill+" : ");
         for(int i=0;i<n;i++){
             if((dsdb[i].getidProduct()).equals(a)){
                 n--;
