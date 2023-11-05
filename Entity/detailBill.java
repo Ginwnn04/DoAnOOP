@@ -1,8 +1,6 @@
 package DoAnOOP.Entity;
-import java.util.Scanner;
-
+package DoAnOOP.Entity;
 public class detailBill {
-    public static Scanner in= new Scanner(System.in);
     String idProduct;
     String nameProduct;
     int quantity;
@@ -59,13 +57,8 @@ public class detailBill {
     }
 
     public void nhap(){
-        System.out.print("Nhap ma san pham : ");
-        idProduct=in.nextLine();
-        System.out.print("Nhap ten san pham : ");
-        nameProduct=in.nextLine();
-        System.out.print("Nhap so luong san pham : ");
-        quantity=in.nextInt();
-        System.out.print("Nhap gia san pham : ");
-        price=in.nextFloat();in.nextLine();
+        idProduct=new Validate().checkStringUser("Nhap ma san pham : ");
+        quantity=new Validate().checkIntUser("Nhap so luong san pham : ");
+        price=new Validate().checkFloatUser("Nhap gia san pham : ");
     }
 }
