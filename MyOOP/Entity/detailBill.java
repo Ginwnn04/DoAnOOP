@@ -59,8 +59,14 @@ public class detailBill {
     }
 
     public void nhap(){
-        idProduct=new Validate().checkStringUser("Nhap ma san pham : ");
-        quantity=new Validate().checkNumberProduct("Nhap so luong san pham : ");
-        price=new Validate().checkMoneyInput("Nhap gia san pham : ");
+        idProduct=new Validate().checkStringUser("Nhập mã sản phẩm");
+        for(int i=0;i<dssp.length;i++){
+            if((dssp[i].getidProduct()).equals(idProduct)){ /*dssp : ListProduct */
+                nameProduct=dssp[i].nameProduct;
+                price=dssp[i].price;
+            }
+        }
+
+        quantity=new Validate().checkIntUser("Nhập số lượng sản phẩm");
     }
 }
