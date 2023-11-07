@@ -10,6 +10,16 @@ public class Validate {
         sc.nextLine();
     }
 
+    public int checkIntUser(String notify) {
+            System.out.printf(notify + ": ");
+            int inputUser = sc.nextInt();sc.nextLine();
+            return inputUser;
+    }
+        public float checkFloatUser(String notify) {
+            System.out.printf(notify + ": ");
+            float inputUser = sc.nextFloat();sc.nextLine();
+            return inputUser;
+    }
 
     public String checkStringUser(String notify) {
         System.out.printf(notify + ": ");
