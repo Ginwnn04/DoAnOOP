@@ -1,22 +1,19 @@
 package MyOOP.Entity;
-
 import java.util.Arrays;
-
 import MyOOP.Manager.Validate;
-
 public class Bill {
     String idBill;
     String idEmployee;
     String idCustomer;
     String nameCustomer;
     String printDate;
+    String namePromotion;
     String idVoucher;
-    float moneyOff;
-    float totalBill;
 
     int n;
     detailBill dsdb[]= new detailBill[1];
-    PromotionsSale dskm[]= new PromotionsSale[1];
+    Voucher dsvc[]= new Voucher[n];
+    PromotionsSale dskm[]= new PromotionsSale[n];
 
     public Bill(){
         this.idBill="";
@@ -24,15 +21,17 @@ public class Bill {
         this.idCustomer="";
         this.nameCustomer="";
         this.printDate="";
+        this.namePromotion="";
         this.idVoucher="";
     }
 
-    public Bill (String idBill, String idEmployee, String idCustomer, String nameCustomer, float totalBill, String printDate, String idVoucher){
+    public Bill (String idBill, String idEmployee, String idCustomer, String nameCustomer, float totalBill, String printDate,String namePromotion, String idVoucher){
         this.idBill=idBill;
         this.idEmployee=idEmployee;
         this.idCustomer=idCustomer;
         this.nameCustomer=nameCustomer;
         this.printDate=printDate;
+        this.namePromotion=namePromotion;
         this.idVoucher=idVoucher;
 
     }
@@ -72,6 +71,13 @@ public class Bill {
         this.printDate=printDate;
     }
 
+    public String getnamePromotion(){
+        return namePromotion;
+    }
+    public void setnamePromotion(String namePromotion){
+        this.namePromotion=namePromotion;
+    }
+
     public String getidVoucher(){
         return idVoucher;
     }
@@ -79,71 +85,64 @@ public class Bill {
         this.idVoucher=idVoucher;
     }
 
-    public float getmoneyOff(){
-        return moneyOff;
-    }
-    public void setmoneyOff(float moneyOff){
-        this.moneyOff=moneyOff;
-    }
-
-    public float gettotalBill(){
-        return totalBill;
-    }
-    public void settotalBill(float totalBill){
-        this.totalBill=totalBill;
-    }
-    
     public String taoidBill(){
         String firtID="HD";
         return firtID+"-"+(int)(Math.random()*10000000);
     }
 
-     /**
-     * 
-     */
-    public void nhap(){
-        printDate = new Validate().checkStringUser("\nNhap ngay in hoa don : ");
+     public void nhap(){
+        printDate = new Validate().checkStringUser("\nNhập ngày in hóa đơn");
         idBill = taoidBill();
-        idEmployee = new Validate().checkStringUser("Nhap ma nhan vien : ");
-        idCustomer = new Validate().checkStringUser("Nhap ma khach hang : ");
-        nameCustomer = new Validate().checkStringUser("Nhap ten khach hang : ");
+        idEmployee = new Validate().checkStringUser("Nhập mã nhân viên");
+        idCustomer = new Validate().checkStringUser("Nhập mã khách hàng");
+        nameCustomer = new Validate().checkStringUser("Nhập tên khách hàng");
         System.out.println("Nhap chi tiet hoa don.");
-        n = new Validate().checkMoneyInput("So chi tiet hoa don : ");
-            dsdb=new detailBill[n];/*... */
+        n = new Validate().checkIntUser("Số chi tiết hóa đơn");
+            dsdb=new detailBill[n];
             for(int i=0;i<n;i++){
-                    System.out.println("\nNhap chi tiet san pham thu "+(i+1));
+                    System.out.println("\nNhập chi tiết sản phẩm thứ "+(i+1));
                     dsdb[i]= new detailBill();
                     dsdb[i].nhap();
                 }
-        int chon = new Validate().checkNumberProduct("Khach hang co su dung voucher khong ? (y/n)");
-            switch (chon) {
-            case 1:{
-                String a= new Validate().checkStringUser("\nNhap ten chuong trinh khuyen mai : ");
-                for(int i=0;i<n;i++){
-                if((dskm[i].getnamePromotions()).equals(a)){
-                    moneyOff=dskm[i].discountrate()*total();
-                    totalBill=total()-moneyOff;
+    }
+
+    public float total(){
+        int total=0;
+        for(int i=0;i<n;i++){
+            total+=dsdb[i].total();
+        }
+        return total;
+    }
+
+    public void moneyOff(){
+        float moneyOff=0;
+        float totalBill=0;
+        String chon = new Validate().checkStringUser("Khách hàng có sử dụng voucher hay không ? (y/n)");
+        if(chon.equals("y")){
+            namePromotion=new Validate().checkStringUser("Nhập tên chương trình khuyến mãi");
+              for(int i=0;i<dskm.length;i++){
+                if((dskm[i].getnamePromotion())==namePromotion){
+                    idVoucher=new Validate().checkStringUser("Nhập mã voucher");
+                    for(int j=0;j<n;j++){
+                        if((dsvc[j].getidVoucher())==idVoucher){
+                            moneyOff=(dsvc[j].getdiscountRate()/100)*total();
                         }
                     }
-                }break;
+                }
             }
+        }
+                totalBill=total()-moneyOff;
+                System.out.println("Tiền giảm : "+moneyOff);
+                System.out.println("Tiền cần thanh toán : "+totalBill);
     }
 
     public void chitiet(){
-        System.out.println("\n------CHI TIET HOA DON "+idBill+"------");
+        System.out.println("\n------CHI TIẾT HÓA ĐƠN "+idBill+"------");
         for(int i=0;i<n;i++){
             dsdb[i].xuat();
         }
     }
 
-
-    public float total(){
-        float totalBill=0;
-        for(int i=0;i<n;i++){
-            totalBill+=dsdb[i].total();
-        }
-        return totalBill;
-    }
 
     public void themchitiet(){
         dsdb = Arrays.copyOf(dsdb, n+1);
@@ -154,7 +153,7 @@ public class Bill {
 
 
     public void xoachitiet(){
-        String a= new Validate().checkStringUser("Nhap ma san pham can xoa cua hoa don "+idBill+" : ");
+        String a= new Validate().checkStringUser("Nhập mã sản phẩm cần xóa của hóa đơn "+idBill+" : ");
         for(int i=0;i<n;i++){
             if((dsdb[i].getidProduct()).equals(a)){
                 n--;
@@ -166,13 +165,14 @@ public class Bill {
     }
 
     public void xuat(){
-        System.out.println("\nNgay in hoa don : "+printDate);
-        System.out.println("Ma hoa don : "+idBill);
-        System.out.println("Nhan vien in hoa don : "+idEmployee);
-        System.out.println("Ma khach hang : "+idCustomer);
-        System.out.println("Ten khach hang : "+nameCustomer);
+        System.out.println("\nNgày in hóa đơn : "+printDate);
+        System.out.println("Mã hóa đơn : "+idBill);
+        System.out.println("Nhân viên in hóa đơn: "+idEmployee);
+        System.out.println("Mã khách hàng : "+idCustomer);
+        System.out.println("Tên khách hàng : "+nameCustomer);
         for(int i=0;i<n;i++){
             dsdb[i].xuat();
         }
+        System.out.println("Tổng tiền : "+total());
     }
 }
