@@ -1,14 +1,12 @@
 package MyOOP.Manager;
 
 import java.util.Arrays;
-
 import MyOOP.Entity.Bill;
 import MyOOP.Entity.PromotionsSale;
-
 public class ListBill {
     int n;
-    int chon;
     Bill dshd[]= new Bill[1];
+    Voucher dsvc[]= new Voucher[1];
     PromotionsSale dskm[]= new PromotionsSale[1];
 
     public ListBill(){}
@@ -20,7 +18,7 @@ public class ListBill {
         n=1;
         dshd=new Bill[1];
         for(int i=0;i<n;i++){
-        System.out.println("\n\nNhap hoa don thu "+(i+1));
+        System.out.println("\n\nNhập hóa đơn thứ "+(i+1));
         dshd[i]= new Bill();
         dshd[i].nhap();
         }
@@ -28,56 +26,43 @@ public class ListBill {
 
     public void in(){
         dshd[n-1].xuat();
-        System.out.println("Tong tien : "+dshd[n-1].total());
-        System.out.println("Tien duoc giam : "+dshd[n-1].getmoneyOff());
-        System.out.println("Tien can thanh toan : "+dshd[n-1].gettotalBill());
+        dshd[n-1].moneyOff();
         }
 
     public void xuat(){
-        System.out.println("--------DANH SACH HOA DON--------");
+        System.out.println("--------DANH SÁCH HÓA ĐƠN--------");
         for(int i=0;i<n;i++){
-            System.out.println("\nHoa don thu "+(i+1));
+            System.out.println("\nHóa đơn thứ "+(i+1));
             dshd[i].xuat();
-            System.out.println("Tong tien : "+dshd[i].total());
-            System.out.println("Tien duoc giam : "+dshd[i].getmoneyOff());
-            System.out.println("Tien can thanh toan : "+dshd[i].gettotalBill());
         }
     }
 
     
 
     public void timkiem(){
-        System.out.println("1.Tim kiem theo ma hoa don.");
-        System.out.println("2.Tim kiem theo ma nhan vien.");
-        System.out.println("3.Tim kiem theo ma khach hang.");
-        System.out.println("4.Tim kiem theo ten khach hang.");
-        int chon =new Validate().checkMoneyInput("Moi nhap lua chon");
+        System.out.println("1.Tìm kiếm theo mã hóa đơn.");
+        System.out.println("2.Tìm kiếm theo mã nhân viên.");
+        System.out.println("3.Tìm kiếm theo mã khách hàng");
+        int chon =new Validate().checkIntUser("Mời nhập lựa chọn");
         switch (chon) {
             case 1:
-                String b =new Validate().checkStringUser("Moi nhap ma hoa don : ");
+                String b =new Validate().checkStringUser("Nhập mã hóa đơn");
                 for(int i=0;i<n;i++){
                 if((dshd[i].getidBill()).equals(b)){
                 dshd[i].xuat();
                 }
             }break;
             case 2:
-                String c =new Validate().checkStringUser("Moi nhap ma nhan vien : ");
+                String c =new Validate().checkStringUser("Nhập mã nhân viên");
                 for(int i=0;i<n;i++){
                 if((dshd[i].getidEmployee()).equals(c)){
                 dshd[i].xuat();
                 }
             }break;
             case 3:
-                String d =new Validate().checkStringUser("Moi nhap ma khach hang : ");
+                String d =new Validate().checkStringUser("Nhập mã khách hàng");
                 for(int i=0;i<n;i++){
                 if((dshd[i].getidCustomer()).equals(d)){
-                dshd[i].xuat();
-                }
-            }break;
-            case 4:
-                String e =new Validate().checkStringUser("Moi nhap ten khach hang : ");
-                for(int i=0;i<n;i++){
-                if((dshd[i].getnameCustomer()).equals(e)){
                 dshd[i].xuat();
                 }
             }break;
@@ -103,15 +88,15 @@ public class ListBill {
     }
 
     public void thongke(){
-            System.out.println("1.Thong ke hoa don theo ngay.");
-            System.out.println("2.Thong ke hoa don theo thang");
-            System.out.println("3.Thong ke hoa don theo nam");
-            System.out.println("4.Thong ke hoa don theo gia tien");
-            int chon =new Validate().checkMoneyInput("Nhap lua chon");;
+            System.out.println("1.Thống kê hóa đơn theo ngày.");
+            System.out.println("2.Thống kê hóa đơn theo tháng");
+            System.out.println("3.Thống kê hóa đơn theo năm");
+            System.out.println("4.Thống kê hóa đơn theo giá tiền");
+            int chon =new Validate().checkIntUser("Nh");;
             switch(chon){
                 case 1: {
-                String a =new  Validate().checkStringUser("\nNhap ngay :");
-                System.out.println("\n---------HOA DON IN NGAY "+a+"--------");
+                String a =new  Validate().checkStringUser("\nNhập ngày");
+                System.out.println("\n---------HÓA ĐƠN IN NGÀY "+a+"--------");
                 for(int i=0;i<n;i++){
                     if((dshd[i].getprintDate()).equals(a)){
                         dshd[i].xuat();
@@ -119,13 +104,13 @@ public class ListBill {
                 }
                 }break;
                 case 4:{
-                System.out.println("1.Thong ke hoa don duoi 100.000dong.");
-                System.out.println("2.Thong ke hoa don tu 100.000dong den 500.000dong");
-                System.out.println("3.Thong ke hoa don tren 500.000dong");
-                int lc =new Validate().checkMoneyInput("Nhap lua chon");
+                System.out.println("1.Hóa đơn dưới 100.000 đồng.");
+                System.out.println("2.Hóa đơn từ 100.000 đồng đến 500.000 đồng");
+                System.out.println("3.Hóa đơn trên 500.000 đồng");
+                int lc =new Validate().checkIntUser("Nhập lựa chọn");
                 switch(lc){
                     case 1:{
-                         System.out.println("\n---------HOA DON DUOI 100.000dong--------");
+                         System.out.println("\n---------HÓA ĐƠN DƯỚI 100.000 ĐÒNG--------");
                          for(int i=0;i<n;i++){
                         if(dshd[i].total()<100000){
                            dshd[i].xuat();
@@ -133,7 +118,7 @@ public class ListBill {
                         }
                     }break;
                     case 2:{
-                         System.out.println("\n---------HOA DON tu 100.000dong den 500.000dong--------");
+                         System.out.println("\n--------HÓA ĐƠN TỪ 100.000 DẾN 500.000 ĐỒNG--------");
                          for(int i=0;i<n;i++){
                         if((dshd[i].total()>100000)&&(dshd[i].total()<500000)){
                            dshd[i].xuat();
@@ -141,7 +126,7 @@ public class ListBill {
                         }
                     }break;
                     case 3:{
-                         System.out.println("\n---------HOA DON TREN 500.000dong--------");
+                         System.out.println("\n---------HÓA ĐƠN TRÊN 500.000 ĐỒNG--------");
                          for(int i=0;i<n;i++){
                         if(dshd[i].total()>500000){
                            dshd[i].xuat();
