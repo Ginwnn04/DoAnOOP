@@ -10,20 +10,23 @@ import java.util.Arrays;
 
 
 public class ListProduct {
-    private int totalProduct;
     private Product[] listProduct;
-    ImportProduct billImport = new ImportProduct();
+    private int totalProduct;
+    public ListBillImport listBillImport;
 
     public ListProduct() {
         listProduct = new Product[totalProduct];
+        listBillImport = new ListBillImport();
     }
     // Copy list san pham
     public ListProduct(ListProduct x) {
         this.listProduct = x.listProduct;
         this.totalProduct = x.totalProduct;
+        this.listBillImport = x.listBillImport;
     }
 
     public void importProduct() {
+        BillImport billImport = new BillImport();
         billImport.insertInfor();
         String choice = "";
         do {
@@ -43,12 +46,15 @@ public class ListProduct {
 
         } while (choice.charAt(0) == 'y');
         billImport.printImportBill();
+        listBillImport.creatBillImport(billImport);
+
     }
 
     public void importProductFormFile() {
+        BillImport billImport = new BillImport();
         billImport.insertInfor();
         String path = new Validate().checkStringUser("Nhập vào địa chỉ file");
-
+        int count = 0;
         try {
             FileReader fileReader = new FileReader(path);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -73,14 +79,16 @@ public class ListProduct {
                             int volume = Integer.parseInt(split[5]);
                             listProduct[totalProduct++] = new Drinks(type, nameProduct, unit, quantity, priceProduct, volume, priceImport);
                         }
-                    Product product = listProduct[totalProduct - 1];
-                    billImport.insertDetail(product.getID(), product.getNameProduct(), product.getUnit(), product.getQuantity(), product.getPriceImport());
+                        count++;
+                        Product product = listProduct[totalProduct - 1];
+                        billImport.insertDetail(product.getID(), product.getNameProduct(), product.getUnit(), product.getQuantity(), product.getPriceImport());
                     }
                 }
             }
-            System.out.println("Đã thêm thành công " + totalProduct + " sản phẩm");
+            System.out.println("Đã thêm thành công " + count + " sản phẩm");
             new Validate().clearBuffer();
             billImport.printImportBill();
+            listBillImport.creatBillImport(billImport);
             bufferedReader.close();
 
         }
@@ -144,6 +152,23 @@ public class ListProduct {
         System.out.println("Sửa thất bại");
 
     }
+    public void findProduct(){
+        showProduct(true);
+        boolean flag = false;
+        String idProductUser = new Validate().checkStringUser("Tìm kiếm ID sản phẩm:");
+        for(int i=0;i<totalProduct;i++){
+            if(listProduct[i].getID().equals(idProductUser)){
+                flag=true;
+                listProduct[i].setSearch(true);
+                System.out.println("Tìm kiếm thành công");
+                return;
+            }
+        }
+        if(flag==false){
+            System.out.println("Không tìm thấy ID sản phẩm");
+        }
+        System.out.println("Tìm kiếm thất bại");
+    }
 
     public void deleteProduct() {
         showProduct(true);
@@ -204,16 +229,16 @@ public class ListProduct {
                 + colSpace + "s %-"
                 + colSpace + "s\n", "Mã sản phẩm", "Tên sản phẩm", "Khối lượng", "Thể tích","Loại sản phẩm" , "Đơn vị tính", "Số lượng", "Giá tiền");
         for(Product x : listProduct) {
-           if (flag) {
-               if (x.getIsDelete() == false) {
-                   x.print();
-               }
-           }
-           else {
-               if (x.getIsDelete() == true) {
-                   x.print();
-               }
-           }
+            if (flag) {
+                if (x.getIsDelete() == false) {
+                    x.print();
+                }
+            }
+            else {
+                if (x.getIsDelete() == true) {
+                    x.print();
+                }
+            }
         }
     }
 

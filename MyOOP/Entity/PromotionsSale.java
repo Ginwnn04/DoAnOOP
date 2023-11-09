@@ -1,8 +1,9 @@
 package MyOOP.Entity;
 
-import java.util.Arrays;
 
 import MyOOP.Manager.Validate;
+
+import java.util.Arrays;
 
 public class PromotionsSale {
     private String namePromotions;
@@ -11,6 +12,7 @@ public class PromotionsSale {
     private String endDate;
     private int totalVoucher;
     public Voucher[] listVoucher;
+
 
     public PromotionsSale() {
         this.listVoucher = new Voucher[totalVoucher];
@@ -56,43 +58,9 @@ public class PromotionsSale {
             x.printVoucher();
         }
     }
-    public String getnamePromotions(){
-        return namePromotions;
-    }
-    public void setnamePromotions(String namePromotions){
-        this.namePromotions=namePromotions;
-    }
+
+
     public String getKeyPromotions() {
         return keyPromotions;
-    }
-    public void setKeyPromotions(String KeyPromotions){
-        this.keyPromotions=keyPromotions;
-    }
-    public String getstartDate(){
-        return startDate;
-    }
-    public void setstartDate(String startDate){
-        this.startDate=startDate;
-    }
-    public String getendDate(){
-        return endDate;
-    }
-    public void setendDate(String endDate){
-        this.endDate=endDate;
-    }
-    public int gettotalVoucher(){
-        return totalVoucher;
-    }
-    public void settotalVoucher(int totalVoucher){
-        this.totalVoucher=totalVoucher;
-    }
-    public Voucher[] getlistVoucher(){
-        return listVoucher;
-    }
-    public void setlistVoucher(Voucher[] liVoucher){
-        this.listVoucher=listVoucher;
-    }
-    public float discountrate() {
-        return 0;
     }
 }

@@ -8,6 +8,7 @@ public abstract class Product {
     protected int price;
     protected int priceImport;
     protected boolean isDelete;
+    protected boolean isSearch;
 
     public Product() {
         this.ID = "";
@@ -16,6 +17,7 @@ public abstract class Product {
         this.unit = "";
         this.quantity = 0;
         this.isDelete = true;
+        this.isSearch = true;
     }
 
     public Product(int type, String nameProduct, String unit, int quantity, int price, int priceImport) {
@@ -26,6 +28,7 @@ public abstract class Product {
         this.price = price;
         this.priceImport = priceImport;
         this.isDelete = false;
+        this.isSearch = false;
         if (quantity <= 0 ) {
             this.isDelete = true;
         }
@@ -71,6 +74,9 @@ public abstract class Product {
     public int getPrice() {
         return price;
     }
+    public boolean getIsSearch(){
+        return isSearch;
+    }
 
 
 
@@ -84,5 +90,8 @@ public abstract class Product {
 
     public int getPriceImport() {
         return priceImport;
+    }
+    public void setSearch(boolean flag){
+        isSearch = flag;
     }
 }
