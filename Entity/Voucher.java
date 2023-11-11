@@ -1,34 +1,41 @@
 package DoAnOOP.Entity;
-import java.util.Scanner;
-
 public class Voucher {
-    public static Scanner in= new Scanner(System.in);
-    String idVoucher;
-    int discountRate;
+    private String idVoucher;
+    private long moneyOff;
 
-    public String getidVoucher(){
+    public Voucher(){
+        this.idVoucher = "";
+        this.moneyOff = 0;
+    }
+    public Voucher(String firstKey, long moneyOff){
+        this.idVoucher = creatKey(firstKey);
+        this.moneyOff = moneyOff;
+    }
+    public String creatKey(String firstKey) {
+        String s = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvxyz0123456789";
+        int size = 12;
+        StringBuilder stringBuilder = new StringBuilder(size);
+        for(int i = 0; i < size; i++) {
+            int x = (int)(Math.random() * 61);
+            stringBuilder.append(s.charAt(x));
+        }
+        return firstKey + "-" + stringBuilder.toString();
+    }
+
+    public void printVoucher() {
+        int colSpace = 25;
+        System.out.printf("%-" + colSpace + "s %-"
+                + colSpace + "d\n", idVoucher, moneyOff);
+
+    }
+
+    public String getidVoucher() {
         return idVoucher;
     }
-    public void setidvoucher(String idVoucher){
-        this.idVoucher=idVoucher;
+    public long getmoneyOff(){
+        return moneyOff;
     }
-
-    public int getdiscountRate(){
-        return discountRate;
+    public void setmoneyOff(long moneyOff){
+        this.moneyOff = moneyOff;
     }
-
-    public String creaKey(){
-        String randomKey= "-"+ (int)(Math.random()*100000000);
-        return randomKey;
-    }
-
-    public void nhap(){
-        System.out.print("Nhập mã voucher : ");
-        idVoucher=in.nextLine();
-        System.out.print("Nhập phần trăm giảm : ");
-        discountRate=in.nextInt();in.nextLine();
-    }
-
-    public void xuat(){
-        System.out.println(idVoucher+" "+discountRate+"%");
-    }
+}

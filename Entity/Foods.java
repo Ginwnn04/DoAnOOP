@@ -1,16 +1,19 @@
 package DoAnOOP.Entity;
 
 public class Foods extends Product{
-    private String typeProduct;
-    private float amount;
+    private String typeFood;
+    private int amount;
 
-    public Foods() {
-        super();
+
+    public Foods(int type, String nameProduct, String unit, int quantity, int price, String typeFood, int amount) {
+        super(type, nameProduct, unit, quantity, price);
+        this.typeFood = typeFood;
+        this.amount = amount;
     }
 
-    public Foods(String ID, String nameProduct, String unit, int quantity, String importDate, String productDate, int price, String typeProduct, float amount) {
-        super(ID, nameProduct, unit, quantity, importDate, productDate, price);
-        this.typeProduct = typeProduct;
+    public Foods(String idProduct, String nameProduct, String unit, int quantity, int price, String typeFood, int amount) {
+        super(idProduct, nameProduct, unit, quantity, price);
+        this.typeFood = typeFood;
         this.amount = amount;
     }
 
@@ -22,8 +25,14 @@ public class Foods extends Product{
                 + colSpace + "s %-"
                 + colSpace + "s %-"
                 + colSpace + "s %-"
-                + colSpace + "d %-"
                 + colSpace + "s %-"
-                + colSpace + "d\n", ID, nameProduct, amount + " gram" ,typeProduct , unit, quantity, productDate, price);
+                + colSpace + "d %-"
+                + colSpace + "d\n", ID, nameProduct, amount + " gram", "-" ,typeFood , unit, quantity, price);
     }
+
+    @Override
+    public String printToFile() {
+        return super.printToFile() + typeFood + "|" + amount;
+    }
+
 }
