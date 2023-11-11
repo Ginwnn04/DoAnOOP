@@ -7,60 +7,52 @@ import java.util.Arrays;
 
 public class PromotionsSale {
     private String namePromotions;
-    private String keyPromotions;
+    private String codeDiscount;
     private String startDate;
     private String endDate;
-    private int totalVoucher;
-    public Voucher[] listVoucher;
+    private int moneyDiscount;
 
 
     public PromotionsSale() {
-        this.listVoucher = new Voucher[totalVoucher];
     }
 
-    public PromotionsSale(String namePromotions, String keyPromotions, String startDate, String endDate) {
-        this.listVoucher = new Voucher[totalVoucher];
+    public PromotionsSale(String namePromotions, String firstKey, String startDate, String endDate, int moneyDiscount) {
         this.namePromotions = namePromotions;
-        this.keyPromotions = keyPromotions;
+        this.codeDiscount = creatCodeDiscount(firstKey);
         this.startDate = startDate;
         this.endDate = endDate;
+        this.moneyDiscount = moneyDiscount;
     }
 
-    public String creatVoucher() {
-        long discount = new Validate().checkMoneyInput("Nhập vào số tiền giảm giá");
-        if (discount == -1) {
-            return null;
+//    public String creatVoucher() {
+//        long discount = new Validate().checkMoneyInput("Nhập vào số tiền giảm giá");
+//        if (discount == -1) {
+//            return null;
+//        }
+//        listVoucher = Arrays.copyOf(listVoucher, totalVoucher + 1);
+//        listVoucher[totalVoucher++] = new Voucher(keyPromotions, discount);
+//        new Validate().clearBuffer();
+//        return listVoucher[totalVoucher - 1].getidVoucher();
+//    }
+
+    public String creatCodeDiscount(String firstKey) {
+        String s = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvxyz0123456789";
+        int size = 12;
+        StringBuilder stringBuilder = new StringBuilder(size);
+        for(int i = 0; i < size; i++) {
+            int x = (int)(Math.random() * 61);
+            stringBuilder.append(s.charAt(x));
         }
-        listVoucher = Arrays.copyOf(listVoucher, totalVoucher + 1);
-        listVoucher[totalVoucher++] = new Voucher(keyPromotions, discount);
-        new Validate().clearBuffer();
-        return listVoucher[totalVoucher - 1].getidVoucher();
+        return firstKey + "-" + stringBuilder.toString();
     }
 
     public void showPromotionsSale() {
         int colSpace = 25;
-        for(Voucher x : listVoucher) {
-            System.out.printf("%-" + colSpace + "s %-"
-                    + colSpace + "s %-"
-                    + colSpace + "s %-"
-                    + colSpace + "s %-"
-                    + colSpace + "s\n", namePromotions, startDate, endDate, x.getidVoucher(), x.getmoneyOff());
-        }
-
-    }
-
-    public void showVoucher() {
-        int colSpace = 25;
         System.out.printf("%-" + colSpace + "s %-"
-                + colSpace + "s\n", "Mã voucher", "Tiền giảm");
+                + colSpace + "s %-"
+                + colSpace + "s %-"
+                + colSpace + "d\n", namePromotions, startDate, endDate, moneyDiscount);
 
-        for(Voucher x: listVoucher) {
-            x.printVoucher();
-        }
     }
 
-
-    public String getKeyPromotions() {
-        return keyPromotions;
-    }
 }

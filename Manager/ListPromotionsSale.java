@@ -21,8 +21,9 @@ public class ListPromotionsSale {
         String keyPromotions = new Validate().checkStringUser("Kí tự bắt đầu khuyến mãi");
         String startDate = new Validate().checkStringUser("Nhập ngày bắt đầu chương trình khuyến mãi");
         String endDate = new Validate().checkStringUser("Nhập ngày kết thúc chương trình khuyến mãi");
+        int moneyDiscount = new Validate().checkMoneyInput("Nhập số tiền giảm giá");
         listPromotionsSale = Arrays.copyOf(listPromotionsSale, totalPromotionsSale + 1);
-        listPromotionsSale[totalPromotionsSale++] = new PromotionsSale(namePromotions, keyPromotions, startDate, endDate);
+        listPromotionsSale[totalPromotionsSale++] = new PromotionsSale(namePromotions, keyPromotions, startDate, endDate, moneyDiscount);
         System.out.println("Tạo chương trình khuyến mãi thành công !");
     }
 
@@ -40,19 +41,4 @@ public class ListPromotionsSale {
         }
     }
 
-    public void addVoucher() {
-        String choice = new Validate().checkStringUser("Bạn có muốn thêm voucher");
-        if (choice.charAt(0) == 'y') {
-            String keyPromotionsSale = new Validate().checkStringUser("Nhập mã chương trình khuyến mãi");
-            for(int i = 0;i < totalPromotionsSale; i++) {
-                if (listPromotionsSale[i].getKeyPromotions().equals(keyPromotionsSale)) {
-                    do {
-                        listPromotionsSale[i].creatVoucher();
-                        System.out.println("Tạo mã thành công !");
-                        choice = new Validate().checkStringUser("Bạn có muốn tiếp tục (y/n)");
-                    } while (choice.charAt(0) == 'y');
-                }
-            }
-        }
-    }
 }
