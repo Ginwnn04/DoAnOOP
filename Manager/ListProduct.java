@@ -221,6 +221,16 @@ public class ListProduct implements ServiceFile{
     }
 
 
+    public Product getProductByCode(String idProduct) {
+        for (Product product : listProduct) {
+            if (product != null && product.getidProduct().equals(idProduct)) {
+                return product;
+            }
+        }
+        return null;
+    }
+
+
     @Override
     public void readData() {
         try {
