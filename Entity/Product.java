@@ -6,6 +6,7 @@ public abstract class Product {
     protected String unit;
     protected int quantity;
     protected int price;
+    protected int priceImport;
     protected boolean isDelete;
 
     public Product() {
@@ -18,23 +19,26 @@ public abstract class Product {
     }
 
     // Nhap du lieu tho
-    public Product(int type, String nameProduct, String unit, int quantity, int price) {
+    public Product(int type, String nameProduct, String unit, int quantity, int price, int priceImport) {
         this.ID = generateIdProduct(type);
         this.nameProduct = nameProduct;
         this.unit = unit;
         this.quantity = quantity;
         this.price = price;
+        this.priceImport = priceImport;
         if (quantity <= 0 ) {
             this.isDelete = true;
         }
     }
     // Nhap du lieu co cau truc
-    public Product(String ID, String nameProduct, String unit, int quantity, int price) {
+    public Product(String ID, String nameProduct, String unit, int quantity, int price, int priceImport) {
         this.ID = ID;
         this.nameProduct = nameProduct;
         this.unit = unit;
         this.quantity = quantity;
         this.price = price;
+        this.priceImport = priceImport;
+
     }
 
     public String generateIdProduct(int type) {
@@ -53,7 +57,7 @@ public abstract class Product {
     public abstract void print();
 
     public String printToFile() {
-        return ID + "|" + nameProduct + "|" + unit + "|" + quantity + "|" + price + "|";
+        return ID + "|" + nameProduct + "|" + unit + "|" + quantity + "|" + priceImport + "|" + price + "|";
     }
 
     public String getID() {
@@ -80,7 +84,9 @@ public abstract class Product {
         return price;
     }
 
-
+    public int getPriceImport() {
+        return priceImport;
+    }
 
     public void setDelete(boolean flag) {
         isDelete = flag;

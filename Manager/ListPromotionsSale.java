@@ -21,7 +21,7 @@ public class ListPromotionsSale {
         String keyPromotions = new Validate().checkStringUser("Kí tự bắt đầu khuyến mãi");
         String startDate = new Validate().checkStringUser("Nhập ngày bắt đầu chương trình khuyến mãi");
         String endDate = new Validate().checkStringUser("Nhập ngày kết thúc chương trình khuyến mãi");
-        int moneyDiscount = new Validate().checkMoneyInput("Nhập số tiền giảm giá");
+        int moneyDiscount = new Validate().checkNumberInput("Nhập số tiền giảm giá", "Tiền giảm giá > 0, vui lòng nhập lại");
         listPromotionsSale = Arrays.copyOf(listPromotionsSale, totalPromotionsSale + 1);
         listPromotionsSale[totalPromotionsSale++] = new PromotionsSale(namePromotions, keyPromotions, startDate, endDate, moneyDiscount);
         System.out.println("Tạo chương trình khuyến mãi thành công !");

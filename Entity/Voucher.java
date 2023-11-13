@@ -56,7 +56,7 @@ public class Voucher {
 
     public void input(){
         idVoucher= taoidVoucher();
-        moneyDiscount=new Validate().checkIntUser("Nhập giá tiền giảm");
+        moneyDiscount=new Validate().checkNumberInput("Nhập giá tiền giảm", "Số tiền > 0, vui lòng nhập lại");
         startDate=new Validate().checkStringUser("Nhập ngày bắt đàu");
         endDate=new Validate().checkStringUser("Ngày kết thúc");
     }

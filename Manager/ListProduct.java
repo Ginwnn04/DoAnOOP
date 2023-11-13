@@ -9,8 +9,7 @@ import java.util.Arrays;
 public class ListProduct implements ServiceFile{
     private int totalProduct;
     private Product[] listProduct;
-     ListBillImport listBillImport = new ListBillImport();
-     private String path = System.getProperty("user.dir") + "/src/MyOOP/KhoSanPham.txt";
+    private String path = System.getProperty("user.dir") + "/src/DoAnOOP/KhoSanPham.txt";
 
     public ListProduct() {
         listProduct = new Product[totalProduct];
@@ -19,10 +18,28 @@ public class ListProduct implements ServiceFile{
     public ListProduct(ListProduct x) {
         this.listProduct = x.listProduct;
         this.totalProduct = x.totalProduct;
-        this.listBillImport = x.listBillImport;
     }
 
-    public void importProduct() {
+    public void addProduct(int type) {
+        // 1 la them sp tu file
+        // 2 la them san pham tu ban phim
+        ListBillImport listBillImport = new ListBillImport();
+        BillImport billImport = new BillImport();
+        if (type == 1) {
+            billImport = importProductFormFile();
+        }
+        else if (type == 2) {
+            billImport = importProduct();
+        }
+        if (billImport == null) {
+            System.out.println("Thêm thất bại");
+        }
+        listBillImport.creatBillImport(billImport);
+        listBillImport.writeData();
+        writeData();
+    }
+
+    public BillImport importProduct() {
         BillImport billImport = new BillImport();
         billImport.insertInfor();
         String choice = "";
@@ -32,7 +49,7 @@ public class ListProduct implements ServiceFile{
             if (product != null) {
                 listProduct = Arrays.copyOf(listProduct, totalProduct + 1);
                 listProduct[totalProduct++] = product;
-//                billImport.insertDetail(product.getID(), product.getNameProduct(), product.getUnit(), product.getQuantity(), product.getPriceImport());
+                billImport.insertDetail(product.getID(), product.getNameProduct(), product.getUnit(), product.getQuantity(), product.getPriceImport());
                 System.out.println("Thêm thành công !");
             }
             else {
@@ -43,17 +60,15 @@ public class ListProduct implements ServiceFile{
 
         } while (choice.charAt(0) == 'y');
         billImport.printImportBill();
-        listBillImport.creatBillImport(billImport);
-        listBillImport.writeData();
-        writeData();
+        return billImport;
     }
 
 
-    public void importProductFormFile() {
+    public BillImport importProductFormFile() {
         BillImport billImport = new BillImport();
         billImport.insertInfor();
         String currentDirectory = System.getProperty("user.dir");
-        String path = currentDirectory + "/src/MyOOP/NhaCungCap.txt";
+        String path = currentDirectory + "/src/DoAnOOP/NhaCungCap.txt";
         int count = 0;
         try {
             FileReader fileReader = new FileReader(path);
@@ -68,16 +83,16 @@ public class ListProduct implements ServiceFile{
                     int quantity = Integer.parseInt(split[3]);
                     int priceImport = Integer.parseInt(split[4]);
                     listProduct = Arrays.copyOf(listProduct, totalProduct + 1);
-                    int priceProduct = new Validate().checkNumberProduct("Nhập giá bán của sản phẩm " + nameProduct + " (" + priceImport + ")" );
+                    int priceProduct = new Validate().checkNumberInput("Nhập giá bán của sản phẩm " + nameProduct + " (" + priceImport + ")", "Giá bán > 0, vui lòng nhập lại" );
                     if (priceProduct != -1) {
                         if (type == 1) {
                             String typeFood = split[5];
                             int amout = Integer.parseInt(split[6]);
-                            listProduct[totalProduct++] = new Foods(type, nameProduct, unit, quantity, priceProduct, typeFood, amout);
+                            listProduct[totalProduct++] = new Foods(type, nameProduct, unit, quantity, priceProduct, typeFood, amout, priceImport);
                         }
                         else {
                             int volume = Integer.parseInt(split[5]);
-                            listProduct[totalProduct++] = new Drinks(type, nameProduct, unit, quantity, priceProduct, volume);
+                            listProduct[totalProduct++] = new Drinks(type, nameProduct, unit, quantity, priceProduct, volume, priceImport);
                         }
                         count++;
                         Product product = listProduct[totalProduct - 1];
@@ -88,46 +103,43 @@ public class ListProduct implements ServiceFile{
             System.out.println("Đã thêm thành công " + count + " sản phẩm");
             new Validate().clearBuffer();
             billImport.printImportBill();
-            listBillImport.creatBillImport(billImport);
-            listBillImport.writeData();
-            writeData();
             bufferedReader.close();
-
+            return billImport;
         }
         catch (FileNotFoundException fnfe) {
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
+        return null;
     }
 
 
     public Product createProduct() {
         System.out.println("1. Thực phẩm");
         System.out.println("2. Thức uống");
-        int type = new Validate().checkNumberProduct("Nhập loại sản phẩm");
+        int type = new Validate().checkNumberInput("Nhập loại sản phẩm", "Loại sản phẩm > 0, vui lòng nhập lại");
         new Validate().clearBuffer();
         String nameProduct = new Validate().checkStringUser("Nhập tên sản phẩm");
         String unit = new Validate().checkStringUser("Nhập đơn vị tính của sản phẩm");
-        int quantity = new Validate().checkNumberProduct("Nhập số lượng sản phẩm");
+        int quantity = new Validate().checkNumberInput("Nhập số lượng sản phẩm", "Số lượng > 0, vui lòng nhập lại");
         new Validate().clearBuffer();
-        int priceImport = new Validate().checkNumberProduct("Nhập giá tiền nhập sản phẩm");
-        int priceProduct = new Validate().checkNumberProduct("Nhập giá tiền bán sản phẩm");
+        int priceImport = new Validate().checkNumberInput("Nhập giá tiền nhập sản phẩm", "Giá bán > 0, vui lòng nhập lại");
+        int priceProduct = new Validate().checkNumberInput("Nhập giá tiền bán sản phẩm", "Giá nhập > 0, vui lòng nhập lại");
         if (quantity == -1 || priceProduct == -1) {
             return null;
         }
         if (type == 1) {
             new Validate().clearBuffer();
             String typeFood = new Validate().checkStringUser("Nhập loại thực phẩm");
-            int amout = new Validate().checkNumberProduct("Nhập khối lượng thực phẩm");
+            int amout = new Validate().checkNumberInput("Nhập khối lượng thực phẩm", "Khối lượng > 0, vui lòng nhập lại");
             if (amout != -1) {
-//                return new Foods(type, nameProduct, unit, quantity, priceProduct, typeFood, amout, priceImport);
+                return new Foods(type, nameProduct, unit, quantity, priceProduct, typeFood, amout, priceImport);
             }
         }
         else if (type == 2){
-            int volume = new Validate().checkNumberProduct("Nhập thể tích");
-//            return new Drinks(type, nameProduct, unit, quantity, priceProduct, volume, priceImport);
+            int volume = new Validate().checkNumberInput("Nhập thể tích", "Thể tích > 0, vui lòng nhập lại");
+            return new Drinks(type, nameProduct, unit, quantity, priceProduct, volume, priceImport);
         }
         return null;
     }
@@ -179,7 +191,7 @@ public class ListProduct implements ServiceFile{
         boolean flag = false;
         for(int i = 0; i < totalProduct; i++) {
             if (listProduct[i].getID().equals(idProductUser)) {
-                int newQuantity = new Validate().checkNumberProduct("Nhập số lượng sản phẩm cần thêm");
+                int newQuantity = new Validate().checkNumberInput("Nhập số lượng sản phẩm cần thêm", "Số lượng > 0, vui lòng nhập lại");
                 if (newQuantity != -1) {
                     listProduct[i].setQuantity(newQuantity);
                     flag = true;
@@ -196,6 +208,7 @@ public class ListProduct implements ServiceFile{
     }
 
     public void showProduct(boolean flag) {
+        readData();
         int colSpace = 15;
         System.out.println("=======================DANH SÁCH SẢN PHẨM======================");
         System.out.printf("%-" + colSpace + "s %-"
@@ -218,18 +231,24 @@ public class ListProduct implements ServiceFile{
                 }
             }
         }
+        resetData();
     }
 
 
     public Product getProductByCode(String idProduct) {
         for (Product product : listProduct) {
-            if (product != null && product.getidProduct().equals(idProduct)) {
+            if (product != null && product.getID().equals(idProduct)) {
                 return product;
             }
         }
         return null;
     }
 
+    @Override
+    public void resetData() {
+        totalProduct = 0;
+        listProduct = new Product[totalProduct];
+    }
 
     @Override
     public void readData() {
@@ -244,21 +263,19 @@ public class ListProduct implements ServiceFile{
                 String nameProduct = split[1];
                 String unit = split[2];
                 int quantity = Integer.parseInt(split[3]);
-                int price = Integer.parseInt(split[4]);
+                int priceImport = Integer.parseInt(split[4]);
+                int price = Integer.parseInt(split[5]);
                 String firstKey = idProduct.substring(0, 2);
                 if (firstKey.equals("FD")) {
-                    String typeProduct = split[5];
-                    int amout = Integer.parseInt(split[6]);
-                    listProduct[totalProduct++] = new Foods(idProduct, nameProduct, unit, quantity, price, typeProduct, amout);
+                    String typeProduct = split[6];
+                    int amout = Integer.parseInt(split[7]);
+                    listProduct[totalProduct++] = new Foods(idProduct, nameProduct, unit, quantity, price, typeProduct, amout, priceImport);
                 }
                 else {
-                    int volume = Integer.parseInt(split[5]);
-                    listProduct[totalProduct++] = new Drinks(idProduct, nameProduct, unit, quantity, price, volume);
-
+                    int volume = Integer.parseInt(split[6]);
+                    listProduct[totalProduct++] = new Drinks(idProduct, nameProduct, unit, quantity, price, volume, priceImport);
                 }
             }
-            listProduct = null;
-            totalProduct = 0;
             bufferedReader.close();
         }
         catch (FileNotFoundException fnfe) {
@@ -272,11 +289,12 @@ public class ListProduct implements ServiceFile{
     @Override
     public void writeData() {
         try {
-            FileWriter fileWriter = new FileWriter(path);
+            FileWriter fileWriter = new FileWriter(path, true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             for(Product x : listProduct) {
-                bufferedWriter.write(x.printToFile() + "\n");
+                bufferedWriter.write(x.printToFile());
             }
+            resetData();
             bufferedWriter.close();
         }
         catch (FileNotFoundException fnfe) {

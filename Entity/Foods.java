@@ -5,14 +5,14 @@ public class Foods extends Product{
     private int amount;
 
 
-    public Foods(int type, String nameProduct, String unit, int quantity, int price, String typeFood, int amount) {
-        super(type, nameProduct, unit, quantity, price);
+    public Foods(int type, String nameProduct, String unit, int quantity, int price, String typeFood, int amount, int priceImport) {
+        super(type, nameProduct, unit, quantity, price, priceImport);
         this.typeFood = typeFood;
         this.amount = amount;
     }
 
-    public Foods(String idProduct, String nameProduct, String unit, int quantity, int price, String typeFood, int amount) {
-        super(idProduct, nameProduct, unit, quantity, price);
+    public Foods(String idProduct, String nameProduct, String unit, int quantity, int price, String typeFood, int amount, int priceImport) {
+        super(idProduct, nameProduct, unit, quantity, price, priceImport);
         this.typeFood = typeFood;
         this.amount = amount;
     }
@@ -32,7 +32,7 @@ public class Foods extends Product{
 
     @Override
     public String printToFile() {
-        return super.printToFile() + typeFood + "|" + amount;
+        return super.printToFile() + typeFood + "|" + amount + "\n";
     }
 
 }

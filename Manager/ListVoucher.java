@@ -1,6 +1,7 @@
-package DoAnOOP.Entity;
+package DoAnOOP.Manager;
 
 import DoAnOOP.Manager.Validate;
+import DoAnOOP.Entity.Voucher;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -25,7 +26,7 @@ public class ListVoucher {
     }
 
     public void input(){
-        totalVoucher=new Validate().checkIntUser("Số voucher cần tạo");
+        totalVoucher=new Validate().checkNumberInput("Số voucher cần tạo", "Số voucher > 0, vui lòng nhập lại");
         voucher=new Voucher[totalVoucher];
         for(int i=0;i<totalVoucher;i++){
         System.out.println("\n\nNhập voucher thứ "+(i+1));

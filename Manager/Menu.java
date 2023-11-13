@@ -1,8 +1,9 @@
 package DoAnOOP.Manager;
 
 public class Menu {
-    ListProduct list = new ListProduct();
-    ListPromotionsSale listSale = new ListPromotionsSale();
+    private ListProduct list = new ListProduct();
+    private ListPromotionsSale listSale = new ListPromotionsSale();
+    private ListBillImport listBillImport = new ListBillImport();
     public void printMenuEmployee() {
         int choice;
         do {
@@ -12,7 +13,7 @@ public class Menu {
             System.out.println("3. Sửa thông tin sản phẩm");
             System.out.println("4. Tìm kiếm tin sản phẩm");
             System.out.println("5. Xoá sản phẩm");
-            System.out.println("6. Hiển thị chi tiết phiếu nhập.");
+            System.out.println("6. Thống kê.");
             System.out.println("7. Chương trình khuyến mãi");
             System.out.println("8. Đăng xuất.");
             choice = new Validate().checkChoiceUser(1, 8);
@@ -33,10 +34,11 @@ public class Menu {
                     list.deleteProduct();
                     break;
                 case 6:
-//                    list.listBillImport.test();
+                    // Report
                     break;
                 case 7:
-                    promotionsSaleMenu();
+                    // Chuong trinh khuyen mai
+//                    promotionsSaleMenu();
                     break;
 
             }
@@ -53,10 +55,10 @@ public class Menu {
             choice = new Validate().checkChoiceUser(1,3);
             switch (choice) {
                 case 1:
-                    list.importProductFormFile();
+                    list.addProduct(1);
                     break;
                 case 2:
-                    list.importProduct();
+                    list.addProduct(2);
                     break;
             }
 
@@ -83,26 +85,26 @@ public class Menu {
         } while(choice != 3);
     }
 
-    public void promotionsSaleMenu() {
-        int choice;
-        do {
-            System.out.println("=====================TẠO CHƯƠNG TRÌNH KHUYẾN MÃI========================");
-            System.out.println("1. Tạo chương trình khuyến mãi.");
-            System.out.println("2. Hiển thị danh sách mã khuyến mãi của 1 chương trình.");
-            System.out.println("3. Quay lại.");
-            choice = new Validate().checkChoiceUser(1,3);
-            switch (choice) {
-                case 1:
-                    listSale.addPromotionsSale();
-                    break;
-                case 2:
-                    listSale.showAllPromotionsSale();
-                    listSale.addVoucher();
-                    break;
-            }
-
-        } while(choice != 3);
-    }
+//    public void promotionsSaleMenu() {
+//        int choice;
+//        do {
+//            System.out.println("=====================TẠO CHƯƠNG TRÌNH KHUYẾN MÃI========================");
+//            System.out.println("1. Tạo chương trình khuyến mãi.");
+//            System.out.println("2. Hiển thị danh sách mã khuyến mãi của 1 chương trình.");
+//            System.out.println("3. Quay lại.");
+//            choice = new Validate().checkChoiceUser(1,3);
+//            switch (choice) {
+//                case 1:
+//                    listSale.addPromotionsSale();
+//                    break;
+//                case 2:
+//                    listSale.showAllPromotionsSale();
+////                    listSale.addVoucher();
+//                    break;
+//            }
+//
+//        } while(choice != 3);
+//    }
 
     public void reportMenu() {
         int choice;
@@ -119,7 +121,7 @@ public class Menu {
                     listSale.addPromotionsSale();
                     break;
                 case 2:
-                    list.listBillImport.show();
+//                    list.listBillImport.show();
                     break;
             }
 
@@ -139,7 +141,7 @@ public class Menu {
                     list.showProduct(true);
                     break;
                 case 2:
-                    list.listBillImport.show();
+                    listBillImport.show();
                     break;
             }
 
