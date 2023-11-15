@@ -12,8 +12,8 @@ public class Drinks extends Product{
         this.volume = volume;
     }
 
-    public Drinks(String ID, String nameProduct, String unit, int quantity, int price, int volume, int priceImport) {
-        super(ID, nameProduct, unit, quantity, price, priceImport);
+    public Drinks(String ID, String nameProduct, String unit, int quantity, int price, boolean isDelete, int volume, int priceImport) {
+        super(ID, nameProduct, unit, quantity, price, priceImport, isDelete);
         this.volume = volume;
     }
 

@@ -78,7 +78,7 @@ public class Menu {
                     subMenuAdd();
                     break;
                 case 2:
-                    list.addQuantityProduct();
+                    list.restock();
                     break;
             }
 

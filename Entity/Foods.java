@@ -11,8 +11,8 @@ public class Foods extends Product{
         this.amount = amount;
     }
 
-    public Foods(String idProduct, String nameProduct, String unit, int quantity, int price, String typeFood, int amount, int priceImport) {
-        super(idProduct, nameProduct, unit, quantity, price, priceImport);
+    public Foods(String idProduct, String nameProduct, String unit, int quantity, int price, boolean isDelete, String typeFood, int amount, int priceImport) {
+        super(idProduct, nameProduct, unit, quantity, price, priceImport, isDelete);
         this.typeFood = typeFood;
         this.amount = amount;
     }

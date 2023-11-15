@@ -30,15 +30,15 @@ public abstract class Product {
             this.isDelete = true;
         }
     }
-    // Nhap du lieu co cau truc
-    public Product(String ID, String nameProduct, String unit, int quantity, int price, int priceImport) {
+    // Nhap du lieu co cau truc tu file
+    public Product(String ID, String nameProduct, String unit, int quantity, int price, int priceImport, boolean isDelete) {
         this.ID = ID;
         this.nameProduct = nameProduct;
         this.unit = unit;
         this.quantity = quantity;
         this.price = price;
         this.priceImport = priceImport;
-
+        this.isDelete = isDelete;
     }
 
     public String generateIdProduct(int type) {
@@ -57,7 +57,7 @@ public abstract class Product {
     public abstract void print();
 
     public String printToFile() {
-        return ID + "|" + nameProduct + "|" + unit + "|" + quantity + "|" + priceImport + "|" + price + "|";
+        return ID + "|" + nameProduct + "|" + unit + "|" + quantity + "|" + priceImport + "|" + price + "|" + isDelete + "|";
     }
 
     public String getID() {

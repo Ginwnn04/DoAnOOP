@@ -103,9 +103,9 @@ public class ListBillImport implements ServiceFile {
     }
 
     @Override
-    public void writeData() {
+    public void writeData(boolean flag) {
         try {
-            FileWriter fileWriter = new FileWriter(path, true);
+            FileWriter fileWriter = new FileWriter(path, flag);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             for(BillImport x : listBill) {
                 bufferedWriter.write(x.printToFile());

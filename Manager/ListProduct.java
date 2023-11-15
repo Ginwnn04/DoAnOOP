@@ -35,8 +35,8 @@ public class ListProduct implements ServiceFile{
             System.out.println("Thêm thất bại");
         }
         listBillImport.creatBillImport(billImport);
-        listBillImport.writeData();
-        writeData();
+        listBillImport.writeData(true);
+        writeData(true);
     }
 
     public BillImport importProduct() {
@@ -146,6 +146,7 @@ public class ListProduct implements ServiceFile{
 
     public void updateProduct() {
         showProduct(true);
+        readData();
         boolean flag = false;
         String idProductUser = new Validate().checkStringUser("Nhập vào ID sản phẩm cần sửa");
         for(int i = 0; i < totalProduct; i++) {
@@ -155,6 +156,7 @@ public class ListProduct implements ServiceFile{
                 if (tmp != null) {
                     listProduct[i] = tmp;
                     System.out.println("Sửa thành công !!");
+                    writeData(false);
                     return;
                 }
             }
@@ -164,10 +166,12 @@ public class ListProduct implements ServiceFile{
         }
         System.out.println("Sửa thất bại");
 
+        resetData();
     }
 
     public void deleteProduct() {
         showProduct(true);
+        readData();
         boolean flag = false;
         String idProductUser = new Validate().checkStringUser("Nhập vào ID sản phẩm cần xoá");
         for(int i = 0; i < totalProduct; i++) {
@@ -175,6 +179,7 @@ public class ListProduct implements ServiceFile{
                 flag = true;
                 listProduct[i].setDelete(true);
                 System.out.println("Xóa thành công");
+                writeData(false);
                 return;
             }
         }
@@ -182,29 +187,42 @@ public class ListProduct implements ServiceFile{
             System.out.println("Không tìm thấy ID sản phẩm");
         }
         System.out.println("Xóa thất thất bại");
-
+        resetData();
     }
 
-    public void addQuantityProduct() {
+    public void restock() {
         showProduct(false);
-        String idProductUser = new Validate().checkStringUser("Nhập ID sản phẩm cần thêm số lượng");
+        readData();
+        String idProductUser = new Validate().checkStringUser("Nhập ID sản cần khôi phục HOẶC thêm số lượng");
         boolean flag = false;
         for(int i = 0; i < totalProduct; i++) {
             if (listProduct[i].getID().equals(idProductUser)) {
-                int newQuantity = new Validate().checkNumberInput("Nhập số lượng sản phẩm cần thêm", "Số lượng > 0, vui lòng nhập lại");
-                if (newQuantity != -1) {
-                    listProduct[i].setQuantity(newQuantity);
-                    flag = true;
-                    listProduct[i].setDelete(false);
-                    System.out.println("Thêm số lượng thành công");
-                    return;
-                }
+                // So luong > 0 => Can khoi phuc
+                 if (listProduct[i].getQuantity() > 0) {
+                     listProduct[i].setDelete(false);
+                     flag = true;
+                     System.out.println("Khôi phục thành công!");
+                     return;
+                 }
+                 // Nguoc lai => So luong = 0 => Can them so luong
+                 else {
+                     int newQuantity = new Validate().checkNumberInput("Nhập số lượng sản phẩm cần thêm", "Số lượng > 0, vui lòng nhập lại");
+                     if (newQuantity != -1) {
+                         flag = true;
+                         listProduct[i].setQuantity(newQuantity);
+                         listProduct[i].setDelete(false);
+                         System.out.println("Thêm số lượng thành công");
+                         return;
+                     }
+                 }
             }
+
         }
         if (flag == false) {
-            System.out.println("Không tìm thấy ID sản phẩm");
+            System.out.println("Không tìm thấy ID sản phẩm HOẶC số lượng sản phẩm ko hợp lệ");
         }
-        System.out.println("Thêm số lượng thất thất bại");
+        System.out.println("Thêm số lượng HOẶC khôi phục thất bại");
+        writeData(false);
     }
 
     public void showProduct(boolean flag) {
@@ -265,15 +283,16 @@ public class ListProduct implements ServiceFile{
                 int quantity = Integer.parseInt(split[3]);
                 int priceImport = Integer.parseInt(split[4]);
                 int price = Integer.parseInt(split[5]);
+                boolean isDelete = Boolean.parseBoolean(split[6]);
                 String firstKey = idProduct.substring(0, 2);
                 if (firstKey.equals("FD")) {
-                    String typeProduct = split[6];
-                    int amout = Integer.parseInt(split[7]);
-                    listProduct[totalProduct++] = new Foods(idProduct, nameProduct, unit, quantity, price, typeProduct, amout, priceImport);
+                    String typeProduct = split[7];
+                    int amout = Integer.parseInt(split[8]);
+                    listProduct[totalProduct++] = new Foods(idProduct, nameProduct, unit, quantity, price, isDelete, typeProduct, amout, priceImport);
                 }
                 else {
-                    int volume = Integer.parseInt(split[6]);
-                    listProduct[totalProduct++] = new Drinks(idProduct, nameProduct, unit, quantity, price, volume, priceImport);
+                    int volume = Integer.parseInt(split[7]);
+                    listProduct[totalProduct++] = new Drinks(idProduct, nameProduct, unit, quantity, price, isDelete, volume, priceImport);
                 }
             }
             bufferedReader.close();
@@ -287,9 +306,9 @@ public class ListProduct implements ServiceFile{
     }
 
     @Override
-    public void writeData() {
+    public void writeData(boolean flag) {
         try {
-            FileWriter fileWriter = new FileWriter(path, true);
+            FileWriter fileWriter = new FileWriter(path, flag);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             for(Product x : listProduct) {
                 bufferedWriter.write(x.printToFile());
