@@ -198,23 +198,23 @@ public class ListProduct implements ServiceFile{
         for(int i = 0; i < totalProduct; i++) {
             if (listProduct[i].getID().equals(idProductUser)) {
                 // So luong > 0 => Can khoi phuc
-                 if (listProduct[i].getQuantity() > 0) {
-                     listProduct[i].setDelete(false);
-                     flag = true;
-                     System.out.println("Khôi phục thành công!");
-                     return;
-                 }
-                 // Nguoc lai => So luong = 0 => Can them so luong
-                 else {
-                     int newQuantity = new Validate().checkNumberInput("Nhập số lượng sản phẩm cần thêm", "Số lượng > 0, vui lòng nhập lại");
-                     if (newQuantity != -1) {
-                         flag = true;
-                         listProduct[i].setQuantity(newQuantity);
-                         listProduct[i].setDelete(false);
-                         System.out.println("Thêm số lượng thành công");
-                         return;
-                     }
-                 }
+                if (listProduct[i].getQuantity() > 0) {
+                    listProduct[i].setDelete(false);
+                    flag = true;
+                    System.out.println("Khôi phục thành công!");
+                    return;
+                }
+                // Nguoc lai => So luong = 0 => Can them so luong
+                else {
+                    int newQuantity = new Validate().checkNumberInput("Nhập số lượng sản phẩm cần thêm", "Số lượng > 0, vui lòng nhập lại");
+                    if (newQuantity != -1) {
+                        flag = true;
+                        listProduct[i].setQuantity(newQuantity);
+                        listProduct[i].setDelete(false);
+                        System.out.println("Thêm số lượng thành công");
+                        return;
+                    }
+                }
             }
 
         }
@@ -224,6 +224,64 @@ public class ListProduct implements ServiceFile{
         System.out.println("Thêm số lượng HOẶC khôi phục thất bại");
         writeData(false);
     }
+
+    // Can fix lai
+    public void findIdProduct(){
+        showProduct(true);
+        readData();
+        boolean flag = false;
+        String idProductUser = new Validate().checkStringUser("Nhập vào ID sản phẩm cần tìm");
+        for(int i = 0 ; i < totalProduct ; i++){
+            if(listProduct[i].getID().contains(idProductUser)){
+                flag = true;
+//                listProduct[i].setSearch(true);
+//                System.out.println("Tìm kiếm thành công");
+                return;
+            }
+        }
+        if(flag == false){
+            System.out.println("Không tìm thấy ID sản phẩm");
+        }
+        else {
+            System.out.println("Tìm kiếm thành công");
+        }
+        System.out.println("Tìm kiếm thất bại");
+        readData();
+    }
+
+    public void findNameProduct(){
+        int colSpace = 15;
+        readData();
+        boolean flag = false;
+        String nameProduct = new Validate().checkStringUser("Nhập vào tên sản phẩm cần tìm");
+        System.out.println("=======================DANH SÁCH SẢN PHẨM======================");
+        System.out.printf("%-" + colSpace + "s %-"
+                + colSpace + "s %-"
+                + colSpace + "s %-"
+                + colSpace + "s %-"
+                + colSpace + "s %-"
+                + colSpace + "s %-"
+                + colSpace + "s %-"
+                + colSpace + "s\n", "Mã sản phẩm", "Tên sản phẩm", "Khối lượng", "Thể tích","Loại sản phẩm" , "Đơn vị tính", "Số lượng", "Giá tiền");
+        for(int i = 0 ; i < totalProduct ; i++){
+            if(listProduct[i].getNameProduct().toLowerCase().contains(nameProduct.toLowerCase())){
+                flag = true;
+//                listProduct[i].setSearch(true);
+//                System.out.println("Tìm kiếm thành công");
+                listProduct[i].print();
+            }
+        }
+        if(flag == false){
+            System.out.println("Không tìm thấy tên sản phẩm");
+        }
+        else {
+            System.out.println("Tìm kiếm thành công");
+            return;
+        }
+        System.out.println("Tìm kiếm thất bại");
+        readData();
+    }
+
 
     public void showProduct(boolean flag) {
         readData();

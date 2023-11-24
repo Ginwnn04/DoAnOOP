@@ -28,7 +28,7 @@ public class Menu {
                     list.updateProduct();
                     break;
                 case 4:
-                    // Find
+                    SubMenufind();
                     break;
                 case 5:
                     list.deleteProduct();
@@ -126,6 +126,25 @@ public class Menu {
             }
 
         } while(choice != 5);
+    }
+
+    public void SubMenufind(){
+        int choice;
+        do{
+            System.out.println("=====================TÌM SẢN PHẨM========================");
+            System.out.println("1.Tìm sản phẩm theo mã sản phẩm");
+            System.out.println("2.Tìm sản phẩm theo tên sản phẩm");
+            System.out.println("3.Quay lại");
+            choice = new Validate().checkChoiceUser(1, 3);
+            switch (choice) {
+                case 1:
+                    list.findIdProduct();
+                    break;
+                case 2:
+                    list.findNameProduct();
+                    break;
+            }
+        }while(choice != 3);
     }
 
     public void showSubMenu() {
