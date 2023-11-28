@@ -13,11 +13,25 @@ public class Customer {
         this.phone = phone;
     }
 
+    public Customer(String idCustomer, String lastName, String firstName, String phone) {
+        this.idCustomer = idCustomer;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.phone = phone;
+    }
+
     public String generateId() {
         return "KH-" + (int)(Math.random() * 1000000);
     }
 
     public void show() {
-        System.out.println(idCustomer + " " + lastName + " " + firstName + " " + phone + "\n");
+        int colSpace = 15;
+        System.out.printf("%-" + colSpace + "s %-"
+                + colSpace + "s %-"
+                + colSpace + "s %-"
+                + colSpace + "s\n", idCustomer, lastName, firstName, phone);
+    }
+    public String printToFile() {
+        return idCustomer + "|" + lastName + "|" +  firstName + "|" + phone + "\n";
     }
 }

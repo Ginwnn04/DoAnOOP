@@ -6,8 +6,16 @@ import DoAnOOP.Entity.Customer;
 public class Main {
     public static void main(String[] args) {
 //        new Menu().printMenuEmployee();
-        Customer c1 = new Customer("Nguyen Nhat Quang", "0397575084");
-        c1.show();
+        ListCustomer l = new ListCustomer();
+        l.createCustomer();
+        l.createCustomer();
+        l.createCustomer();
+        l.printCustomer();
+        l.writeData(true);
+
+        ListCustomer s = new ListCustomer();
+        s.readData();
+        s.printCustomer();
 
 
     }
