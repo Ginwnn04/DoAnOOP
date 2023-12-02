@@ -104,7 +104,17 @@ public class Bill {
         String idVoucher;
         String idPromotions;
         int count = 0;
-        printDate = new Validate().checkStringUser("Nhập ngay in hoa don");
+        
+        //Nhập ngày in hóa đơn
+		do {
+			printDate = new Validate().checkStringUser("Nhập ngay in hoa don (dd-MM-yyyy)");
+			if(!new Validate().CheckDate(printDate)) {
+				System.err.println("Ngày nhập không hợp lệ, vui lòng nhập lại !");
+				System.err.println();
+			}		
+		}while(!new Validate().CheckDate(printDate));
+
+        //Nhập mã nhân viên, khách hàng, tên khách hàng
         idBill = createIdBill();
         idEmployee = new Validate().checkStringUser("Nhập mã nhân viên");
         idCustomer = new Validate().checkStringUser("Nhập mã khách hàng");
@@ -126,12 +136,11 @@ public class Bill {
             }while(count != 1 && count != 2);
         }while(count == 1);
 
-
         //Lựa chọn sử dụng có sử dụng voucher hay không
         do{
             System.out.println("1.Su dung Voucher.");
             System.out.println("2.Thanh toan."); 
-            count = new Validate().checkNumberInput("Nhap lua chon", "So phai >0, vui long nhap lai !");
+            count = new Validate().checkNumberInput("Nhap lua chon", "Vui long nhap lai !");
             new Validate().clearBuffer();
             if(count == 1 ){
                 do {
@@ -140,15 +149,18 @@ public class Bill {
                     idPromotions = new Validate().checkStringUser("Nhập vào mã CTKM");
                     idVoucher = new Validate().checkStringUser("Nhap ma voucehr");
 			        if(listPromotionsSale.transMoneyDiscount(idPromotions,idVoucher) == 0){
-				        System.err.println("\nMã khách hàng mà bạn vừa nhập không hợp lệ hoặc không có trong danh sách!!!");
+				        System.err.println("\nMã ctkm mà bạn vừa nhập không hợp lệ hoặc không có trong danh sách!!!");
                     }
 		        }while(listPromotionsSale.transMoneyDiscount(idPromotions,idVoucher) == 0);
+                
                 //Lấy giá trị tiền giảm của Voucher tương ứng
 		        moneyDiscount = listPromotionsSale.transMoneyDiscount(idPromotions,idVoucher);
             }
         }while(count != 1 && count != 2);
-        
-        //Tính tiền cần phải thanh toán
+
+        //Tính tiền cần thanh toán
+            totalPay=totalBill-moneyDiscount;
+
     }
 
     //Hàm xuất
@@ -166,13 +178,13 @@ public class Bill {
         System.out.println("Tiền cần thanh toán : " + totalPay);
     }
 
-    //Hàm mua thêm sản phẩm vào hóa đơn
+    //Hàm mua thêm sản phẩm 
     public void addDetailBill(){
         String idProduct;
         int quantity;
         detailBill = Arrays.copyOf(detailBill, totalDetailBill+1);
 
-        //Nhập mã sản phẩm và kiểm tra với từng mã sản phẩm trong kho
+        //Nhập mã sản phẩm 
         do{
             listProduct.readData();
             listProduct.showProduct(true);
@@ -197,14 +209,20 @@ public class Bill {
 
             //Tính tiền từng chi tiết hóa đơn
             int total = price*quantity;
-            totalBill+=total;
-            totalPay=totalBill-moneyDiscount;
-            
+
+            //Lưu chi tiết vừa nhập
             detailBill[totalDetailBill]= new DetailBill(nameProduct,idProduct,price,quantity,total);
             totalDetailBill++;
+
+            //Tính tiền hóa đơn
+            totalBill += detailBill[totalDetailBill-1].gettotal();
+
+            //Tính tiền cần thanh toán
+            totalPay=totalBill-moneyDiscount;
+
     }
 
-    //Hàm xóa bớt sản phẩm khỏi hóa đơn
+    //Hàm xóa bớt sản phẩm 
     public void deleteDetailBill(){
         int count=0;
         String idProductUser = new Validate().checkStringUser("Nhập mã sản phẩm cần xóa ");

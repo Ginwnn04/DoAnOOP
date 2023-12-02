@@ -1,4 +1,4 @@
-package DoAnOOP.Entity;
+//package DoAnOOP.Entity;
 
 public class Foods extends Product{
     private String typeFood;

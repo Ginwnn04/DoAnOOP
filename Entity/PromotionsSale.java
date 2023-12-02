@@ -1,6 +1,6 @@
-package DoAnOOP.Entity;
-import DoAnOOP.Manager.Validate;
-import DoAnOOP.Entity.ServiceFile;
+//package DoAnOOP.Entity;
+//import DoAnOOP.Manager.Validate;
+//import DoAnOOP.Entity.ServiceFile;
 
 import java.util.Arrays;
 
@@ -67,7 +67,7 @@ public class PromotionsSale {
         idPromotions = createIdPromotions();
         namePromotions = new Validate().checkStringUser("Nhập tên chương trình khuyến mãi");
         startDate = new Validate().checkStringUser("Nhập ngày bắt đầu");
-        endDate = new Validate().checkStringUser("Nhập kết thúc")
+        endDate = new Validate().checkStringUser("Nhập kết thúc");
         totalVoucher = new Validate().checkNumberInput("Số voucher cần tạo", "Số voucher > 0, vui long nhập lại !");
         voucher = new Voucher[totalVoucher];
             for(int i = 0 ; i < totalVoucher ; i++ ){

@@ -1,10 +1,14 @@
-package DoAnOOP.Manager;
+//package DoAnOOP.Manager;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Validate {
     private static Scanner sc = new Scanner(System.in);
+    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+    SimpleDateFormat dfmonth = new SimpleDateFormat("MM-yyyy");
 
     public void clearBuffer() {
         sc.nextLine();
@@ -63,5 +67,25 @@ public class Validate {
         }
     }
 
+    //Ham kiem tra ngay
+    public boolean CheckDate(String printDate) {
+		df.setLenient(false);
+		try {
+			df.parse(printDate);
+		}catch(ParseException e) {
+			return false;
+		}
+		return true;
+	}
+
+    public boolean CheckDateMonth(String printDate) {
+		dfmonth.setLenient(false);
+		try {
+			dfmonth.parse(printDate);
+		}catch(ParseException e) {
+			return false;
+		}
+		return true;
+	}
 
 }

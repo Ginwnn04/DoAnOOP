@@ -33,7 +33,7 @@ public class ListBill implements ServiceFile {
     //Hàm xuất hóa đơn hiện tại
     public void printBill(){
         if(totalBill==0){
-            System.out.println("Chua nhap du lieu vao hoa don !");
+            System.out.println("Chưa có dữ liệu !");
         }
         else{
         bill[totalBill-1].print();
@@ -42,53 +42,105 @@ public class ListBill implements ServiceFile {
 
     //Hàm xuất lịch sử hóa đơn
     public void printListBill(){
-        System.out.println("--------DANH SÁCH HÓA ĐƠN--------");
-        for(int i=0;i<totalBill;i++){
-            System.out.println("\nHóa đơn thứ "+(i+1));
-            bill[i].print();
+        if(totalBill==0){
+            System.out.println("Chưa có dữ liệu !");
+        }
+        else{
+            System.out.println("--------DANH SÁCH HÓA ĐƠN--------");
+            for(int i=0;i<totalBill;i++){
+                System.out.println("\nHóa đơn thứ "+(i+1));
+                bill[i].print();
+            }
         }
     }
 
     //Hàm tìm kiếm hóa đơn bằng mã hóa đơn
     public void findBillByIdBill(){
         int count = 0 ;
-        String idBillUser = new Validate().checkStringUser("Nhập mã hóa đơn cần tìm");
-        for( int i = 0 ; i < totalBill ; i++ ){
-            if((bill[i].getidBill()).equals(idBillUser)){
-                bill[i].print();
-                count++;
-            }
+        if(totalBill==0){
+            System.out.println("Chưa có dữ liệu !");
         }
-        if(count == 0 ){
-            System.out.println("Không tìm thấy hóa đơn !");
+        else{
+            String idBillUser = new Validate().checkStringUser("Nhập mã hóa đơn cần tìm");
+            for( int i = 0 ; i < totalBill ; i++ ){
+                if((bill[i].getidBill()).equals(idBillUser)){
+                    bill[i].print();
+                    count++;
+                }
+            }
+            if(count == 0 ){
+                System.out.println("Không tìm thấy hóa đơn !");
+            }
         }
     }
 
-    //Hàm tìm kiếm hóa đơn bằng tên nhân viên 
+    //Hàm tìm kiếm hóa đơn bằng mã nhân viên 
     public void findBillByIdEmployee(){
         int count = 0;
-        String idEmployeeUser = new Validate().checkStringUser("Nhập mã nhân viên");
-        for( int i = 0 ; i < totalBill ; i++ ){
-            if((bill[i].getidEmployee()).equals(idEmployeeUser)){
-                bill[i].print();
-                count++;
-            }
+        if(totalBill==0){
+            System.out.println("Chưa có dữ liệu !");
         }
-        if(count == 0 ){
-            System.out.println("Không tìm thấy hóa đơn !");
+        else{
+            String idEmployeeUser = new Validate().checkStringUser("Nhập mã nhân viên");
+            for( int i = 0 ; i < totalBill ; i++ ){
+                if((bill[i].getidEmployee()).equals(idEmployeeUser)){
+                    bill[i].print();
+                    count++;
+                }
+            }
+            if(count == 0 ){
+                System.out.println("Không tìm thấy hóa đơn !");
+            }
         }
     }
 
     //Hàm tìm kiếm hóa đơn bằng ngày xuất
-    public void findBillByPrintDate(){
+    public void findBillByDay(){
         int count = 0;
-        String printDateUser = new Validate().checkStringUser("Nhập ngày xuất hóa đơn");
+        if(totalBill==0){
+            System.out.println("Chưa có dữ liệu !");
+        }
+        else{
+            String printDateUser;
+            do {
+			    printDateUser = new Validate().checkStringUser("Nhập ngày xuất hóa đơn (dd-MM-yyyy)");
+			
+    			if(!new Validate().CheckDate(printDateUser)) {
+	    			System.err.println("Ngày tháng năm không hợp lê. Xin mời nhập lại!!!");
+		    		System.err.println();
+			    }		
+    		}while(!new Validate().CheckDate(printDateUser));
+    
+            for( int i = 0 ; i < totalBill ; i++ ){
+                if((bill[i].getprintDate()).equals(printDateUser)){
+                    bill[i].print();
+                    count++;
+                }
+            }
+            if(count == 0 ){
+                System.out.println("Không tìm thấy hóa đơn !");
+            }
+        }
+    }
+
+    public void findBillByMonth(){
+        int count = 0;
+        String printDateUser;
+        do {
+			printDateUser = new Validate().checkStringUser("Nhập thang xuất hóa đơn (MM-yyyy)");
+			
+			if(!new Validate().CheckDateMonth(printDateUser)) {
+				System.err.println("Ngày tháng năm không hợp lê. Xin mời nhập lại!!!");
+				System.err.println();
+			}		
+		}while(!new Validate().CheckDateMonth(printDateUser));
+        
         for( int i = 0 ; i < totalBill ; i++ ){
-            if((bill[i].getprintDate()).equals(printDateUser)){
+            //if((bill[i].Month()).equals(printDateUser)){
                 bill[i].print();
                 count++;
             }
-        }
+        
         if(count == 0 ){
             System.out.println("Không tìm thấy hóa đơn !");
         }
@@ -97,31 +149,51 @@ public class ListBill implements ServiceFile {
     //Hàm tìm kiếm hóa đơn bằng tên khách hàng
     public void findBillByName(){
         int count = 0;
-        String nameCustomer = new Validate().checkStringUser("Nhập tên khách hàng ");
-        for( int i = 0 ; i < totalBill ; i++ ){
-            if((bill[i].getnameCustomer()).equals(nameCustomer)){
-                bill[i].print();
-                count++;
-            }
+        if(totalBill==0){
+            System.out.println("Chưa có dữ liệu !");
         }
-        if(count == 0 ){
-            System.out.println("Không tìm thấy hóa đơn !");
+        else{
+            String nameCustomer = new Validate().checkStringUser("Nhập tên khách hàng ");
+            for( int i = 0 ; i < totalBill ; i++ ){
+                if((bill[i].getnameCustomer()).equals(nameCustomer)){
+                    bill[i].print();
+                    count++;
+                }
+            }
+            if(count == 0 ){
+                System.out.println("Không tìm thấy hóa đơn !");
+            }
         }
     }
   
     //Hàm thêm sản phẩm vào hóa đơn
     public void addProduct(){
-        bill[totalBill-1].addDetailBill();
+        if(totalBill==0){
+            System.out.println("Chưa có dữ liệu !");
+        }
+        else{
+            bill[totalBill-1].addDetailBill();
+        }
     }
 
     //Hàm xóa bớt sản phảm khỏi hóa đơn
     public void deleteProduct(){
-        bill[totalBill-1].deleteDetailBill();
+        if(totalBill==0){
+            System.out.println("Chưa có dữ liệu !");
+        }
+        else{
+            bill[totalBill-1].deleteDetailBill();
+        }
     }
 
     //Hàm thây đỏi số lượng sản phẩm 
     public void fixQuantityProduct(){
-        bill[totalBill-1].fixQuantityDetailBill();
+        if(totalBill==0){
+            System.out.println("Chưa có dữ liệu !");
+        }
+        else{
+            bill[totalBill-1].fixQuantityDetailBill();
+        }
     }
 
     @Override
@@ -132,18 +204,23 @@ public class ListBill implements ServiceFile {
 
     @Override
     public void writeData(boolean flag) {
-        try {
-            FileWriter fileWriter = new FileWriter("HoaDon.txt",true);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            for( Bill x : bill){
-                bufferedWriter.write(x.printToFile());
-            }
-            bufferedWriter.close();
-            fileWriter.close();
-        } catch (Exception e) {
+        if(totalBill==0){
+            System.out.println("Chưa có dữ liệu !");
         }
-        resetData();
-        System.out.println("Luu file thanh cong !");
+        else{
+            try {
+                FileWriter fileWriter = new FileWriter("HoaDon.txt");
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                for( Bill x : bill){
+                    bufferedWriter.write(x.printToFile());
+                }
+                bufferedWriter.close();
+                fileWriter.close();
+            } catch (Exception e) {
+            }
+            resetData();
+            System.out.println("Luu file thanh cong !");
+        }
     }
 
     @Override
