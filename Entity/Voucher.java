@@ -2,9 +2,10 @@ package DoAnOOP.Entity;
 import DoAnOOP.Manager.Validate;
 
 public class Voucher {
-    String idVoucher;
-    float moneyDiscount;
+    private String idVoucher;
+    private int moneyDiscount;
 
+    //Getter & Setter
     public String getidVoucher(){
         return idVoucher;
     }
@@ -12,36 +13,43 @@ public class Voucher {
         this.idVoucher=idVoucher;
     }
 
-    public float getmoneyDiscount(){
+    public int getmoneyDiscount(){
         return moneyDiscount;
     }
 
-    public void setmoneyDiscount(float moneyDiscount){
+    public void setmoneyDiscount(int moneyDiscount){
         this.moneyDiscount=moneyDiscount;
     }
 
+    //Constructor
     public Voucher(){}
 
-    public Voucher(String idVoucher, float moneyDiscount, String startDate, String endDate){
+    public Voucher(String idVoucher, int moneyDiscount){
         this.idVoucher=idVoucher;
         this.moneyDiscount=moneyDiscount;
     }
-
+    
+    //Hàm tạo mã Voucher
     public String createIdVoucher(){
         String idVoucher="VC"+"-"+ (int)(Math.random()*1000);
         return idVoucher;
     }
 
+    //Hàm nhập
     public void input(){
-        idVoucher= taoidVoucher();
+        idVoucher= createIdVoucher();
+        System.out.println(idVoucher);
         moneyDiscount=new Validate().checkNumberInput("Nhập giá tiền giảm", "Số tiền > 0, vui lòng nhập lại");
+        new Validate().clearBuffer();
     }
 
+    //Hàm xuất
     public void print(){
         System.out.println(idVoucher+" giảm "+moneyDiscount+" đồng");
     }
 
-    public String printToFile() {
+    //Ghi voucher vào file
+    public String printToFile(){
         return idVoucher + "|" + moneyDiscount+"\n";
     }
 }

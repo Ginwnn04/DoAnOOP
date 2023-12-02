@@ -2,8 +2,6 @@ package DoAnOOP.Entity;
 import DoAnOOP.Manager.Validate;
 import DoAnOOP.Entity.ServiceFile;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.Arrays;
 
 public class PromotionsSale {
@@ -11,10 +9,10 @@ public class PromotionsSale {
     private String idPromotions;
     private String startDate;
     private String endDate;
+    private int totalVoucher=0;
+    private Voucher[] voucher= new Voucher[totalVoucher];
 
-    int totalVoucher=0;
-    Voucher[] voucher= new Voucher[totalVoucher];
-
+    //Constructor
     public PromotionsSale() {
     }
 
@@ -25,9 +23,11 @@ public class PromotionsSale {
         this.endDate = endDate;
     }
 
+    //Getter & Setter
     public String getnamePromotions(){
         return namePromotions;
     }
+
     public void setnamePromotions(String namePromotions){
         this.namePromotions=namePromotions;
     }
@@ -35,6 +35,7 @@ public class PromotionsSale {
     public String getidPromotions(){
         return idPromotions;
     }
+
     public void setidPromotions(String idPromotions){
         this.idPromotions=idPromotions;
     }
@@ -42,6 +43,7 @@ public class PromotionsSale {
     public String getstartDate(){
         return startDate;
     }
+
     public void setstartDate(String startDate){
         this.startDate=startDate;
     }
@@ -49,29 +51,32 @@ public class PromotionsSale {
     public String getendDate(){
         return endDate;
     }
+
     public void setendDate(String endDate){
         this.endDate=endDate;
     }
 
+    //Hàm tạo mã CTKM
     public String createIdPromotions(){
         String idPromotions="KM"+"-"+ (int)(Math.random()*10000);
         return idPromotions;
     }
 
+    //Hàm nhập
     public void input(){
         idPromotions = createIdPromotions();
-        System.out.println(idPromotions);
         namePromotions = new Validate().checkStringUser("Nhập tên chương trình khuyến mãi");
         startDate = new Validate().checkStringUser("Nhập ngày bắt đầu");
-        endDate = new Validate().checkStringUser("Nhập kết thúc");
-        totalVoucher = new Validate().checkNumberInput("Số voucher cần tạo", "Số voucher > 0, ui long nhập lại !");
+        endDate = new Validate().checkStringUser("Nhập kết thúc")
+        totalVoucher = new Validate().checkNumberInput("Số voucher cần tạo", "Số voucher > 0, vui long nhập lại !");
         voucher = new Voucher[totalVoucher];
-        for(int i = 0 ; i < totalVoucher ; i++ ){
+            for(int i = 0 ; i < totalVoucher ; i++ ){
             voucher[i]= new Voucher();
             voucher[i].input();
         }
     }
 
+    //Hàm xuat
     public void print(){
         System.out.println("\n-------------KHUYẾN MÃI "+namePromotions+" ("+idPromotions+") từ "+startDate+" đến "+endDate+" -----------");
         for(int i=0;i<totalVoucher;i++){
@@ -80,12 +85,9 @@ public class PromotionsSale {
         }
     }
 
-    public void checkIdVoucher(String idVoucher){
-        //
-    }
-
+    //Hàm thêm Voucher
     public void addVoucher(){
-        int quantityVoucher = new Validate().checkNumberInput("So voucher muon them", "So phia >0, vui long nhap lai !");
+        int quantityVoucher = new Validate().checkNumberInput("So voucher muon them", "So phai > 0, vui long nhap lai !");
         for(int i = 0 ; i < quantityVoucher ; i++) {
         voucher = Arrays.copyOf(voucher, totalVoucher+1);
                 voucher[totalVoucher]=new Voucher();
@@ -95,6 +97,7 @@ public class PromotionsSale {
         System.out.println("Thêm voucher thành công !");
     }
 
+    //Hàm xóa Voucher
     public void deleteVoucher(){
         int count = 0;
         String idVoucherUser=new Validate().checkStringUser("Nhập mã voucher cần xóa của CTKM "+namePromotions);
@@ -113,7 +116,8 @@ public class PromotionsSale {
         }
     }
 
-    public void findVoucher(){
+    //Hàm tìm kiếm Voucher bằng mã
+    public void findIdVoucher(){
         int count=0;
         String idVoucherUser=new Validate().checkStringUser("\nNhập mã voucher cần tìm");
         for(int i=0;i<totalVoucher;i++){
@@ -127,12 +131,24 @@ public class PromotionsSale {
         }
     }
 
+    //Hàm lấy giá trị tiền giảm
+    public int TransVoucher(String idVoucher) {
+		for(int i = 0; i < totalVoucher; i++) {
+			if(idVoucher.equals((voucher[i].getidVoucher()))) {
+				return voucher[i].getmoneyDiscount();
+			}
+		}
+        return 0;
+	}
+
+    //Hàm thêm Voucher bằng truyền tham số
     public void insertVoucher(String idVoucher, int moneyDiscount) {
         voucher = Arrays.copyOf(voucher, totalVoucher + 1);
         voucher[totalVoucher] = new Voucher(idVoucher,moneyDiscount);
         totalVoucher ++;
     }
 
+    //Ghi CTKM vào file
     public String printToFile() {
         String result = "";
         for (Voucher x : voucher) {
@@ -141,24 +157,4 @@ public class PromotionsSale {
         return result;
     }
 
-    public void readData() {
-        try {
-            FileReader fileReader = new FileReader("Voucher.txt");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String line = "";
-            while(true){
-                line = bufferedReader.readLine();
-                if(line == null){
-                    break;
-                }
-                voucher = Arrays.copyOf(voucher, totalVoucher++ );
-                String[] split = line.split("\\|");
-                String idVoucher = split[4];
-                int moneyDiscount = Integer.parseInt(split[5]);
-                voucher[totalVoucher++] = new Voucher(idVoucher,moneyDiscount);
-            }
-            bufferedReader.close();
-        } catch (Exception e) {
-        }
-    }
 }

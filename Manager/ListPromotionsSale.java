@@ -9,9 +9,11 @@ import java.io.FileWriter;
 import java.util.Arrays;
 
 public class ListPromotionsSale implements ServiceFile{
-    public PromotionsSale[] listPromotionsSale;
-    public int totalPromotionsSale;
+    private int totalPromotionsSale;
+    private PromotionsSale[] listPromotionsSale;
 
+
+    //Constructor
     public ListPromotionsSale() {
         listPromotionsSale = new PromotionsSale[totalPromotionsSale];
     }
@@ -20,10 +22,11 @@ public class ListPromotionsSale implements ServiceFile{
         this.listPromotionsSale = x.listPromotionsSale;
         this.totalPromotionsSale = x.totalPromotionsSale;
     }
-    public ListPromotionsSale(String namePromotions, String idPromotions, String startDate, String endDate) {}
 
+    //Hàm nhập
     public void input(){
-        totalPromotionsSale = new Validate().checkNumberInput("So CTKM can tao\n", "Sai");
+        totalPromotionsSale = new Validate().checkNumberInput("So CTKM can tao", "Sai"); 
+        new Validate().clearBuffer();
         listPromotionsSale = new PromotionsSale[totalPromotionsSale];
         for(int i=0;i<totalPromotionsSale;i++){
             listPromotionsSale[i]=new PromotionsSale();
@@ -31,12 +34,14 @@ public class ListPromotionsSale implements ServiceFile{
         }
     }
 
+    //Hàm xuất
     public void print(){
         for(int i=0;i<totalPromotionsSale;i++){
             listPromotionsSale[i].print();
         }
     }
 
+    //Hàm thêm CTKM
     public void addPromotionsSale(){
         listPromotionsSale = Arrays.copyOf(listPromotionsSale, totalPromotionsSale+1);
         listPromotionsSale[totalPromotionsSale]=new PromotionsSale();
@@ -45,7 +50,10 @@ public class ListPromotionsSale implements ServiceFile{
         System.out.println("Them CTKM thanh cong !");
     }
 
+
+    //Hàm xóa CTKM
     public void deletePromotionsSale(){
+        int count = 0;
         String idPromotionUser=new Validate().checkStringUser("Nhập ma CTKM cần xóa");
         for(int i=0;i<totalPromotionsSale;i++){
             if((listPromotionsSale[i].getidPromotions()).equals(idPromotionUser)){
@@ -54,19 +62,69 @@ public class ListPromotionsSale implements ServiceFile{
 			   listPromotionsSale[j] = listPromotionsSale[j+1];
                } 
                System.out.println("Xoa CTKM thanh cong !");
+               count ++;
             }
-            else{
+        }
+        if(count != 0){
                 System.out.println("Khong tim thay CTKM ");
             }
+    }
+
+    //Hàm thêm Voucher
+    public void addVoucher(){
+        int count = 0;
+        String idPromotionsUser = new Validate().checkStringUser("Nhap ma Chuong Trinh Khuyen Mai");
+        for( int i = 0 ; i < totalPromotionsSale ; i++ ){
+            if((listPromotionsSale[i].getidPromotions()).equals(idPromotionsUser)){
+                listPromotionsSale[i].addVoucher();
+                System.out.println("Them voucher thanh cong !");
+                count++;
+            }
+        }
+        if(count==0){
+            System.out.println("Khong tim thay Chuong Trinh Khuyen Mai !");
         }
     }
 
+    //Hàm xóa Voucher
+    public void deleteVoucher(){
+        int count = 0;
+        String idPromotionsUser = new Validate().checkStringUser("Nhap ma Chuong Trinh Khuyen Mai");
+        for(int i = 0 ; i < totalPromotionsSale ; i++ ){
+            if((listPromotionsSale[i].getidPromotions()).equals(idPromotionsUser)){
+                listPromotionsSale[i].deleteVoucher();  
+                count++;
+            }
+        }
+        if(count==0){
+            System.out.println("Khong tim thay Chuong Trinh Khuyen Mai !");
+        }
+    }
+
+    //Hàm sửa tên CTKM
+    public void fixNamePromotions(){
+        int count = 0;
+        String idPromotionsUser = new Validate().checkStringUser("Nhap ma Chuong Trinh Khuyen Mai");
+        String namePromotions = new Validate().checkStringUser("Nhap ten thay doi");
+        for( int i = 0 ; i < totalPromotionsSale ; i++ ){
+            if(idPromotionsUser.equals((listPromotionsSale[i]).getidPromotions())){
+                listPromotionsSale[i].setnamePromotions(namePromotions);
+                System.out.println("Thay doi ten thanh cong !");
+                count++;
+            }
+        }
+        if(count == 0){
+            System.out.println("Khong tim thay Chuong Trinh Khuyen Mai !");
+        }
+    }
+
+    //Hàm tìm kiếm Voucher
     public void findVoucher(){
         int count=0;
         String idPromotionsUser=new Validate().checkStringUser("\nNhập ma CTKM cần tìm");
         for(int i=0;i<totalPromotionsSale;i++){
             if((listPromotionsSale[i].getidPromotions()).equals(idPromotionsUser)){
-                listPromotionsSale[i].findVoucher();
+                listPromotionsSale[i].findIdVoucher();
                 count++;
             }
         }
@@ -74,7 +132,8 @@ public class ListPromotionsSale implements ServiceFile{
             System.out.println("Khong tim thay CTKM !");
         }
     }
-
+    
+    //Hàm tìm kiếm CTKM
     public void findPromotions(){
         int count=0;
         String idPromotionsUser=new Validate().checkStringUser("\nNhập ma CTKM cua voucher cần tìm");
@@ -89,50 +148,16 @@ public class ListPromotionsSale implements ServiceFile{
         }
     }
 
-    public void fixPromotions(){
-        int count = 0;
-        System.out.println("1.Thay doi ten Chuong Trinh Khuyen Mai.");
-        System.out.println("2.Them voucher vao Chuong Trinh Khuyen Mai.");
-        System.out.println("3.Xoa bot voucher khoi Chuong Trinh Khuyen Mai.");
-        int chon = new Validate().checkNumberInput("Nhap lua chon","So phai > 0, Vui long nhap lai !");
-        String idPromotionsUser = new Validate().checkStringUser("Nhap ma Chuong Trinh Khuyen Mai muon thay doi");
-        switch (chon) {
-            case 1:{
-                String namePromotions = new Validate().checkStringUser("Nhap ten thay doi");
-                for( int i = 0 ; i < totalPromotionsSale ; i++ ){
-                    if(idPromotionsUser.equals((listPromotionsSale[i]).getidPromotions())){
-                        listPromotionsSale[i].setidPromotions(namePromotions);
-                        System.out.println("Thay doi ten thanh cong !");
-                        count++;
-                    }
-                }
-                if(count == 0){
-                    System.out.println("Khong tim thay Chuong Trinh Khuyen Mai !");
-                }
-            }break;
-            case 2:{
-                for( int i = 0 ; i < totalPromotionsSale ; i++ ){
-                    if((listPromotionsSale[i].getidPromotions()).equals(idPromotionsUser)){
-                        listPromotionsSale[i].addVoucher();
-                        count++;
-                        System.out.println("Thay doi thanh cong !");
-                    }
-                }
-                if(count==0){
-                    System.out.println("Khong tim thay Chuong Trinh Khuyen Mai !");
-                }
-            }break;
-            case 3:{
-                for(int i = 0 ; i < totalPromotionsSale ; i++ ){
-                    if((listPromotionsSale[i].getidPromotions()).equals(idPromotionsUser)){
-                    listPromotionsSale[i].deleteVoucher();  
-                    }
-                }
-            }break;
-            default:
-                break;
-        }
-    }
+    //Hàm lấy giá trị tiền giảm
+    public int transMoneyDiscount(String idPromotions, String idVoucher) {
+        readData();
+		for(int i = 0; i < totalPromotionsSale; i++) {
+			if(idPromotions.equals(listPromotionsSale[i].getidPromotions())) {
+			    return listPromotionsSale[i].TransVoucher(idVoucher);
+			}
+		}
+        return 0;
+	}
 
     @Override
     public void resetData() {
@@ -143,7 +168,7 @@ public class ListPromotionsSale implements ServiceFile{
     @Override
     public void writeData(boolean flag) {
         try {
-            FileWriter fileWriter = new FileWriter("Voucher.txt");
+            FileWriter fileWriter = new FileWriter("Voucher.txt",true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter); 
             for(PromotionsSale x : listPromotionsSale){
                 bufferedWriter.write(x.printToFile());
@@ -191,6 +216,7 @@ public class ListPromotionsSale implements ServiceFile{
                 }
             }
             bufferedReader.close();
+            System.out.println("Da doc file !");
         }
         catch (Exception e) {
         }

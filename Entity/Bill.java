@@ -1,36 +1,28 @@
 package DoAnOOP.Entity;
 import DoAnOOP.Manager.Validate;
+import DoAnOOP.Manager.ListVoucher;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.Arrays;
 
 public class Bill {
-    String idBill;
-    String idEmployee;
-    String idCustomer;
-    String nameCustomer;
-    String printDate;
-    String idVoucher;
-    String idPromotions;
-    int totalBill;
-    int moneyDiscount;
-    int totalPay;
+    private ListPromotionsSale listPromotionsSale = new ListPromotionsSale();
 
-    int totalDetailBill = 0;
-    DetailBill[] detailBill = new DetailBill[totalDetailBill];
+    private String idBill;
+    private String idEmployee;
+    private String idCustomer;
+    private String nameCustomer;
+    private String printDate;
+    private String idVoucher;
+    private String idPromotions;
+    private int totalBill;
+    private int moneyDiscount;
+    private int totalPay;
+    
+    private int totalDetailBill = 0;
+    private DetailBill[] detailBill = new DetailBill[totalDetailBill];
 
-    public Bill(){
-        this.idBill="";
-        this.idEmployee="";
-        this.idCustomer="";
-        this.nameCustomer="";
-        this.printDate="";
-        this.totalBill=0;
-        this.moneyDiscount=0;
-        this.totalPay=0;
-
-    }
+    //Constructor
+    public Bill(){}
 
     public Bill (String idBill,String printDate, String idEmployee, String idCustomer, String nameCustomer, int totalBill, int moneyDiscount, int totalPay){
         this.idBill=idBill;
@@ -43,6 +35,7 @@ public class Bill {
         this.totalPay=totalPay;
     }
 
+    //Getter & Setter
     public String getidBill(){
         return idBill;
     }
@@ -72,24 +65,10 @@ public class Bill {
     }
 
     public String getprintDate(){
-        return idBill;
+        return printDate;
     }
     public void setprintDate(String printDate){
         this.printDate=printDate;
-    }
-
-    public String getidPromotions(){
-        return idPromotions;
-    }
-    public void setidPromotions(String idPromotions){
-        this.idPromotions=idPromotions;
-    }
-
-    public String getidVoucher(){
-        return idVoucher;
-    }
-    public void setidVoucher(String idVoucher){
-        this.idVoucher=idVoucher;
     }
 
     public int gettotalBill(){
@@ -113,43 +92,73 @@ public class Bill {
         this.totalPay=totalPay;
     }
 
+    //Ham tao ma hoa don
     public String createIdBill(){
         String firtID="HD";
         return firtID+"-"+(int)(Math.random()*10000000);
     }
 
+    //Hàm nhập
     public void input(){
-        printDate = new Validate().checkStringUser("\nNhập ngày in hóa đơn");
-        idBill = creatIdBill();
+        printDate = new Validate().checkStringUser("Nhập ngay in hoa don");
+        idBill = createIdBill();
         idEmployee = new Validate().checkStringUser("Nhập mã nhân viên");
         idCustomer = new Validate().checkStringUser("Nhập mã khách hàng");
         nameCustomer = new Validate().checkStringUser("Nhập tên khách hàng");
-        
+
+        //Nhập chi tiết hóa đơn
         System.out.println("Nhập chi tiết hóa đơn.");
-        totalDetailBill = new Validate().checkNumberInput("Số chi tiết hóa đơn", "Số nguyên dương, vui lòng nhập lại");
-            detailBill = new DetailBill[totalDetailBill];
-            for(int i = 0 ; i < totalDetailBill ; i++ ){
-                    System.out.println("\nNhập chi tiết sản phẩm thứ " + (i+1));
-                    detailBill[i]= new DetailBill();
-                    detailBill[i].input();
-                }
+        int count = 0;
+        do{
+            detailBill = Arrays.copyOf(detailBill, totalDetailBill+1);
+            System.out.println("\nNhập chi tiết sản phẩm thứ " + (totalDetailBill+1));
+            detailBill[totalDetailBill]= new DetailBill();
+            detailBill[totalDetailBill].input();
+            totalDetailBill++;
 
-        for(int i = 0 ; i <totalDetailBill; i++){
-            totalBill += (detailBill[i].total);
-        }
+            //Lựa chọn tiếp tục mua thêm hoặc thanh toán
+            do{
+            System.out.println("1.Mua them.");
+            System.out.println("2.Tiep tuc.");
+            count = new Validate().checkNumberInput("Nhap lua chon", "So phai >0, vui long nhap lai !");
+            new Validate().clearBuffer();
+            if(count != 1 && count != 2){
+                System.out.println("Nhap sai lua chon !");
+               }
+            }while(count != 1 && count != 2);
+        }while(count == 1);
 
-        int choice=new Validate().checkNumberInput("Khách hàng có sử dụng voucher không ? (1.Có/2.Không)","Lựa chọn không hợp lệ !");
-        switch (choice) {
-            case 1:{
-                idPromotions=new Validate().checkStringUser("Nhập mã Chương Trình Khuyến Mãi.");
-                readData();
-            }break;
-            default:
-                break;
+        //Tính tổng tiền của hóa đơn
+        for(int i = 0 ; i < totalDetailBill ; i++ ){
+            totalBill += detailBill[i].gettotal();
         }
+        
+        //Lựa chọn sử dụng có sử dụng voucher hay không
+        do{
+            System.out.println("1.Su dung Voucher.");
+            System.out.println("2.Thanh toan."); 
+            count = new Validate().checkNumberInput("Nhap lua chon", "So phai >0, vui long nhap lai !");
+            new Validate().clearBuffer();
+            if(count == 1 ){
+                do {
+                    listPromotionsSale.readData();
+                    listPromotionsSale.print();
+                    idPromotions = new Validate().checkStringUser("Nhập vào mã CTKM");
+                    idVoucher = new Validate().checkStringUser("Nhap ma voucehr");
+			        if(listPromotionsSale.transMoneyDiscount(idPromotions,idVoucher) == 0){
+				        System.err.println("\nMã khách hàng mà bạn vừa nhập không hợp lệ hoặc không có trong danh sách!!!");
+                    }
+		        }while(listPromotionsSale.transMoneyDiscount(idPromotions,idVoucher) == 0);
+                //Lấy giá trị tiền giảm của Voucher tương ứng
+		        moneyDiscount = listPromotionsSale.transMoneyDiscount(idPromotions,idVoucher);
+            }
+        }while(count != 1 && count != 2);
+        
+        //Tính tiền cần phải thanh toán
         totalPay=totalBill-moneyDiscount;
     }
 
+    //Hàm xuất
     public void print(){
         System.out.println("\nNgày in hóa đơn : " + printDate);
         System.out.println("Mã hóa đơn : " + idBill);
@@ -164,6 +173,7 @@ public class Bill {
         System.out.println("Tiền cần thanh toán : " + totalPay);
     }
 
+    //Hàm mua thêm sản phẩm vào hóa đơn
     public void addDetailBill(){
         int quantityDetailBill = new Validate().checkNumberInput("So chi tiet san pham muon them", "So phia > 0, vui long nhap lai !");
         for(int i = 0 ; i < quantityDetailBill ; i++) {
@@ -178,6 +188,7 @@ public class Bill {
         System.out.println("\nThêm sản phẩm vào thành công !");
     }
 
+    //Hàm xóa bớt sản phẩm khỏi hóa đơn
     public void deleteDetailBill(){
         int count=0;
         String idProductUser = new Validate().checkStringUser("Nhập mã sản phẩm cần xóa ");
@@ -198,7 +209,8 @@ public class Bill {
         }
     }
 
-    public void fixDetailBill(){
+    //Thây đổi số lượng sản phẩm trong hóa đơn
+    public void fixQuantityDetailBill(){
         int count=0;
         String idProductUser = new Validate().checkStringUser("Nhap ma san pham can thay doi so luong");
         int quantityUser = new Validate().checkNumberInput("Nhap so luong muon thay doi", "So phai > 0, moi nhap lai !");
@@ -218,39 +230,19 @@ public class Bill {
         }
     }
 
+    //Lưu sản phẩm từ File
     public void insertDetailBill(String nameProduct, String idProduct, int quantity, int price, int total) {
         detailBill = Arrays.copyOf(detailBill, totalDetailBill + 1);
         detailBill[totalDetailBill] = new DetailBill(nameProduct,idProduct,quantity,price,total);
         totalDetailBill ++;
     }
 
+    //Ghi hóa đơn vào File
     public String printToFile(){
         String result = "";
         for( DetailBill x : detailBill){
             result += idBill + "|" + printDate + "|" + idEmployee + "|" + idCustomer + "|" + nameCustomer + "|" + x.printToFile() + "|" + totalBill + "|" + moneyDiscount + "|" + totalPay + "\n";
         }
         return result;
-    }
-
-    public void readData(){
-        try {
-            FileReader fileReader = new FileReader("Voucher.txt");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String line = "";
-            while ((line = bufferedReader.readLine()) != null) {
-                String[] split = line.split("\\|");
-                String idPromotionsFile = split[1];
-                String idVoucherFile = split[4];
-                int moneyDiscountFile = Integer.parseInt(split[5]);
-                if(idPromotionsFile.equals(idPromotions)){
-                    idVoucher = new Validate().checkStringUser("Nhập mã Voucher");
-                    if(idVoucherFile.equals(idVoucher)){
-                        moneyDiscount = moneyDiscountFile;
-                    }
-                }
-            } 
-            bufferedReader.close();
-        } catch (Exception e) {
-        }
     }
 }
