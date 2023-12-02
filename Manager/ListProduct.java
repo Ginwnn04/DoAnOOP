@@ -1,5 +1,4 @@
 package DoAnOOP.Manager;
-
 import DoAnOOP.Entity.*;
 
 import java.io.*;
@@ -307,6 +306,34 @@ public class ListProduct implements ServiceFile{
         return null;
     }
 
+    public int transPriceProduct(String idProduct) {
+        readData();
+		for(int i = 0; i < totalProduct; i++) {
+			if(listProduct[i].getID().indexOf(idProduct) != -1) {
+				return listProduct[i].getPrice();
+			}
+		}
+        return 0;
+	}
+
+    public int transQuantityProduct(String idProduct) {
+		for(int i = 0; i < totalProduct; i++) {
+			if(listProduct[i].getID().indexOf(idProduct) != -1) {
+				return listProduct[i].getQuantity();
+			}
+		}
+        return 0;
+	}
+
+    public String transNameProduct(String idProduct) {
+		for(int i = 0; i < totalProduct; i++) {
+			if(listProduct[i].getID().indexOf(idProduct) != -1) {
+				return listProduct[i].getNameProduct();
+			}
+		}
+        return null;
+	}
+
     @Override
     public void resetData() {
         totalProduct = 0;
@@ -316,7 +343,7 @@ public class ListProduct implements ServiceFile{
     @Override
     public void readData() {
         try {
-            FileReader fileReader = new FileReader(path);
+            FileReader fileReader = new FileReader("KhoSanPham.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line = "";
             while ((line = bufferedReader.readLine()) != null) {
@@ -362,11 +389,8 @@ public class ListProduct implements ServiceFile{
             bufferedWriter.close();
         }
         catch (FileNotFoundException fnfe) {
-
         }
         catch (IOException ioe) {
-
         }
-
     }
 }
