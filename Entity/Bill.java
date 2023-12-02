@@ -1,19 +1,20 @@
-package DoAnOOP.Entity;
-import DoAnOOP.Manager.Validate;
-import DoAnOOP.Manager.ListVoucher;
+//package DoAnOOP.Entity;
+//import DoAnOOP.Manager.Validate;
+//import DoAnOOP.Entity.DetailBill;
+//import DoAnOOP.Manager.ListVoucher;
+//import DoAnOOP.Manager.ListProduct;
 
 import java.util.Arrays;
 
 public class Bill {
     private ListPromotionsSale listPromotionsSale = new ListPromotionsSale();
+    private ListProduct listProduct = new ListProduct();
 
     private String idBill;
     private String idEmployee;
     private String idCustomer;
     private String nameCustomer;
     private String printDate;
-    private String idVoucher;
-    private String idPromotions;
     private int totalBill;
     private int moneyDiscount;
     private int totalPay;
@@ -100,6 +101,9 @@ public class Bill {
 
     //Hàm nhập
     public void input(){
+        String idVoucher;
+        String idPromotions;
+        int count = 0;
         printDate = new Validate().checkStringUser("Nhập ngay in hoa don");
         idBill = createIdBill();
         idEmployee = new Validate().checkStringUser("Nhập mã nhân viên");
@@ -108,14 +112,8 @@ public class Bill {
 
         //Nhập chi tiết hóa đơn
         System.out.println("Nhập chi tiết hóa đơn.");
-        int count = 0;
         do{
-            detailBill = Arrays.copyOf(detailBill, totalDetailBill+1);
-            System.out.println("\nNhập chi tiết sản phẩm thứ " + (totalDetailBill+1));
-            detailBill[totalDetailBill]= new DetailBill();
-            detailBill[totalDetailBill].input();
-            totalDetailBill++;
-
+            addDetailBill();
             //Lựa chọn tiếp tục mua thêm hoặc thanh toán
             do{
             System.out.println("1.Mua them.");
@@ -128,11 +126,7 @@ public class Bill {
             }while(count != 1 && count != 2);
         }while(count == 1);
 
-        //Tính tổng tiền của hóa đơn
-        for(int i = 0 ; i < totalDetailBill ; i++ ){
-            totalBill += detailBill[i].gettotal();
-        }
-        
+
         //Lựa chọn sử dụng có sử dụng voucher hay không
         do{
             System.out.println("1.Su dung Voucher.");
@@ -155,7 +149,6 @@ public class Bill {
         }while(count != 1 && count != 2);
         
         //Tính tiền cần phải thanh toán
-        totalPay=totalBill-moneyDiscount;
     }
 
     //Hàm xuất
@@ -175,17 +168,40 @@ public class Bill {
 
     //Hàm mua thêm sản phẩm vào hóa đơn
     public void addDetailBill(){
-        int quantityDetailBill = new Validate().checkNumberInput("So chi tiet san pham muon them", "So phia > 0, vui long nhap lai !");
-        for(int i = 0 ; i < quantityDetailBill ; i++) {
-        System.out.println("Chi tiet thu "+(i+1));
+        String idProduct;
+        int quantity;
         detailBill = Arrays.copyOf(detailBill, totalDetailBill+1);
-            detailBill[totalDetailBill] = new DetailBill();
-            detailBill[totalDetailBill].input();
-            totalBill += detailBill[totalDetailBill].gettotal();
+
+        //Nhập mã sản phẩm và kiểm tra với từng mã sản phẩm trong kho
+        do{
+            listProduct.readData();
+            listProduct.showProduct(true);
+            System.out.println("Chi tiet thu "+(totalDetailBill+1));
+            idProduct = new Validate().checkStringUser("Nhap ma san pham");
+			if(listProduct.transPriceProduct(idProduct) == 0)
+				System.err.println("\nMã san pham mà bạn vừa nhập không hợp lệ hoặc không có trong danh sách!!!");
+        }while(listProduct.transPriceProduct(idProduct) == 0);
+            
+            //Lấy giá trị giá tiền,tên sản phẩm,số lượng sản phẩm tương ứng
+		    int price = listProduct.transPriceProduct(idProduct);
+            String nameProduct = listProduct.transNameProduct(idProduct);
+            int quantityCheck = listProduct.transQuantityProduct(idProduct);
+
+            //Nhập số lượng sản phẩm cần mua
+            do{
+                quantity = new Validate().checkNumberInput("Nhập số lượng sản phẩm","Số lượng sản phẩm > 0, vui lòng nhập lại !");
+                if(quantity > quantityCheck){
+                    System.out.println("Sản phẩm trong kho không đủ !");
+                }
+            }while (quantity > quantityCheck);
+
+            //Tính tiền từng chi tiết hóa đơn
+            int total = price*quantity;
+            totalBill+=total;
             totalPay=totalBill-moneyDiscount;
+            
+            detailBill[totalDetailBill]= new DetailBill(nameProduct,idProduct,price,quantity,total);
             totalDetailBill++;
-        }
-        System.out.println("\nThêm sản phẩm vào thành công !");
     }
 
     //Hàm xóa bớt sản phẩm khỏi hóa đơn

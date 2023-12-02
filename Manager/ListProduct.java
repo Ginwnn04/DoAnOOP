@@ -1,5 +1,5 @@
-package DoAnOOP.Manager;
-import DoAnOOP.Entity.*;
+//package DoAnOOP.Manager;
+//import DoAnOOP.Entity.*;
 
 import java.io.*;
 import java.util.Arrays;
@@ -309,10 +309,10 @@ public class ListProduct implements ServiceFile{
     public int transPriceProduct(String idProduct) {
         readData();
 		for(int i = 0; i < totalProduct; i++) {
-			if(listProduct[i].getID().indexOf(idProduct) != -1) {
+			if((listProduct[i].getID()).equals(idProduct)) {
 				return listProduct[i].getPrice();
 			}
-		}
+		}resetData();
         return 0;
 	}
 
