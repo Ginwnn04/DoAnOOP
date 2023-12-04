@@ -1,5 +1,5 @@
-//package DoAnOOP.Entity;
-//import DoAnOOP.Manager.Validate;
+package DoAnOOP.Entity;
+import DoAnOOP.Manager.Validate;
 
 public class Voucher {
     private String idVoucher;

@@ -1,6 +1,6 @@
-//package DoAnOOP.Manager;
-//import DoAnOOP.Entity.PromotionsSale;
-//import DoAnOOP.Entity.ServiceFile;
+package DoAnOOP.Manager;
+import DoAnOOP.Entity.PromotionsSale;
+import DoAnOOP.Entity.ServiceFile;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -36,9 +36,6 @@ public class ListPromotionsSale implements ServiceFile{
 
     //Hàm xuất
     public void print(){
-        if(totalPromotionsSale==0){
-            System.out.println("Chưa có dữ liệu !");
-        }
         for(int i=0;i<totalPromotionsSale;i++){
             listPromotionsSale[i].print();
         }
@@ -56,10 +53,6 @@ public class ListPromotionsSale implements ServiceFile{
 
     //Hàm xóa CTKM
     public void deletePromotionsSale(){
-        if(totalPromotionsSale==0){
-            System.out.println("Chưa có dữ liệu !");
-        }
-        else{
         int count = 0;
         String idPromotionUser=new Validate().checkStringUser("Nhập ma CTKM cần xóa");
         for(int i=0;i<totalPromotionsSale;i++){
@@ -72,111 +65,86 @@ public class ListPromotionsSale implements ServiceFile{
                count ++;
             }
         }
-        if(count == 0){
+        if(count != 0){
                 System.out.println("Khong tim thay CTKM ");
             }
-        }
     }
 
     //Hàm thêm Voucher
     public void addVoucher(){
-        if(totalPromotionsSale==0){
-            System.out.println("Chưa có dữ liệu !");
-        }
-        else{
-            int count = 0;
-            String idPromotionsUser = new Validate().checkStringUser("Nhap ma Chuong Trinh Khuyen Mai");
-            for( int i = 0 ; i < totalPromotionsSale ; i++ ){
-                if((listPromotionsSale[i].getidPromotions()).equals(idPromotionsUser)){
+        int count = 0;
+        String idPromotionsUser = new Validate().checkStringUser("Nhap ma Chuong Trinh Khuyen Mai");
+        for( int i = 0 ; i < totalPromotionsSale ; i++ ){
+            if((listPromotionsSale[i].getidPromotions()).equals(idPromotionsUser)){
                 listPromotionsSale[i].addVoucher();
+                System.out.println("Them voucher thanh cong !");
                 count++;
-                }
             }
-            if(count==0){
-                System.out.println("Khong tim thay Chuong Trinh Khuyen Mai !");
-            }
+        }
+        if(count==0){
+            System.out.println("Khong tim thay Chuong Trinh Khuyen Mai !");
         }
     }
 
     //Hàm xóa Voucher
     public void deleteVoucher(){
-        if(totalPromotionsSale==0){
-            System.out.println("Chưa có dữ liệu !");
+        int count = 0;
+        String idPromotionsUser = new Validate().checkStringUser("Nhap ma Chuong Trinh Khuyen Mai");
+        for(int i = 0 ; i < totalPromotionsSale ; i++ ){
+            if((listPromotionsSale[i].getidPromotions()).equals(idPromotionsUser)){
+                listPromotionsSale[i].deleteVoucher();  
+                count++;
+            }
         }
-        else{
-            int count = 0;
-            String idPromotionsUser = new Validate().checkStringUser("Nhap ma Chuong Trinh Khuyen Mai");
-            for(int i = 0 ; i < totalPromotionsSale ; i++ ){
-                if((listPromotionsSale[i].getidPromotions()).equals(idPromotionsUser)){
-                    listPromotionsSale[i].deleteVoucher();  
-                    count++;
-                }
-            }
-            if(count==0){
-                System.out.println("Khong tim thay Chuong Trinh Khuyen Mai !");
-            }
+        if(count==0){
+            System.out.println("Khong tim thay Chuong Trinh Khuyen Mai !");
         }
     }
 
     //Hàm sửa tên CTKM
     public void fixNamePromotions(){
         int count = 0;
-        if(totalPromotionsSale==0){
-            System.out.println("Chưa có dữ liệu !");
+        String idPromotionsUser = new Validate().checkStringUser("Nhap ma Chuong Trinh Khuyen Mai");
+        String namePromotions = new Validate().checkStringUser("Nhap ten thay doi");
+        for( int i = 0 ; i < totalPromotionsSale ; i++ ){
+            if(idPromotionsUser.equals((listPromotionsSale[i]).getidPromotions())){
+                listPromotionsSale[i].setnamePromotions(namePromotions);
+                System.out.println("Thay doi ten thanh cong !");
+                count++;
+            }
         }
-        else{
-            String idPromotionsUser = new Validate().checkStringUser("Nhap ma Chuong Trinh Khuyen Mai");
-            String namePromotions = new Validate().checkStringUser("Nhap ten thay doi");
-            for( int i = 0 ; i < totalPromotionsSale ; i++ ){
-                if(idPromotionsUser.equals((listPromotionsSale[i]).getidPromotions())){
-                    listPromotionsSale[i].setnamePromotions(namePromotions);
-                    System.out.println("Thay doi ten thanh cong !");
-                    count++;
-                }
-            }
-            if(count == 0){
-                System.out.println("Khong tim thay Chuong Trinh Khuyen Mai !");
-            }
+        if(count == 0){
+            System.out.println("Khong tim thay Chuong Trinh Khuyen Mai !");
         }
     }
 
     //Hàm tìm kiếm Voucher
     public void findVoucher(){
         int count=0;
-        if(totalPromotionsSale==0){
-            System.out.println("Chưa có dữ liệu !");
-        }
-        else{
-            String idPromotionsUser=new Validate().checkStringUser("\nNhập ma CTKM cần tìm");
-            for(int i=0;i<totalPromotionsSale;i++){
-                if((listPromotionsSale[i].getidPromotions()).equals(idPromotionsUser)){
-                     listPromotionsSale[i].findIdVoucher();
+        String idPromotionsUser=new Validate().checkStringUser("\nNhập ma CTKM cần tìm");
+        for(int i=0;i<totalPromotionsSale;i++){
+            if((listPromotionsSale[i].getidPromotions()).equals(idPromotionsUser)){
+                listPromotionsSale[i].findIdVoucher();
                 count++;
-                }
             }
-            if(count==0){
+        }
+        if(count==0){
             System.out.println("Khong tim thay CTKM !");
-            }
         }
     }
     
     //Hàm tìm kiếm CTKM
     public void findPromotions(){
         int count=0;
-        if(totalPromotionsSale==0){
-            System.out.println("Chưa có dữ liệu !");
+        String idPromotionsUser=new Validate().checkStringUser("\nNhập ma CTKM cua voucher cần tìm");
+        for(int i=0;i<totalPromotionsSale;i++){
+            if((listPromotionsSale[i].getidPromotions()).equals(idPromotionsUser)){
+                listPromotionsSale[i].print();
+                count++;
+            }
         }
-        else{
-            String idPromotionsUser=new Validate().checkStringUser("\nNhập ma CTKM cua voucher cần tìm");
-            for(int i=0;i<totalPromotionsSale;i++){
-                if((listPromotionsSale[i].getidPromotions()).equals(idPromotionsUser)){
-                    listPromotionsSale[i].print();
-                    count++;
-                }
-            }
-            if(count==0){
-                System.out.println("Khong tim thay CTKM !");
-            }
+        if(count==0){
+            System.out.println("Khong tim thay CTKM !");
         }
     }
 
@@ -199,23 +167,18 @@ public class ListPromotionsSale implements ServiceFile{
 
     @Override
     public void writeData(boolean flag) {
-        if(totalPromotionsSale==0){
-            System.out.println("Chưa có dữ liệu !");
-        }
-        else{
-            try {
-                FileWriter fileWriter = new FileWriter("Voucher.txt");
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter); 
-                for(PromotionsSale x : listPromotionsSale){
-                    bufferedWriter.write(x.printToFile());
-                }
-                bufferedWriter.close();
-                fileWriter.close();
-            } catch (Exception e) {
+        try {
+            FileWriter fileWriter = new FileWriter("Voucher.txt",true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter); 
+            for(PromotionsSale x : listPromotionsSale){
+                bufferedWriter.write(x.printToFile());
             }
-            resetData();
-            System.out.println("Luu file thanh cong !");
+            bufferedWriter.close();
+            fileWriter.close();
+        } catch (Exception e) {
         }
+        resetData();
+        System.out.println("Luu file thanh cong !");
     }
 
     @Override

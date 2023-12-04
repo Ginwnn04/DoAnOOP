@@ -1,7 +1,5 @@
 package DoAnOOP.Manager;
-
 import DoAnOOP.Entity.*;
-
 
 import java.io.*;
 import java.util.Arrays;
@@ -265,7 +263,6 @@ public class ListProduct implements ServiceFile{
 
     }
 
-
     // Can fix lai
     public void findIdProduct(){
         readData();
@@ -348,6 +345,34 @@ public class ListProduct implements ServiceFile{
         return null;
     }
 
+    public int transPriceProduct(String idProduct) {
+        readData();
+		for(int i = 0; i < totalProduct; i++) {
+			if((listProduct[i].getID()).equals(idProduct)) {
+				return listProduct[i].getPrice();
+			}
+		}resetData();
+        return 0;
+	}
+
+    public int transQuantityProduct(String idProduct) {
+		for(int i = 0; i < totalProduct; i++) {
+			if(listProduct[i].getID().indexOf(idProduct) != -1) {
+				return listProduct[i].getQuantity();
+			}
+		}
+        return 0;
+	}
+
+    public String transNameProduct(String idProduct) {
+		for(int i = 0; i < totalProduct; i++) {
+			if(listProduct[i].getID().indexOf(idProduct) != -1) {
+				return listProduct[i].getNameProduct();
+			}
+		}
+        return null;
+	}
+
     @Override
     public void resetData() {
         totalProduct = 0;
@@ -403,11 +428,8 @@ public class ListProduct implements ServiceFile{
             bufferedWriter.close();
         }
         catch (FileNotFoundException fnfe) {
-
         }
         catch (IOException ioe) {
-
         }
-
     }
 }

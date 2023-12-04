@@ -1,6 +1,5 @@
 package DoAnOOP.Entity;
 
-import DoAnOOP.Manager.Validate;
 
 public class DetailsImport {
     private String idBillImport;

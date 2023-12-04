@@ -51,50 +51,50 @@ public class ListBillImport implements ServiceFile {
     @Override
     public void readData() {
         try {
-        FileReader fileReader = new FileReader(path);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        String line = "";
-        int total = 0;
-        boolean check = true;
-        BillImport[] billImport = new BillImport[0];
-        while ((line = bufferedReader.readLine()) != null) {
-            String[] split = line.split("\\|");
-            String idBillImport = split[0];
-            String idProduct = split[1];
-            String nameProduct = split[2];
-            String unit = split[3];
-            int quantity = Integer.parseInt(split[4]);
-            int priceImport = Integer.parseInt(split[5]);
-            String importDate = split[6];
-            String idEmployee = split[7];
-            String idSupplier = split[8];
-            if (check) {
-                billImport = Arrays.copyOf(billImport, total + 1);
-                billImport[total++] = new BillImport(idBillImport, idEmployee, idSupplier, importDate);
-                check = false;
+            FileReader fileReader = new FileReader(path);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = "";
+            int total = 0;
+            boolean check = true;
+            BillImport[] billImport = new BillImport[0];
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] split = line.split("\\|");
+                String idBillImport = split[0];
+                String idProduct = split[1];
+                String nameProduct = split[2];
+                String unit = split[3];
+                int quantity = Integer.parseInt(split[4]);
+                int priceImport = Integer.parseInt(split[5]);
+                String importDate = split[6];
+                String idEmployee = split[7];
+                String idSupplier = split[8];
+                if (check) {
+                    billImport = Arrays.copyOf(billImport, total + 1);
+                    billImport[total++] = new BillImport(idBillImport, idEmployee, idSupplier, importDate);
+                    check = false;
+                }
+                if (idBillImport.equals(billImport[total - 1].getIdImportProduct())) {
+                    billImport[total - 1].insertDetail(idProduct, nameProduct, unit, quantity, priceImport);
+                }
+                else {
+                    billImport = Arrays.copyOf(billImport, total + 1);
+                    billImport[total++] = new BillImport(idBillImport, idEmployee, idSupplier, importDate);
+                    billImport[total - 1].insertDetail(idProduct, nameProduct, unit, quantity, priceImport);
+                }
+
             }
-            if (idBillImport.equals(billImport[total - 1].getIdImportProduct())) {
-                billImport[total - 1].insertDetail(idProduct, nameProduct, unit, quantity, priceImport);
-            }
-            else {
-                billImport = Arrays.copyOf(billImport, total + 1);
-                billImport[total++] = new BillImport(idBillImport, idEmployee, idSupplier, importDate);
-                billImport[total - 1].insertDetail(idProduct, nameProduct, unit, quantity, priceImport);
-            }
+            listBill = billImport;
+            totalBill = total;
+            billImport = null;
+            total = 0;
+            bufferedReader.close();
+        }
+        catch (FileNotFoundException fnfe) {
 
         }
-        listBill = billImport;
-        totalBill = total;
-        billImport = null;
-        total = 0;
-        bufferedReader.close();
-    }
-    catch (FileNotFoundException fnfe) {
+        catch (IOException ioe) {
 
-    }
-    catch (IOException ioe) {
-
-    }
+        }
     }
 
     @Override

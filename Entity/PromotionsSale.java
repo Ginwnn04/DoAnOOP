@@ -1,6 +1,5 @@
-//package DoAnOOP.Entity;
-//import DoAnOOP.Manager.Validate;
-//import DoAnOOP.Entity.ServiceFile;
+package DoAnOOP.Entity;
+import DoAnOOP.Manager.Validate;
 
 import java.util.Arrays;
 

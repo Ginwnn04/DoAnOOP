@@ -1,4 +1,4 @@
-//package DoAnOOP.Entity;
+package DoAnOOP.Entity;
 
 public abstract class Product {
     protected String ID;

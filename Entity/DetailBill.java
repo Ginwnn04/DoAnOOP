@@ -1,5 +1,6 @@
-//package DoAnOOP.Entity;
-//import DoAnOOP.Manager.Validate;
+package DoAnOOP.Entity;
+import DoAnOOP.Manager.ListProduct;
+
 
 public class DetailBill {
     ListProduct lisProduct = new ListProduct();
@@ -19,13 +20,13 @@ public class DetailBill {
         this.total=0;
     }
 
-    public DetailBill(String nameProduct,String idProduct,int price, int quantity, int total ){
-        this.idProduct=idProduct;
-        this.nameProduct=nameProduct;
-        this.price=price;
-        this.quantity=quantity;
-        this.total=total;
-    }
+        public DetailBill(String nameProduct,String idProduct,int price, int quantity, int total ){
+            this.idProduct=idProduct;
+            this.nameProduct=nameProduct;
+            this.price=price;
+            this.quantity=quantity;
+            this.total=total;
+        }
 
     //Getter & Setter
     public String getidProduct(){
