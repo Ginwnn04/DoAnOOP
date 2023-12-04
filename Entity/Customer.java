@@ -20,6 +20,20 @@ public class Customer {
         this.phone = phone;
     }
 
+    public String getphone(){
+        return phone;
+    }
+    public void setphone(String phone){
+        this.phone=phone;
+    }
+
+    public String getidCustomer(){
+        return idCustomer;
+    }
+    public void setidCustomer(String idCustomer){
+        this.idCustomer=idCustomer;
+    }
+
     public String generateId() {
         return "KH-" + (int)(Math.random() * 1000000);
     }

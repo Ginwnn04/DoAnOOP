@@ -3,37 +3,38 @@ import DoAnOOP.Manager.Validate;
 import DoAnOOP.Manager.ListPromotionsSale;
 import DoAnOOP.Manager.ListProduct;
 
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 public class Bill {
     private ListPromotionsSale listPromotionsSale = new ListPromotionsSale();
     private ListProduct listProduct = new ListProduct();
+    private ListCustomer listCustomer = new ListCustomer();
 
     private String idBill;
     private String idEmployee;
     private String idCustomer;
-    private String nameCustomer;
     private String printDate;
     private int totalBill;
     private int moneyDiscount;
     private int totalPay;
-    
+
+    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
     private int totalDetailBill = 0;
     private DetailBill[] detailBill = new DetailBill[totalDetailBill];
 
     //Constructor
     public Bill(){}
 
-    public Bill (String idBill,String printDate, String idEmployee, String idCustomer, String nameCustomer, int totalBill, int moneyDiscount, int totalPay){
+    public Bill (String idBill,String printDate, String idEmployee, String idCustomer, int totalBill, int moneyDiscount){
         this.idBill=idBill;
         this.idEmployee=idEmployee;
         this.idCustomer=idCustomer;
-        this.nameCustomer=nameCustomer;
         this.printDate=printDate;
         this.totalBill=totalBill;
         this.moneyDiscount=moneyDiscount;
-        this.totalPay=totalPay;
+        this.totalPay=totalBill-moneyDiscount;
     }
 
     //Getter & Setter
@@ -56,13 +57,6 @@ public class Bill {
     }
     public void setidCustomer(String idCustomer){
         this.idCustomer=idCustomer;
-    }
-
-    public String getnameCustomer(){
-        return nameCustomer;
-    }
-    public void setnameCustomer(String nameCustomer){
-        this.nameCustomer=nameCustomer;
     }
 
     public String getprintDate(){
@@ -99,16 +93,38 @@ public class Bill {
         return firtID+"-"+(int)(Math.random()*10000000);
     }
 
+    //Ham kt ngay
+    public boolean CheckDate(String date) {
+		df.setLenient(false);
+		try {
+			df.parse(date);
+		}catch(ParseException e) {
+			return false;
+		}
+		return true;
+	}
+
     //Hàm nhập
     public void input(){
         String idVoucher;
         String idPromotions;
+        String phone;
+        String lastName;
+        String firstName;
         int count = 0;
-        printDate = new Validate().checkStringUser("Nhập ngay in hoa don");
+
+        do {
+			printDate = new Validate().checkStringUser("Nhập ngay in hoa don (dd-MM-yyyy)");
+			
+			if(!CheckDate(printDate)) {
+				System.err.println("Ngày tháng năm không hợp lê. Xin mời nhập lại!!!");
+				System.err.println();
+			}
+				
+		}while(!CheckDate(printDate));
+
         idBill = createIdBill();
         idEmployee = new Validate().checkStringUser("Nhập mã nhân viên");
-        idCustomer = new Validate().checkStringUser("Nhập mã khách hàng");
-        nameCustomer = new Validate().checkStringUser("Nhập tên khách hàng");
 
         //Nhập chi tiết hóa đơn
         System.out.println("Nhập chi tiết hóa đơn.");
@@ -147,20 +163,55 @@ public class Bill {
 		        moneyDiscount = listPromotionsSale.transMoneyDiscount(idPromotions,idVoucher);
             }
         }while(count != 1 && count != 2);
-        
-        //Tính tiền cần phải thanh toán
+        totalPay = totalBill-moneyDiscount;
+        //Thong tin khach hang
+        do{
+            System.out.println("Khách hàng có cho thông tin không ?");
+            System.out.println("1.Có.");
+            System.out.println("2.Không.");
+            count = new Validate().checkNumberInput("Nhập lựa chọn","Lựa chọn > 0.");
+            new Validate().clearBuffer();
+            if(count != 1 && count != 2){
+                System.out.println("Lựa chọn sai.");
+            }
+            else {
+                if(count == 1){
+                    phone = new Validate().checkStringUser("Nhập số điện thoại khách hàng");
+                    if(listCustomer.transIdCustomer(phone) == null){
+                        idCustomer = "KH-" + (int)(Math.random() * 1000000);
+                        firstName = new Validate().checkStringUser("Nhập họ và tên lót khách hàng");
+                        lastName = new Validate().checkStringUser("Nhập tên khách hàng");
+                        listCustomer.insertCustomer(idCustomer, lastName, firstName, phone);
+                    }
+                    else{
+                        idCustomer = listCustomer.transIdCustomer(phone);
+                    }
+                }
+                else if(count == 2){
+                    idCustomer = null;
+                }
+            }
+        }while(count != 1 && count != 2);
     }
 
     //Hàm xuất
     public void print(){
-        System.out.println("\nNgày in hóa đơn : " + printDate);
+        int colSpace = 15;
+        System.out.println("\n============================ HÓA ĐƠN THANH TOÁN ========================\n");
+        System.out.println("Ngày in hóa đơn : " + printDate);
         System.out.println("Mã hóa đơn : " + idBill);
-        System.out.println("Nhân viên in hóa đơn: " + idEmployee);
-        System.out.println("Mã khách hàng : " + idCustomer);
-        System.out.println("Tên khách hàng : " + nameCustomer);
-        for( int i = 0 ; i < totalDetailBill ; i++ ){
-            detailBill[i].print();
+        System.out.println("Nhân viên : " + idEmployee);
+        System.out.println("khách hàng : " + idCustomer);
+        System.out.println("-------------------------------------------------------------------------");
+        System.out.printf("%-" + colSpace + "s %-"
+                    + colSpace + "s %-"
+                    + colSpace + "s %-"
+                    + colSpace + "s %-"
+                    + colSpace + "s\n","Mã sản phẩm","Tên sản phẩm","Giá bán","Số lượng","Thành tiền" );
+        for(DetailBill x : detailBill){
+            x.print();
         }
+        System.out.println("-------------------------------------------------------------------------");
         System.out.println("Tổng tiền : " + totalBill);
         System.out.println("Tiền được giảm : " + moneyDiscount);
         System.out.println("Tiền cần thanh toán : " + totalPay);
@@ -194,14 +245,12 @@ public class Bill {
                     System.out.println("Sản phẩm trong kho không đủ !");
                 }
             }while (quantity > quantityCheck);
-
-            //Tính tiền từng chi tiết hóa đơn
-            int total = price*quantity;
-            totalBill+=total;
-            totalPay=totalBill-moneyDiscount;
             
-            detailBill[totalDetailBill]= new DetailBill(nameProduct,idProduct,price,quantity,total);
-            totalDetailBill++;
+            detailBill[totalDetailBill]= new DetailBill(nameProduct,idProduct,price,quantity);
+            totalDetailBill++; 
+
+            totalBill += detailBill[totalDetailBill-1].gettotal();
+            totalPay = totalBill-moneyDiscount;
     }
 
     //Hàm xóa bớt sản phẩm khỏi hóa đơn
@@ -247,9 +296,9 @@ public class Bill {
     }
 
     //Lưu sản phẩm từ File
-    public void insertDetailBill(String nameProduct, String idProduct, int quantity, int price, int total) {
+    public void insertDetailBill(String nameProduct, String idProduct, int quantity, int price) {
         detailBill = Arrays.copyOf(detailBill, totalDetailBill + 1);
-        detailBill[totalDetailBill] = new DetailBill(nameProduct,idProduct,quantity,price,total);
+        detailBill[totalDetailBill] = new DetailBill(nameProduct,idProduct,quantity,price);
         totalDetailBill ++;
     }
 
@@ -257,7 +306,7 @@ public class Bill {
     public String printToFile(){
         String result = "";
         for( DetailBill x : detailBill){
-            result += idBill + "|" + printDate + "|" + idEmployee + "|" + idCustomer + "|" + nameCustomer + "|" + x.printToFile() + "|" + totalBill + "|" + moneyDiscount + "|" + totalPay + "\n";
+            result += idBill + "|" + printDate + "|" + idEmployee + "|" + idCustomer + "|" + x.printToFile() + "|" + totalBill + "|" + moneyDiscount + "|" + totalPay + "\n";
         }
         return result;
     }

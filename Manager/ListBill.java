@@ -95,11 +95,11 @@ public class ListBill implements ServiceFile {
     }
 
     //Hàm tìm kiếm hóa đơn bằng tên khách hàng
-    public void findBillByName(){
+    public void findBillByIdCustomer(){
         int count = 0;
-        String nameCustomer = new Validate().checkStringUser("Nhập tên khách hàng ");
+        String idCustomer = new Validate().checkStringUser("Nhập tên khách hàng ");
         for( int i = 0 ; i < totalBill ; i++ ){
-            if((bill[i].getnameCustomer()).equals(nameCustomer)){
+            if((bill[i].getidCustomer()).equals(idCustomer)){
                 bill[i].print();
                 count++;
             }
@@ -158,31 +158,28 @@ public class ListBill implements ServiceFile {
                 String idBillFile = split[0];
                 String printDateFile = split[1];
                 String idEmployeeFile = split[2];
-                String idCustomerFile = split[3];
-                String nameCustomerFile = split[4]; 
-                String nameProductFile = split[5];
-                String idProductFile = split[6];
+                String idCustomerFile = split[3]; 
+                String nameProductFile = split[4];
+                String idProductFile = split[5];
+                int priceFile = Integer.parseInt(split[6]);
                 int quantityFile = Integer.parseInt(split[7]);
-                int priceFile = Integer.parseInt(split[8]);
-                int totalFile = Integer.parseInt(split[9]);
-                int totalBillFile = Integer.parseInt(split[10]);
-                int moneyDiscountFile = Integer.parseInt(split[11]);
-                int totalPayFile = Integer.parseInt(split[12]);
-                if (check) {
+                int totalBillFile = Integer.parseInt(split[8]);
+                int moneyDiscountFile = Integer.parseInt(split[9]);
+                if (check==true) {
                     bill = Arrays.copyOf(bill, totalBill + 1);
-                    bill[totalBill] = new Bill(idBillFile,printDateFile,idEmployeeFile,idCustomerFile,nameCustomerFile,totalBillFile,moneyDiscountFile,totalPayFile);
-                    bill[totalBill].insertDetailBill(nameProductFile, idProductFile, quantityFile, priceFile, totalFile);
+                    bill[totalBill] = new Bill(idBillFile,printDateFile,idEmployeeFile,idCustomerFile,totalBillFile,moneyDiscountFile);
+                    bill[totalBill].insertDetailBill(nameProductFile, idProductFile, quantityFile, priceFile);
                     totalBill++;
                     check = false;
                 }
                 else{  
                     if (idBillFile.equals(bill[totalBill-1].getidBill())) {
-                        bill[totalBill-1].insertDetailBill(nameProductFile, idProductFile, quantityFile, priceFile, totalFile);
+                        bill[totalBill-1].insertDetailBill(nameProductFile, idProductFile, quantityFile, priceFile);
                     }
                     else {
                         bill = Arrays.copyOf(bill, totalBill + 1);
-                        bill[totalBill] = new Bill(idBillFile,printDateFile,idEmployeeFile,idCustomerFile,nameCustomerFile,totalBillFile,moneyDiscountFile,totalPayFile);
-                        bill[totalBill].insertDetailBill(nameProductFile, idProductFile, quantityFile, priceFile, totalFile);
+                        bill[totalBill] = new Bill(idBillFile,printDateFile,idEmployeeFile,idCustomerFile,totalBillFile,moneyDiscountFile);
+                        bill[totalBill].insertDetailBill(nameProductFile, idProductFile, quantityFile, priceFile);
                         totalBill++;
                     }
                 }

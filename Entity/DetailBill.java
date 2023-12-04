@@ -20,12 +20,12 @@ public class DetailBill {
         this.total=0;
     }
 
-        public DetailBill(String nameProduct,String idProduct,int price, int quantity, int total ){
+        public DetailBill(String nameProduct,String idProduct,int price, int quantity){
             this.idProduct=idProduct;
             this.nameProduct=nameProduct;
             this.price=price;
             this.quantity=quantity;
-            this.total=total;
+            this.total=price*quantity;
         }
 
     //Getter & Setter
@@ -71,11 +71,16 @@ public class DetailBill {
 
     //Hàm xuất
     public void print(){
-        System.out.println(idProduct+"|"+nameProduct+"|"+price+"|"+quantity+"|"+total);
+        int colSpace = 15;
+        System.out.printf("%-" + colSpace + "s %-"
+        + colSpace + "s %-"
+                    + colSpace + "s %-"
+                    + colSpace + "s %-"
+                    + colSpace + "s\n", idProduct, nameProduct, price ,quantity, total);
     }
 
     //Ghi chi tiết hóa đơn vào File
     public String printToFile() {
-        return nameProduct + "|"+ idProduct + "|" + price + "|" + quantity + "|" + total;
+        return nameProduct + "|"+ idProduct + "|" + price + "|" + quantity ;
     }
 }
