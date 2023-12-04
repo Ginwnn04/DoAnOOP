@@ -1,5 +1,7 @@
-//package DoAnOOP.Manager;
-//import DoAnOOP.Entity.*;
+package DoAnOOP.Manager;
+
+import DoAnOOP.Entity.*;
+
 
 import java.io.*;
 import java.util.Arrays;
@@ -224,6 +226,46 @@ public class ListProduct implements ServiceFile{
         writeData(false);
     }
 
+    public void restock1() {
+        BillImport billImport = new BillImport();
+        billImport.insertInfor();
+        String choice;
+        do {
+            showProduct(true);
+            readData();
+            boolean flag = true;
+            String idProductUser = new Validate().checkStringUser("Nhập ID sản cần thêm số lượng");
+            for(int i = 0; i < totalProduct; i++) {
+                if (listProduct[i].getID().equals(idProductUser)) {
+                    int newQuantity = new Validate().checkNumberInput("Nhập số lượng sản phẩm cần thêm", "Số lượng > 0, vui lòng nhập lại");
+                    if (newQuantity != -1) {
+                        int quantityCurrent = listProduct[i].getQuantity();
+                        listProduct[i].setQuantity(quantityCurrent + newQuantity);
+                        billImport.insertDetail(listProduct[i].getID(), listProduct[i].getNameProduct(), listProduct[i].getUnit(), newQuantity, listProduct[i].getPriceImport());
+                        System.out.println("Thêm số lượng thành công");
+                    }
+                    else {
+                        System.out.println("Số lượng cần thêm không hợp lệ");
+                        flag = false;
+                    }
+                    break;
+                }
+            }
+            if (flag == false) {
+                System.out.println("Thêm số lượng thất bại");
+            }
+            new Validate().clearBuffer();
+            writeData(false);
+            resetData();
+            choice = new Validate().checkStringUser("Bạn có muốn tiếp tục thêm sản phẩm không (y/n)");
+        } while(choice.charAt(0) == 'y');
+        billImport.printImportBill();
+        ListBillImport listBillImport = new ListBillImport();
+        listBillImport.creatBillImport(billImport);
+
+    }
+
+
     // Can fix lai
     public void findIdProduct(){
         readData();
@@ -306,34 +348,6 @@ public class ListProduct implements ServiceFile{
         return null;
     }
 
-    public int transPriceProduct(String idProduct) {
-        readData();
-		for(int i = 0; i < totalProduct; i++) {
-			if((listProduct[i].getID()).equals(idProduct)) {
-				return listProduct[i].getPrice();
-			}
-		}resetData();
-        return 0;
-	}
-
-    public int transQuantityProduct(String idProduct) {
-		for(int i = 0; i < totalProduct; i++) {
-			if(listProduct[i].getID().indexOf(idProduct) != -1) {
-				return listProduct[i].getQuantity();
-			}
-		}
-        return 0;
-	}
-
-    public String transNameProduct(String idProduct) {
-		for(int i = 0; i < totalProduct; i++) {
-			if(listProduct[i].getID().indexOf(idProduct) != -1) {
-				return listProduct[i].getNameProduct();
-			}
-		}
-        return null;
-	}
-
     @Override
     public void resetData() {
         totalProduct = 0;
@@ -343,7 +357,7 @@ public class ListProduct implements ServiceFile{
     @Override
     public void readData() {
         try {
-            FileReader fileReader = new FileReader("KhoSanPham.txt");
+            FileReader fileReader = new FileReader(path);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line = "";
             while ((line = bufferedReader.readLine()) != null) {
@@ -389,8 +403,11 @@ public class ListProduct implements ServiceFile{
             bufferedWriter.close();
         }
         catch (FileNotFoundException fnfe) {
+
         }
         catch (IOException ioe) {
+
         }
+
     }
 }
