@@ -1,8 +1,8 @@
-//package DoAnOOP.Manager;
+package DoAnOOP.Manager;
 
-//import DoAnOOP.Entity.BillImport;
-//import DoAnOOP.Entity.Product;
-//import DoAnOOP.Entity.ServiceFile;
+import DoAnOOP.Entity.BillImport;
+import DoAnOOP.Entity.Product;
+import DoAnOOP.Entity.ServiceFile;
 
 import java.io.*;
 import java.util.Arrays;
@@ -29,6 +29,7 @@ public class ListBillImport implements ServiceFile {
         }
         listBill = Arrays.copyOf(listBill, totalBill + 1);
         listBill[totalBill++] = billImport;
+        writeData(true);
     }
 
     public void show() {
