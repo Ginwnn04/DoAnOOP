@@ -77,10 +77,16 @@ public class PromotionsSale {
 
     //Hàm xuat
     public void print(){
-        System.out.println("\n-------------KHUYẾN MÃI "+namePromotions+" ("+idPromotions+") từ "+startDate+" đến "+endDate+" -----------");
-        for(int i=0;i<totalVoucher;i++){
-            System.out.println("\nVoucher thứ  "+(i+1));
-            voucher[i].print();
+        int colSpace = 15;
+        System.out.println("\n\n=================================================");
+        System.out.println("\t KHUYẾN MÃI "+namePromotions+" ["+idPromotions+"] ");
+        System.out.println("BẮT ĐẦU TỪ "+ startDate + " KẾT THÚC VÀO "+ endDate );
+        System.out.println("-------------------------------------------------");
+        System.out.printf("\t%-" + colSpace + "s %-"
+                + colSpace + "s\n", "Mã giảm giá", "Tiền giảm");
+        System.out.println("-------------------------------------------------");
+        for(Voucher x : voucher){
+                x.print();
         }
     }
 

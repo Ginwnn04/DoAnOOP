@@ -11,6 +11,7 @@ import java.util.Arrays;
 public class ListPromotionsSale implements ServiceFile{
     private int totalPromotionsSale;
     private PromotionsSale[] listPromotionsSale;
+    private String path = System.getProperty("user.dir") + "/src/DoAnOOP/GiamGia.txt";
 
 
     //Constructor
@@ -168,7 +169,7 @@ public class ListPromotionsSale implements ServiceFile{
     @Override
     public void writeData(boolean flag) {
         try {
-            FileWriter fileWriter = new FileWriter("Voucher.txt",true);
+            FileWriter fileWriter = new FileWriter("GiamGia.txt",true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter); 
             for(PromotionsSale x : listPromotionsSale){
                 bufferedWriter.write(x.printToFile());
@@ -184,7 +185,7 @@ public class ListPromotionsSale implements ServiceFile{
     @Override
     public void readData() {
         try {
-            FileReader fileReader = new FileReader("Voucher.txt");
+            FileReader fileReader = new FileReader(path);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             boolean check = true;
             String line = "";

@@ -45,7 +45,9 @@ public class Voucher {
 
     //Hàm xuất
     public void print(){
-        System.out.println(idVoucher+" giảm "+moneyDiscount+" đồng");
+        int colSpace = 15;
+        System.out.printf("\t%-" + colSpace + "s %-"
+                + colSpace + "s\n", idVoucher, moneyDiscount + " đồng");
     }
 
     //Ghi voucher vào file
