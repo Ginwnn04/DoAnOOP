@@ -318,7 +318,7 @@ public class ListProduct implements ServiceFile{
     }
 
     public void showProduct(boolean flag) {
-        readData();
+//        readData();
         printFrame("DANH SÁCH SẢN PHẨM");
         for(Product x : listProduct) {
             if (flag) {
@@ -332,9 +332,19 @@ public class ListProduct implements ServiceFile{
                 }
             }
         }
-        resetData();
+//        resetData();
     }
 
+    public void setQuantity(String idProduct, int newQuantity) {
+        for(Product x : listProduct) {
+            if (x.getID().equals(idProduct)) {
+                x.setQuantity(newQuantity);
+                if (newQuantity == 0) {
+                    x.setDelete(true);
+                }
+            }
+        }
+    }
 
     public Product getProductByCode(String idProduct) {
         for (Product product : listProduct) {
@@ -346,12 +356,13 @@ public class ListProduct implements ServiceFile{
     }
 
     public int transPriceProduct(String idProduct) {
-        readData();
+//        readData();
 		for(int i = 0; i < totalProduct; i++) {
 			if((listProduct[i].getID()).equals(idProduct)) {
 				return listProduct[i].getPrice();
 			}
-		}resetData();
+		}
+//        resetData();
         return 0;
 	}
 

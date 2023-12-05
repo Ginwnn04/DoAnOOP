@@ -108,9 +108,6 @@ public class Bill {
         String idVoucher;
         String idPromotions;
         String phone;
-        String lastName;
-        String firstName;
-        int count = 0;
         do {
 			printDate = new Validate().checkStringUser("Nhập ngay in hoa don (dd-MM-yyyy)");
 			
@@ -131,13 +128,14 @@ public class Bill {
         //Nhập chi tiết hóa đơn
         System.out.println("Nhập chi tiết hóa đơn.");
         String choice = "";
+        listProduct.readData();
         do{
             addDetailBill();
             new Validate().clearBuffer();
             //Lựa chọn tiếp tục mua thêm hoặc thanh toán
             choice = new Validate().checkStringUser("Bạn có muôn mua thêm (y/n)");
         }while(choice.charAt(0) == 'y');
-
+        listProduct.writeData(false);
         //Lựa chọn sử dụng có sử dụng voucher hay không
         choice = new Validate().checkStringUser("Bạn có mã giảm giá không (y/n)");
         if (choice.charAt(0) == 'y') {
@@ -199,12 +197,12 @@ public class Bill {
     public void addDetailBill(){
         String idProduct;
         int quantity;
+//        listProduct.readData();
         detailBill = Arrays.copyOf(detailBill, totalDetailBill+1);
 
         //Nhập mã sản phẩm và kiểm tra với từng mã sản phẩm trong kho
         do{
             listProduct.showProduct(true);
-            listProduct.readData();
             System.out.println("Chi tiet thu "+(totalDetailBill+1));
             idProduct = new Validate().checkStringUser("Nhap ma san pham");
 			if(listProduct.transPriceProduct(idProduct) == 0)
@@ -223,13 +221,13 @@ public class Bill {
                     System.out.println("Sản phẩm trong kho không đủ !");
                 }
             }while (quantity > quantityCheck);
-            
+            listProduct.setQuantity(idProduct, (quantityCheck - quantity));
             detailBill[totalDetailBill]= new DetailBill(nameProduct,idProduct,price,quantity);
             totalDetailBill++; 
 
             totalBill += detailBill[totalDetailBill-1].gettotal();
             totalPay = totalBill-moneyDiscount;
-            listProduct.resetData();
+//            listProduct.writeData(false);
     }
 
     //Hàm xóa bớt sản phẩm khỏi hóa đơn
