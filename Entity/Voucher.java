@@ -46,8 +46,8 @@ public class Voucher {
     //Hàm xuất
     public void print(){
         int colSpace = 15;
-        System.out.printf("\t%-" + colSpace + "s %-"
-                + colSpace + "s\n", idVoucher, moneyDiscount + " đồng");
+        System.out.printf("%-" + colSpace + "s %-"
+                + colSpace + "s\n", idVoucher, moneyDiscount);
     }
 
     //Ghi voucher vào file

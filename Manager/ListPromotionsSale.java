@@ -37,6 +37,14 @@ public class ListPromotionsSale implements ServiceFile{
 
     //Hàm xuất
     public void print(){
+        int colSpace = 15;
+        System.out.println("=======================" + "DANH SACH CHUONG TRINH KHUYEN MAI" + "======================");
+        System.out.printf("%-" + colSpace + "s %-"
+                + colSpace + "s %-"
+                + colSpace + "s %-"
+                + colSpace + "s %-"
+                + colSpace + "s %-"
+                + colSpace + "s\n", "Mã CT", "Tên CT", "Ngày bắt đầu", "Ngày kết thúc","Mã giảm giá" , "Tiền giảm");
         for(int i=0;i<totalPromotionsSale;i++){
             listPromotionsSale[i].print();
         }

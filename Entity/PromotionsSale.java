@@ -78,14 +78,16 @@ public class PromotionsSale {
     //Hàm xuat
     public void print(){
         int colSpace = 15;
-        System.out.println("\n\n=================================================");
-        System.out.println("\t KHUYẾN MÃI "+namePromotions+" ["+idPromotions+"] ");
-        System.out.println("BẮT ĐẦU TỪ "+ startDate + " KẾT THÚC VÀO "+ endDate );
-        System.out.println("-------------------------------------------------");
-        System.out.printf("\t%-" + colSpace + "s %-"
-                + colSpace + "s\n", "Mã giảm giá", "Tiền giảm");
-        System.out.println("-------------------------------------------------");
+//        System.out.println("\n\n=================================================");
+//        System.out.println("\t KHUYẾN MÃI "+namePromotions+" ["+idPromotions+"] ");
+//        System.out.println("BẮT ĐẦU TỪ "+ startDate + " KẾT THÚC VÀO "+ endDate );
+//        System.out.println("-------------------------------------------------");
+//        System.out.printf("\t%-" + colSpace + "s %-"
+//                + colSpace + "s\n", "Mã giảm giá", "Tiền giảm");
+//        System.out.println("-------------------------------------------------");
         for(Voucher x : voucher){
+            System.out.printf("%-" + colSpace + "s %-"
+                    + colSpace + "s %-" + colSpace + "s %-" + colSpace + "s ", idPromotions, namePromotions, startDate, endDate);
                 x.print();
         }
     }

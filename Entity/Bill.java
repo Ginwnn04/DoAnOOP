@@ -2,6 +2,8 @@ package DoAnOOP.Entity;
 import DoAnOOP.Manager.Validate;
 import DoAnOOP.Manager.ListPromotionsSale;
 import DoAnOOP.Manager.ListProduct;
+import DoAnOOP.Manager.ListCustomer;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
