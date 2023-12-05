@@ -135,7 +135,6 @@ public class Bill {
             //Lựa chọn tiếp tục mua thêm hoặc thanh toán
             choice = new Validate().checkStringUser("Bạn có muôn mua thêm (y/n)");
         }while(choice.charAt(0) == 'y');
-        listProduct.writeData(false);
         //Lựa chọn sử dụng có sử dụng voucher hay không
         choice = new Validate().checkStringUser("Bạn có mã giảm giá không (y/n)");
         if (choice.charAt(0) == 'y') {
@@ -168,6 +167,7 @@ public class Bill {
             }
         }
         print();
+        listProduct.writeData(false);
     }
 
     //Hàm xuất
