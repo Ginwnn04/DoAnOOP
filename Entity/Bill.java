@@ -1,32 +1,33 @@
 package DoAnOOP.Entity;
 import DoAnOOP.Manager.*;
 
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+
 
 public class Bill {
     private ListPromotionsSale listPromotionsSale = new ListPromotionsSale();
     private ListProduct listProduct = new ListProduct();
     private ListCustomer listCustomer = new ListCustomer();
+    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 
     private String idBill;
     private String idEmployee;
     private String idCustomer;
-    private String printDate;
+    private Date printDate;
     private int totalBill;
     private int moneyDiscount;
     private int totalPay;
 
-    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+    Date today = new Date();
     private int totalDetailBill = 0;
     private DetailBill[] detailBill = new DetailBill[totalDetailBill];
     private ListStaff listStaff = new ListStaff();
     //Constructor
     public Bill(){}
 
-    public Bill (String idBill,String printDate, String idEmployee, String idCustomer, int totalBill, int moneyDiscount){
+    public Bill (String idBill,Date printDate, String idEmployee, String idCustomer, int totalBill, int moneyDiscount){
         this.idBill=idBill;
         this.idEmployee=idEmployee;
         this.idCustomer=idCustomer;
@@ -58,10 +59,10 @@ public class Bill {
         this.idCustomer=idCustomer;
     }
 
-    public String getprintDate(){
+    public Date getprintDate(){
         return printDate;
     }
-    public void setprintDate(String printDate){
+    public void setprintDate(Date printDate){
         this.printDate=printDate;
     }
 
@@ -92,32 +93,12 @@ public class Bill {
         return firtID+"-"+(int)(Math.random()*10000000);
     }
 
-    //Ham kt ngay
-    public boolean CheckDate(String date) {
-		df.setLenient(false);
-		try {
-			df.parse(date);
-		}catch(ParseException e) {
-			return false;
-		}
-		return true;
-	}
-
     //Hàm nhập
     public void input(){
         String idVoucher;
         String idPromotions;
         String phone;
-        do {
-			printDate = new Validate().checkStringUser("Nhập ngay in hoa don (dd-MM-yyyy)");
-			
-			if(!CheckDate(printDate)) {
-				System.err.println("Ngày tháng năm không hợp lê. Xin mời nhập lại!!!");
-				System.err.println();
-			}
-				
-		}while(!CheckDate(printDate));
-
+		printDate = new Date();
         idBill = createIdBill();
         idEmployee = new Validate().checkStringUser("Nhập mã nhân viên");
         listStaff.readData();
@@ -135,6 +116,7 @@ public class Bill {
             //Lựa chọn tiếp tục mua thêm hoặc thanh toán
             choice = new Validate().checkStringUser("Bạn có muôn mua thêm (y/n)");
         }while(choice.charAt(0) == 'y');
+
         //Lựa chọn sử dụng có sử dụng voucher hay không
         choice = new Validate().checkStringUser("Bạn có mã giảm giá không (y/n)");
         if (choice.charAt(0) == 'y') {
@@ -144,9 +126,9 @@ public class Bill {
 
             idPromotions = new Validate().checkStringUser("Nhập vào mã CTKM");
             idVoucher = new Validate().checkStringUser("Nhap ma voucher");
-            moneyDiscount = listPromotionsSale.transMoneyDiscount(idPromotions,idVoucher);
+            moneyDiscount = listPromotionsSale.transMoneyDiscount(idPromotions,idVoucher, printDate);
             if(moneyDiscount == 0){
-                System.err.println("\nMã khách hàng mà bạn vừa nhập không hợp lệ hoặc không có trong danh sách!!!");
+                System.err.println("\nMã giảm giá bạn vừa nhập không hợp lệ !!!");
             }
         }
         totalPay = totalBill - moneyDiscount;
@@ -174,7 +156,7 @@ public class Bill {
     public void print(){
         int colSpace = 15;
         System.out.println("\n============================ HÓA ĐƠN THANH TOÁN ========================\n");
-        System.out.println("Ngày in hóa đơn : " + printDate);
+        System.out.println("Ngày in hóa đơn : " + df.format(printDate));
         System.out.println("Mã hóa đơn : " + idBill);
         System.out.println("Nhân viên : " + idEmployee);
         System.out.println("khách hàng : " + idCustomer);

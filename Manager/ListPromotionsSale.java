@@ -6,13 +6,15 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
-public class ListPromotionsSale implements ServiceFile{
+public class ListPromotionsSale implements ServiceFile {
     private int totalPromotionsSale;
     private PromotionsSale[] listPromotionsSale;
+    private SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
     private String path = System.getProperty("user.dir") + "/src/DoAnOOP/GiamGia.txt";
-
 
     //Constructor
     public ListPromotionsSale() {
@@ -158,13 +160,22 @@ public class ListPromotionsSale implements ServiceFile{
     }
 
     //Hàm lấy giá trị tiền giảm
-    public int transMoneyDiscount(String idPromotions, String idVoucher) {
+    public int transMoneyDiscount(String idPromotions, String idVoucher,Date printDate) {
         readData();
+        int count =0;
 		for(int i = 0; i < totalPromotionsSale; i++) {
 			if(idPromotions.equals(listPromotionsSale[i].getidPromotions())) {
-			    return listPromotionsSale[i].TransVoucher(idVoucher);
+                if(((listPromotionsSale[i].getstartDate()).after(printDate)) || ((listPromotionsSale[i].getendDate()).before(printDate))){
+                    count++;
+                }
+                else{
+                    return listPromotionsSale[i].TransVoucher(idVoucher);
+                }
 			}
 		}
+        if(count != 0){
+             System.out.println("Mã giảm giá hết hạn sử dụng !");
+        }
         return 0;
 	}
 
@@ -193,7 +204,7 @@ public class ListPromotionsSale implements ServiceFile{
     @Override
     public void readData() {
         try {
-            FileReader fileReader = new FileReader(path);
+            FileReader fileReader = new FileReader("GiamGia.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             boolean check = true;
             String line = "";
@@ -201,8 +212,8 @@ public class ListPromotionsSale implements ServiceFile{
                 String[] split = line.split("\\|");
                 String namePromotions = split[0];
                 String idPromotions = split[1];
-                String startDate = split[2];
-                String endDate = split[3];
+                Date startDate = df.parse(split[2]);
+                Date endDate = df.parse(split[3]);
                 String idVoucher = split[4]; 
                 int moneyDiscount = Integer.parseInt(split[5]);
                 if (check) {
@@ -225,7 +236,6 @@ public class ListPromotionsSale implements ServiceFile{
                 }
             }
             bufferedReader.close();
-            System.out.println("Da doc file !");
         }
         catch (Exception e) {
         }

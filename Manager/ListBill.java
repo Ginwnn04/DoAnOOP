@@ -6,11 +6,16 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 public class ListBill implements ServiceFile {
+    private static final Date printDateUserStr = null;
     private int totalBill;
     private Bill[] bill;
+    private SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 
     //Constructor
     public ListBill(){
@@ -80,11 +85,22 @@ public class ListBill implements ServiceFile {
     }
 
     //Hàm tìm kiếm hóa đơn bằng ngày xuất
-    public void findBillByPrintDate(){
+   /* public void findBillByPrintDate(){
         int count = 0;
-        String printDateUser = new Validate().checkStringUser("Nhập ngày xuất hóa đơn");
+        Date printDateUser;
+        boolean validDate = false;
+        do {
+            String printDateUserStr = new Validate().checkStringUser("Nhập ngày xuất hóa đơn (dd-MM-yyyy)");
+            try {
+                printDateUser = df.parse(printDateUserStr);
+                validDate = true;
+            } catch (ParseException e) { 
+                System.out.println("Định dạng ngày không hợp lệ!");
+            }
+        }while (!validDate);
+
         for( int i = 0 ; i < totalBill ; i++ ){
-            if((bill[i].getprintDate()).equals(printDateUser)){
+            if((bill[i].getprintDate()).before(printDateUser)){
                 bill[i].print();
                 count++;
             }
@@ -92,7 +108,7 @@ public class ListBill implements ServiceFile {
         if(count == 0 ){
             System.out.println("Không tìm thấy hóa đơn !");
         }
-    }
+    }*/
 
     //Hàm tìm kiếm hóa đơn bằng tên khách hàng
     public void findBillByIdCustomer(){
@@ -156,7 +172,7 @@ public class ListBill implements ServiceFile {
             while((line = bufferedReader.readLine()) != null){
                 String[] split = line.split("\\|");
                 String idBillFile = split[0];
-                String printDateFile = split[1];
+                Date printDateFile = df.parse(split[1]);
                 String idEmployeeFile = split[2];
                 String idCustomerFile = split[3]; 
                 String nameProductFile = split[4];
