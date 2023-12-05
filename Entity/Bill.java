@@ -1,8 +1,5 @@
 package DoAnOOP.Entity;
-import DoAnOOP.Manager.Validate;
-import DoAnOOP.Manager.ListPromotionsSale;
-import DoAnOOP.Manager.ListProduct;
-import DoAnOOP.Manager.ListCustomer;
+import DoAnOOP.Manager.*;
 
 
 import java.text.ParseException;
@@ -25,7 +22,7 @@ public class Bill {
     SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
     private int totalDetailBill = 0;
     private DetailBill[] detailBill = new DetailBill[totalDetailBill];
-
+    private ListStaff listStaff = new ListStaff();
     //Constructor
     public Bill(){}
 
@@ -114,7 +111,6 @@ public class Bill {
         String lastName;
         String firstName;
         int count = 0;
-
         do {
 			printDate = new Validate().checkStringUser("Nhập ngay in hoa don (dd-MM-yyyy)");
 			
@@ -127,73 +123,53 @@ public class Bill {
 
         idBill = createIdBill();
         idEmployee = new Validate().checkStringUser("Nhập mã nhân viên");
-
+        listStaff.readData();
+        if (listStaff.findStaff(idEmployee) == null) {
+            System.out.println("Mã nhân viên ko tồn tại");
+            return;
+        }
         //Nhập chi tiết hóa đơn
         System.out.println("Nhập chi tiết hóa đơn.");
+        String choice = "";
         do{
             addDetailBill();
-            //Lựa chọn tiếp tục mua thêm hoặc thanh toán
-            do{
-            System.out.println("1.Mua them.");
-            System.out.println("2.Tiep tuc.");
-            count = new Validate().checkNumberInput("Nhap lua chon", "So phai >0, vui long nhap lai !");
             new Validate().clearBuffer();
-            if(count != 1 && count != 2){
-                System.out.println("Nhap sai lua chon !");
-               }
-            }while(count != 1 && count != 2);
-        }while(count == 1);
-
+            //Lựa chọn tiếp tục mua thêm hoặc thanh toán
+            choice = new Validate().checkStringUser("Bạn có muôn mua thêm (y/n)");
+        }while(choice.charAt(0) == 'y');
 
         //Lựa chọn sử dụng có sử dụng voucher hay không
-        do{
-            System.out.println("1.Su dung Voucher.");
-            System.out.println("2.Thanh toan."); 
-            count = new Validate().checkNumberInput("Nhap lua chon", "So phai >0, vui long nhap lai !");
-            new Validate().clearBuffer();
-            if(count == 1 ){
-                do {
-                    listPromotionsSale.readData();
-                    listPromotionsSale.print();
-                    idPromotions = new Validate().checkStringUser("Nhập vào mã CTKM");
-                    idVoucher = new Validate().checkStringUser("Nhap ma voucehr");
-			        if(listPromotionsSale.transMoneyDiscount(idPromotions,idVoucher) == 0){
-				        System.err.println("\nMã khách hàng mà bạn vừa nhập không hợp lệ hoặc không có trong danh sách!!!");
-                    }
-		        }while(listPromotionsSale.transMoneyDiscount(idPromotions,idVoucher) == 0);
-                //Lấy giá trị tiền giảm của Voucher tương ứng
-		        moneyDiscount = listPromotionsSale.transMoneyDiscount(idPromotions,idVoucher);
+        choice = new Validate().checkStringUser("Bạn có mã giảm giá không (y/n)");
+        if (choice.charAt(0) == 'y') {
+            listPromotionsSale.readData();
+
+//            listPromotionsSale.print();
+
+            idPromotions = new Validate().checkStringUser("Nhập vào mã CTKM");
+            idVoucher = new Validate().checkStringUser("Nhap ma voucher");
+            moneyDiscount = listPromotionsSale.transMoneyDiscount(idPromotions,idVoucher);
+            if(moneyDiscount == 0){
+                System.err.println("\nMã khách hàng mà bạn vừa nhập không hợp lệ hoặc không có trong danh sách!!!");
             }
-        }while(count != 1 && count != 2);
-        totalPay = totalBill-moneyDiscount;
+        }
+        totalPay = totalBill - moneyDiscount;
         //Thong tin khach hang
-        do{
-            System.out.println("Khách hàng có cho thông tin không ?");
-            System.out.println("1.Có.");
-            System.out.println("2.Không.");
-            count = new Validate().checkNumberInput("Nhập lựa chọn","Lựa chọn > 0.");
-            new Validate().clearBuffer();
-            if(count != 1 && count != 2){
-                System.out.println("Lựa chọn sai.");
+        choice = new Validate().checkStringUser("Có phải là thanh viên (y/n)");
+        if (choice.charAt(0) == 'y') {
+            phone = new Validate().checkStringUser("Nhập số điện thoại khách hàng (+84)");
+            listCustomer.readData();
+            idCustomer = listCustomer.transIdCustomer(phone);
+            if (idCustomer == null) {
+                System.out.println("Không tồn tại khách hàng có sdt là " + phone + "\n");
             }
-            else {
-                if(count == 1){
-                    phone = new Validate().checkStringUser("Nhập số điện thoại khách hàng");
-                    if(listCustomer.transIdCustomer(phone) == null){
-                        idCustomer = "KH-" + (int)(Math.random() * 1000000);
-                        firstName = new Validate().checkStringUser("Nhập họ và tên lót khách hàng");
-                        lastName = new Validate().checkStringUser("Nhập tên khách hàng");
-                        listCustomer.insertCustomer(idCustomer, lastName, firstName, phone);
-                    }
-                    else{
-                        idCustomer = listCustomer.transIdCustomer(phone);
-                    }
-                }
-                else if(count == 2){
-                    idCustomer = null;
-                }
+        }
+        else {
+            choice = new Validate().checkStringUser("Có muốn trở thành thành viên không (y/n)");
+            if (choice.charAt(0) == 'y') {
+                idCustomer = listCustomer.createCustomer();
             }
-        }while(count != 1 && count != 2);
+        }
+        print();
     }
 
     //Hàm xuất
@@ -227,13 +203,13 @@ public class Bill {
 
         //Nhập mã sản phẩm và kiểm tra với từng mã sản phẩm trong kho
         do{
-            listProduct.readData();
             listProduct.showProduct(true);
+            listProduct.readData();
             System.out.println("Chi tiet thu "+(totalDetailBill+1));
             idProduct = new Validate().checkStringUser("Nhap ma san pham");
 			if(listProduct.transPriceProduct(idProduct) == 0)
 				System.err.println("\nMã san pham mà bạn vừa nhập không hợp lệ hoặc không có trong danh sách!!!");
-        }while(listProduct.transPriceProduct(idProduct) == 0);
+        } while(listProduct.transPriceProduct(idProduct) == 0);
             
             //Lấy giá trị giá tiền,tên sản phẩm,số lượng sản phẩm tương ứng
 		    int price = listProduct.transPriceProduct(idProduct);
@@ -253,6 +229,7 @@ public class Bill {
 
             totalBill += detailBill[totalDetailBill-1].gettotal();
             totalPay = totalBill-moneyDiscount;
+            listProduct.resetData();
     }
 
     //Hàm xóa bớt sản phẩm khỏi hóa đơn

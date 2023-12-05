@@ -19,11 +19,16 @@ public class ListCustomer implements ServiceFile {
         this.totalCustomer = list.totalCustomer;
     }
 
-    public void createCustomer() {
+
+    // ádasd
+    public String createCustomer() {
         String fullName = new Validate().checkStringUser("Nhập tên khách hàng");
         String phone = new Validate().checkStringUser("Nhập sđt khách hàng");
         listCustomer = Arrays.copyOf(listCustomer, totalCustomer + 1);
         listCustomer[totalCustomer++] = new Customer(fullName, phone);
+        String idCustomer = listCustomer[totalCustomer - 1].getidCustomer();
+        writeData(true);
+        return idCustomer;
     }
 
     public void printCustomer() {
@@ -51,7 +56,6 @@ public class ListCustomer implements ServiceFile {
 				return listCustomer[i].getidCustomer();
 			}
 		}
-        
         return null;
 	}
 
