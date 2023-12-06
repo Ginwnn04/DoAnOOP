@@ -16,6 +16,8 @@ public class ListBill implements ServiceFile {
     private int totalBill;
     private Bill[] bill;
     private SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+    private String path = System.getProperty("user.dir") + "/src/DoAnOOP/HoaDon.txt";
+
 
     //Constructor
     public ListBill(){
@@ -33,6 +35,7 @@ public class ListBill implements ServiceFile {
         bill[totalBill]=new Bill();
         bill[totalBill].input();
         totalBill++;
+        writeData(true);
     }
 
     //Hàm xuất hóa đơn hiện tại
@@ -154,7 +157,7 @@ public class ListBill implements ServiceFile {
     @Override
     public void writeData(boolean flag) {
         try {
-            FileWriter fileWriter = new FileWriter("HoaDon.txt",true);
+            FileWriter fileWriter = new FileWriter(path, flag);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             for( Bill x : bill){
                 bufferedWriter.write(x.printToFile());
@@ -169,7 +172,7 @@ public class ListBill implements ServiceFile {
     @Override
     public void readData() {
         try {
-            FileReader fileReader = new FileReader("HoaDon.txt");
+            FileReader fileReader = new FileReader(path);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             boolean check = true;
             String line = "";

@@ -265,7 +265,7 @@ public class Bill {
     public String printToFile(){
         String result = "";
         for( DetailBill x : detailBill){
-            result += idBill + "|" + printDate + "|" + idEmployee + "|" + idCustomer + "|" + x.printToFile() + "|" + totalBill + "|" + moneyDiscount + "|" + totalPay + "\n";
+            result += idBill + "|" + df.format(printDate) + "|" + idEmployee + "|" + idCustomer + "|" + x.printToFile() + "|" + totalBill + "|" + moneyDiscount + "|" + totalPay + "\n";
         }
         return result;
     }
