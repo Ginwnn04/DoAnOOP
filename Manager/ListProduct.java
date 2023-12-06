@@ -189,6 +189,8 @@ public class ListProduct implements ServiceFile{
     }
 
     public void restock() {
+        BillImport billImport = new BillImport();
+        billImport.insertInfor();
         readData();
         showProduct(true);
         String idProductUser = new Validate().checkStringUser("Nhập ID sản phẩm cần khôi phục HOẶC thêm số lượng");
@@ -209,7 +211,9 @@ public class ListProduct implements ServiceFile{
                         flag = true;
                         listProduct[i].setQuantity(newQuantity);
                         listProduct[i].setDelete(false);
+                        billImport.insertDetail(listProduct[i].getID(), listProduct[i].getNameProduct(), listProduct[i].getUnit(), newQuantity, listProduct[i].getPriceImport());
                         System.out.println("Thêm số lượng thành công");
+                        new Validate().clearBuffer();
                         break;
                     }
                 }
@@ -218,9 +222,12 @@ public class ListProduct implements ServiceFile{
         }
         if (flag == false) {
             System.out.println("Không tìm thấy ID sản phẩm HOẶC số lượng sản phẩm ko hợp lệ");
+            System.out.println("Thêm số lượng HOẶC khôi phục thất bại");
         }
-        System.out.println("Thêm số lượng HOẶC khôi phục thất bại");
         writeData(false);
+        billImport.printImportBill();
+        ListBillImport listBillImport = new ListBillImport();
+        listBillImport.creatBillImport(billImport);
     }
 
     public void restock1() {
