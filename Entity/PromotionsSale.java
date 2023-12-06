@@ -32,6 +32,10 @@ public class PromotionsSale {
         return namePromotions;
     }
 
+    public int getTotalVoucher() {
+        return totalVoucher;
+    }
+
     public void setnamePromotions(String namePromotions){
         this.namePromotions=namePromotions;
     }
