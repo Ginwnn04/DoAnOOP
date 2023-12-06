@@ -240,11 +240,13 @@ public class ListPromotionsSale implements ServiceFile {
         } catch (Exception e) {
         }
     }
+
+    // Thống kê mã khuyến mãi
     public void reportPromotion() {
         readData();
-        System.out.format("%-20s %-15s \n", "Mã khuyến mãi", "Số lượng");
-        for (PromotionsSale l : listPromotionsSale) {
-            System.out.format("%-20s %-15s \n", l.getnamePromotions(), l.getTotalVoucher());
+        System.out.format("%-25s %-15s %-15s \n", "Tên chương trình", "Số lượng", "Tổng tiền");
+        for (int i =0;i<totalPromotionsSale;i++){
+            System.out.format("%-20s %-15s %-15s \n", listPromotionsSale[i].getnamePromotions(), listPromotionsSale[i].getTotalVoucher(), listPromotionsSale[i].getTotalMoney());
         }
         String choice = new Validate().checkStringUser("Bạn có muốn chi tiết mã khuyến mãi không yes/no (yes để xem hoặc no từ chối)");
         if (choice.equals("yes")) {

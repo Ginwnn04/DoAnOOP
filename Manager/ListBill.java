@@ -212,12 +212,4 @@ public class ListBill implements ServiceFile {
         catch (Exception e) {
         }
     }
-    public void reportProductSell(){
-        readData();
-        System.out.format("%-20s %-15s \n", "Mã đơn hàng", "Số tiền đã bán");
-        for (Bill x : bill) {
-            System.out.format("%-20s %-15s \n",x.getidBill(),x.gettotalBill());
-        }
-        resetData();
-    }
 }

@@ -211,27 +211,19 @@ public class Menu {
         do {
             System.out.println("=====================THỐNG KÊ========================");
             System.out.println("1. Thống kê số lượng sản phẩm đang tồn.");
-            System.out.println("2. Thống kê số lượng sản phẩm đã xóa.");
-            System.out.println("3. Thống kê số lượng sản phẩm đã bán.");
-            System.out.println("4. Thống kê số lượng mã khuyến mãi của từng chương trình.");
-            System.out.println("5. Quay lại.");
-            choice = new Validate().checkChoiceUser(1,5);
+            System.out.println("2. Thống kê số lượng mã khuyến mãi của từng chương trình.");
+            System.out.println("0. Quay lại.");
+            choice = new Validate().checkChoiceUser(0,2);
             switch (choice) {
                 case 1:
                     list.reportProductCurrent();
                     break;
                 case 2:
-                    list.reportProductDelete();
-                    break;
-                case 3:
-                    listBill.reportProductSell();
-                    break;
-                case 4:
                     listSale.reportPromotion();
                     break;
             }
 
-        } while(choice != 5);
+        } while(choice != 0);
     }
 
     public void SubMenufind(){

@@ -212,5 +212,12 @@ public class PromotionsSale {
         }
         return result;
     }
+    public int getTotalMoney(){
+        int count = 0;
+        for (int i =0;i<totalVoucher;i++){
+            count += voucher[i].getmoneyDiscount();
+        }
+        return count;
+    }
 
 }

@@ -318,7 +318,7 @@ public class ListProduct implements ServiceFile{
                 + colSpace + "s %-"
                 + colSpace + "s %-"
                 + colSpace + "s %-"
-                + colSpace + "s\n", "Mã sản phẩm", "Tên sản phẩm", "Khối lượng", "Thể tích","Loại sản phẩm" , "Đơn vị tính", "Số lượng", "Giá tiền");
+                + colSpace + "s\n", "Mã sản phẩm", "Tên sản phẩm", "Khối lượng", "Thể tích","Loại thực phẩm" , "Đơn vị tính", "Số lượng", "Giá tiền");
     }
 
 
@@ -455,6 +455,8 @@ public class ListProduct implements ServiceFile{
         catch (IOException ioe) {
         }
     }
+
+    // Thống kê sản phẩm trong kho
     public void reportProductCurrent() {
         readData();
         int countFD = 0;
@@ -478,33 +480,6 @@ public class ListProduct implements ServiceFile{
         }
         if (choice.equals("no")) {
             System.out.println("Đã hủy yêu cầu xem sản phẩm trong kho");
-        }
-        resetData();
-    }
-
-    public void reportProductDelete() {
-        readData();
-        int countFD = 0;
-        int countDK = 0;
-        for (Product p : listProduct) {
-            if (p.getIsDelete() == true) {
-                if (p instanceof Foods) {
-                    countFD++;
-                }
-                if (p instanceof Drinks) {
-                    countDK++;
-                }
-            }
-        }
-        System.out.format("%-15s %-15s \n", "Loại sản phẩm", "Số lượng");
-        System.out.format("%-15s %-15s \n", "Thực phẩm", countFD);
-        System.out.format("%-15s %-15s \n", "Thức uống", countDK);
-        String choice = new Validate().checkStringUser("Bạn có muốn xem sản phẩm đã xóa khỏi kho không yes/no (yes để xem hoặc no từ chối)");
-        if (choice.equals("yes")) {
-            showProduct(true);
-        }
-        if (choice.equals("no")) {
-            System.out.println("Đã hủy yêu cầu xem sản phẩm đã bị xóa");
         }
         resetData();
     }
