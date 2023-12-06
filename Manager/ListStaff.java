@@ -165,6 +165,12 @@ public class ListStaff implements ServiceFile {
 
         }
     }
+
+    @Override
+    public boolean checkData() {
+        return false;
+    }
+
     @Override
     public void resetData(){
         totalStaff = 0;

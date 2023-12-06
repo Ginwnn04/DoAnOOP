@@ -79,6 +79,11 @@ public class ListCustomer implements ServiceFile {
     }
 
     @Override
+    public boolean checkData() {
+        return false;
+    }
+
+    @Override
     public void readData() {
         try {
             FileReader fileReader = new FileReader(path);

@@ -104,6 +104,11 @@ public class ListBillImport implements ServiceFile {
     }
 
     @Override
+    public boolean checkData() {
+        return false;
+    }
+
+    @Override
     public void writeData(boolean flag) {
         try {
             FileWriter fileWriter = new FileWriter(path, flag);

@@ -121,9 +121,8 @@ public class Menu {
             System.out.println("6. Xóa voucher.");
             System.out.println("7. Tìm kiếm chương trình khuyến mãi.");
             System.out.println("8. Tìm kiếm voucher.");
-            System.out.println("9. Thây đổi tên chương trình khuyến mãi.");
-            System.out.println("10. Đọc File.");
-            System.out.println("11. Ghi File");
+            System.out.println("9. Thay đổi tên chương trình khuyến mãi.");
+
             System.out.println("0. Quay lại.");
             choice = new Validate().checkChoiceUser(0,11);
             switch (choice) {
@@ -154,12 +153,6 @@ public class Menu {
                 case 9:
                     listSale.fixNamePromotions();
                     break;
-                case 10:
-                    listSale.readData();
-                    break;
-                case 11:
-                    listSale.writeData(true);
-                    break;
             }
 
         } while(choice != 0);
@@ -170,17 +163,14 @@ public class Menu {
         do {
             System.out.println("=====================HOA DON========================");
             System.out.println("1. Tạo hóa đơn mới.");
-            System.out.println("2. Xuất hóa đơn.");
-            System.out.println("3. Lịch sử hóa đơn.");
-            System.out.println("4. Thây đổi số lượng sản phẩm mua.");
-            System.out.println("5. Mua thêm sản phẩm.");
-            System.out.println("6. Xóa bớt sản phẩm.");
-            System.out.println("7. Tìm kiếm hóa đơn bằng mã.");
-            System.out.println("8. Tìm kiếm hóa đơn bằng ngày xuất.");
-            System.out.println("9. Tìm kiếm hóa đơn bằng mã nhân viên.");
-            System.out.println("10. Tìm kiếm hóa đơn bằng tên khách hàng.");
-            System.out.println("11. Doc File");
-            System.out.println("12. Ghi File");
+            System.out.println("2. Lịch sử hóa đơn.");
+            System.out.println("3. Thây đổi số lượng sản phẩm mua.");
+            System.out.println("4. Mua thêm sản phẩm.");
+            System.out.println("5. Xóa bớt sản phẩm.");
+            System.out.println("6. Tìm kiếm hóa đơn bằng mã.");
+            System.out.println("7. Tìm kiếm hóa đơn bằng ngày xuất.");
+            System.out.println("8. Tìm kiếm hóa đơn bằng mã nhân viên.");
+            System.out.println("9. Tìm kiếm hóa đơn bằng tên khách hàng.");
             System.out.println("0. Quay lại.");
             choice = new Validate().checkChoiceUser(0,11);
             switch (choice) {
@@ -188,37 +178,28 @@ public class Menu {
                     listBill.addBill();
                     break;
                 case 2:
-                    listBill.printBill();
-                    break;
-                case 3:
                     listBill.printListBill();
                     break;
-                case 4:
+                case 3:
                     listBill.fixQuantityProduct();
                     break;
-                case 5:
+                case 4:
                     listBill.addProduct();
                     break;
-                case 6:
+                case 5:
                     listBill.deleteProduct();
                     break;
-                case 7:
+                case 6:
                     listBill.findBillByIdBill();
                     break;
-                case 8:
+                case 7:
                     listBill.findBillByPrintDate();
                     break;
-                case 9:
+                case 8:
                     listBill.findBillByIdEmployee();
                     break;
-                case 10:
+                case 9:
                     listBill.findBillByIdCustomer();
-                    break;
-                case 11:
-                    listBill.readData();
-                    break;
-                case 12:
-                    listBill.writeData(true);
                     break;
             }
 
@@ -276,7 +257,9 @@ public class Menu {
             choice = new Validate().checkChoiceUser(1, 3);
             switch (choice) {
                 case 1:
-                    list.showProduct(true);
+                    list.readData();
+                    list.showProduct(false);
+                    list.resetData();
                     break;
                 case 2:
                     listBillImport.show();

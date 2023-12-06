@@ -187,7 +187,11 @@ public class ListPromotionsSale implements ServiceFile{
         } catch (Exception e) {
         }
         resetData();
-        System.out.println("Luu file thanh cong !");
+    }
+
+    @Override
+    public boolean checkData() {
+        return false;
     }
 
     @Override
@@ -225,7 +229,6 @@ public class ListPromotionsSale implements ServiceFile{
                 }
             }
             bufferedReader.close();
-            System.out.println("Da doc file !");
         }
         catch (Exception e) {
         }

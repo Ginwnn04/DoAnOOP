@@ -131,6 +131,11 @@ public class ListBill implements ServiceFile {
     }
 
     @Override
+    public boolean checkData() {
+        return false;
+    }
+
+    @Override
     public void writeData(boolean flag) {
         try {
             FileWriter fileWriter = new FileWriter("HoaDon.txt",true);
@@ -143,7 +148,6 @@ public class ListBill implements ServiceFile {
         } catch (Exception e) {
         }
         resetData();
-        System.out.println("Luu file thanh cong !");
     }
 
     @Override

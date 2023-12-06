@@ -202,7 +202,7 @@ public class Bill {
 
         //Nhập mã sản phẩm và kiểm tra với từng mã sản phẩm trong kho
         do{
-            listProduct.showProduct(true);
+            listProduct.showProduct(false);
             System.out.println("Chi tiet thu "+(totalDetailBill+1));
             idProduct = new Validate().checkStringUser("Nhap ma san pham");
 			if(listProduct.transPriceProduct(idProduct) == 0)
@@ -227,7 +227,7 @@ public class Bill {
 
             totalBill += detailBill[totalDetailBill-1].gettotal();
             totalPay = totalBill-moneyDiscount;
-//            listProduct.writeData(false);
+
     }
 
     //Hàm xóa bớt sản phẩm khỏi hóa đơn
