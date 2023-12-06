@@ -193,7 +193,7 @@ public class Menu {
                     listBill.findBillByIdBill();
                     break;
                 case 7:
-                    listBill.findBillByPrintDate();
+//                    listBill.findBillByPrintDate();
                     break;
                 case 8:
                     listBill.findBillByIdEmployee();
