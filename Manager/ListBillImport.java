@@ -5,35 +5,32 @@ import DoAnOOP.Entity.Product;
 import DoAnOOP.Entity.ServiceFile;
 
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 public class ListBillImport implements ServiceFile {
     private BillImport[] listBill;
-    private int totalBill;
+    private int totalBill = 0;
     private String path = System.getProperty("user.dir") + "/src/DoAnOOP/PhieuNhap.txt";
+    private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
 
     public ListBillImport() {
         listBill = new BillImport[totalBill];
     }
 
-    public ListBillImport(ListBillImport list) {
-        this.listBill = list.listBill;
-        this.totalBill = list.totalBill;
-    }
 
-
-
-    public void creatBillImport(BillImport billImport) {
-        if (listBill == null) {
-            System.out.println("Tao dang null");
-        }
+    // Them bill khi them san pham moi
+    public void addBillImport(ListProduct listProduct, ListStaff listStaff, ListSupplier listSupplier, boolean flag) {
         listBill = Arrays.copyOf(listBill, totalBill + 1);
-        listBill[totalBill++] = billImport;
-        writeData(true);
+        listBill[totalBill] = new BillImport();
+        listBill[totalBill++].createBillImport(listProduct, listStaff, listSupplier, flag);
     }
+
 
     public void show() {
-        readData();
         int colSpace = 25;
         System.out.printf("%-" + colSpace + "s %-"
                 + colSpace + "s %-"
@@ -44,9 +41,7 @@ public class ListBillImport implements ServiceFile {
         for (BillImport x : listBill) {
             x.printBill();
         }
-        resetData();
     }
-
 
     @Override
     public void readData() {
@@ -65,7 +60,13 @@ public class ListBillImport implements ServiceFile {
                 String unit = split[3];
                 int quantity = Integer.parseInt(split[4]);
                 int priceImport = Integer.parseInt(split[5]);
-                String importDate = split[6];
+                Date importDate = new Date();
+                try {
+                    importDate = df.parse(split[6]);
+                }
+                catch (ParseException pe) {
+
+                }
                 String idEmployee = split[7];
                 String idSupplier = split[8];
                 if (check) {
@@ -98,17 +99,6 @@ public class ListBillImport implements ServiceFile {
     }
 
     @Override
-    public void resetData() {
-        totalBill = 0;
-        listBill = new BillImport[totalBill];
-    }
-
-    @Override
-    public boolean checkData() {
-        return false;
-    }
-
-    @Override
     public void writeData(boolean flag) {
         try {
             FileWriter fileWriter = new FileWriter(path, flag);
@@ -116,7 +106,6 @@ public class ListBillImport implements ServiceFile {
             for(BillImport x : listBill) {
                 bufferedWriter.write(x.printToFile());
             }
-            resetData();
             bufferedWriter.close();
         }
         catch (FileNotFoundException fnfe) {

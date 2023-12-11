@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -21,21 +22,6 @@ public class ListPromotionsSale implements ServiceFile {
         listPromotionsSale = new PromotionsSale[totalPromotionsSale];
     }
 
-    public ListPromotionsSale(ListPromotionsSale x) {
-        this.listPromotionsSale = x.listPromotionsSale;
-        this.totalPromotionsSale = x.totalPromotionsSale;
-    }
-
-    //Hàm nhập
-    public void input() {
-        totalPromotionsSale = new Validate().checkNumberInput("So CTKM can tao", "Sai");
-        new Validate().clearBuffer();
-        listPromotionsSale = new PromotionsSale[totalPromotionsSale];
-        for (int i = 0; i < totalPromotionsSale; i++) {
-            listPromotionsSale[i] = new PromotionsSale();
-            listPromotionsSale[i].input();
-        }
-    }
 
     //Hàm xuất
     public void print() {
@@ -56,7 +42,7 @@ public class ListPromotionsSale implements ServiceFile {
     public void addPromotionsSale() {
         listPromotionsSale = Arrays.copyOf(listPromotionsSale, totalPromotionsSale + 1);
         listPromotionsSale[totalPromotionsSale] = new PromotionsSale();
-        listPromotionsSale[totalPromotionsSale].input();
+        listPromotionsSale[totalPromotionsSale].createPromotionSale();
         totalPromotionsSale++;
         System.out.println("Them CTKM thanh cong !");
     }
@@ -160,8 +146,8 @@ public class ListPromotionsSale implements ServiceFile {
     }
 
     //Hàm lấy giá trị tiền giảm
-    public int transMoneyDiscount(String idPromotions, String idVoucher, Date printDate) {
-        readData();
+    public int transMoneyDiscount(String idPromotions, String idVoucher, Date printDate)  {
+
         int count = 0;
         for (int i = 0; i < totalPromotionsSale; i++) {
             if (idPromotions.equals(listPromotionsSale[i].getidPromotions())) {
@@ -178,11 +164,6 @@ public class ListPromotionsSale implements ServiceFile {
         return 0;
     }
 
-    @Override
-    public void resetData() {
-        totalPromotionsSale = 0;
-        listPromotionsSale = new PromotionsSale[totalPromotionsSale];
-    }
 
     @Override
     public void writeData(boolean flag) {
@@ -196,13 +177,8 @@ public class ListPromotionsSale implements ServiceFile {
             fileWriter.close();
         } catch (Exception e) {
         }
-        resetData();
     }
 
-    @Override
-    public boolean checkData() {
-        return false;
-    }
 
     @Override
     public void readData() {
@@ -244,9 +220,9 @@ public class ListPromotionsSale implements ServiceFile {
     // Thống kê mã khuyến mãi
     public void reportPromotion() {
         readData();
-        System.out.format("%-25s %-15s %-15s \n", "Tên chương trình", "Số lượng", "Tổng tiền");
+        System.out.format("%-25s %-15s %-15s \n", "Tên chương trình", "Số lượng", "Tổng tiền giảm");
         for (int i =0;i<totalPromotionsSale;i++){
-            System.out.format("%-20s %-15s %-15s \n", listPromotionsSale[i].getnamePromotions(), listPromotionsSale[i].getTotalVoucher(), listPromotionsSale[i].getTotalMoney());
+            System.out.format("%-20s %-15s %-15s \n", listPromotionsSale[i].getnamePromotions(), listPromotionsSale[i].getTotalVoucher(), listPromotionsSale[i].getTotalMoneyOfPromotionSale());
         }
         String choice = new Validate().checkStringUser("Bạn có muốn chi tiết mã khuyến mãi không yes/no (yes để xem hoặc no từ chối)");
         if (choice.equals("yes")) {
@@ -255,7 +231,7 @@ public class ListPromotionsSale implements ServiceFile {
         if (choice.equals("no")) {
             System.out.println("Đã hủy yêu cầu xem chương trình khuyến mãi ");
         }
-        resetData();
+
     }
 
 }
