@@ -146,7 +146,7 @@ public class ListPromotionsSale implements ServiceFile {
     }
 
     //Hàm lấy giá trị tiền giảm
-    public int transMoneyDiscount(String idPromotions, String idVoucher, Date printDate)  {
+    public int transMoneyDiscount(String idPromotions, String idVoucher, Date printDate) {
 
         int count = 0;
         for (int i = 0; i < totalPromotionsSale; i++) {
@@ -219,19 +219,25 @@ public class ListPromotionsSale implements ServiceFile {
 
     // Thống kê mã khuyến mãi
     public void reportPromotion() {
-        readData();
         System.out.format("%-25s %-15s %-15s \n", "Tên chương trình", "Số lượng", "Tổng tiền giảm");
-        for (int i =0;i<totalPromotionsSale;i++){
-            System.out.format("%-20s %-15s %-15s \n", listPromotionsSale[i].getnamePromotions(), listPromotionsSale[i].getTotalVoucher(), listPromotionsSale[i].getTotalMoneyOfPromotionSale());
+        for (int i = 0; i < totalPromotionsSale; i++) {
+            System.out.format("%-25s %-15s %-15s \n", listPromotionsSale[i].getnamePromotions(), listPromotionsSale[i].getTotalVoucher(), listPromotionsSale[i].getTotalMoneyOfPromotionSale());
         }
-        String choice = new Validate().checkStringUser("Bạn có muốn chi tiết mã khuyến mãi không yes/no (yes để xem hoặc no từ chối)");
-        if (choice.equals("yes")) {
-            print();
-        }
-        if (choice.equals("no")) {
-            System.out.println("Đã hủy yêu cầu xem chương trình khuyến mãi ");
-        }
-
+        String choice;
+        do {
+            System.out.println("=====================================");
+            choice = new Validate().checkStringUser("Xem chi tiết mã khuyến mãi (y/n)");
+            if (choice.charAt(0) == 'y') {
+                print();
+                System.out.println("=====================================");
+                System.out.println("Thống kê thành công !!!");
+                break;
+            } else if (choice.charAt(0) == 'n') {
+                System.out.println("Từ chối xem chương trình khuyến mãi !!!");
+                break;
+            } else {
+                System.out.println("Nhập sai định dạng !!!");
+            }
+        } while (true);
     }
-
 }

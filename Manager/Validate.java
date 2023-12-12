@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class Validate {
     private static Scanner sc = new Scanner(System.in);
+
     private SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 
     public void clearBuffer() {
@@ -52,7 +53,7 @@ public class Validate {
 
 
     public int checkChoiceUser(int min, int max) {
-        while(true) {
+        while (true) {
             System.out.printf("Nhập vào lựa chọn của bạn: ");
             try {
                 int choice = sc.nextInt();
@@ -60,12 +61,13 @@ public class Validate {
                     sc.nextLine();
                     System.out.println("");
                     return choice;
-                }
-                else {
+                } else {
                     System.out.println("Vui lòng nhập lại trong khoảng " + "[" + min + "," + max + "]");
                 }
-            }
-            catch (InputMismatchException ime) {
+                // InputMismatchException là 1 ngoại lệ sẽ được bắt nếu như dữ liệu đầu vào ko phù hợp
+                // với kiểu dữ liệu mà phương thức đang cố gắng đọc, nextInt() trả về số nguyên
+                // nhập vào chuỗi sẽ gây ra lỗi
+            } catch (InputMismatchException ime) {
                 System.out.println("Nhập sai định dạng, vui lòng nhập lựa chọn bằng SỐ");
                 sc.nextLine();
                 System.out.println("");

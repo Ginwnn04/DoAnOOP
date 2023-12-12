@@ -89,7 +89,7 @@ public class Menu {
             System.out.println("6. Tìm kiếm chương trình khuyến mãi.");
             System.out.println("7. Tìm kiếm voucher.");
             System.out.println("8. Thay đổi tên chương trình khuyến mãi.");
-            choice = new Validate().checkChoiceUser(0,11);
+            choice = new Validate().checkChoiceUser(0,8);
             switch (choice) {
                 case 1:
                     listPromotionsSale.addPromotionsSale();
@@ -123,7 +123,7 @@ public class Menu {
     public void billMenu() {
         int choice;
         do {
-            System.out.println("=====================HOA DON========================");
+            System.out.println("=====================HÓA ĐƠN========================");
             System.out.println("0. Quay lại.");
             System.out.println("1. Tạo hóa đơn mới.");
             System.out.println("2. Lịch sử hóa đơn.");
@@ -151,7 +151,7 @@ public class Menu {
     public void reportMenu() {
         int choice;
         do {
-            System.out.println("=====================THỐNG KÊ========================");
+            System.out.println("===================== THỐNG KÊ ========================");
             System.out.println("0. Quay lại.");
             System.out.println("1. Thống kê số lượng sản phẩm đang tồn.");
             System.out.println("2. Thống kê số lượng mã khuyến mãi của từng chương trình.");
