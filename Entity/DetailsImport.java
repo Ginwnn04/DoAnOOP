@@ -12,7 +12,7 @@ public class DetailsImport {
     private boolean isDelete;
 
 
-
+    // Khi fill gia tri vao
     public DetailsImport(String idBillImport, String idProduct, String nameProduct, String unit, int quantity, long importPrice) {
         this.idBillImport = idBillImport;
         this.idProduct = idProduct;
@@ -23,15 +23,14 @@ public class DetailsImport {
         this.totalPrice = importPrice * quantity;
     }
 
-    // Khi nhap du lieu tu file vao thi luc do chua tao duoc id bill
-    public DetailsImport(String idProduct, String nameProduct, String unit, int quantity, long importPrice) {
-        this.idProduct = idProduct;
-        this.nameProduct = nameProduct;
-        this.unit = unit;
-        this.quantity = quantity;
-        this.importPrice = importPrice;
-        this.totalPrice = importPrice * quantity;
-    }
+//    public DetailsImport(String idProduct, String nameProduct, String unit, int quantity, long importPrice) {
+//        this.idProduct = idProduct;
+//        this.nameProduct = nameProduct;
+//        this.unit = unit;
+//        this.quantity = quantity;
+//        this.importPrice = importPrice;
+//        this.totalPrice = importPrice * quantity;
+//    }
 
 
     public void printDetail() {

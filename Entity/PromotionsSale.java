@@ -158,7 +158,7 @@ public class PromotionsSale {
     public String printToFile() {
         String result = "";
         for (Voucher x : voucher) {
-            result += namePromotions + "|" + idPromotions + "|" + startDate + "|" + endDate + "|" + x.printToFile();
+            result += namePromotions + "|" + idPromotions + "|" + df.format(startDate) + "|" + df.format(endDate) + "|" + x.printToFile();
         }
         return result;
     }

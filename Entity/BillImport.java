@@ -58,20 +58,21 @@ public class BillImport {
             if (choice.charAt(0) == 'y') {
                 do {
                     listDetailsImport = Arrays.copyOf(listDetailsImport, totalImportProduct + 1);
-                    listDetailsImport[totalImportProduct++] = listProduct.createProduct();
+                    listDetailsImport[totalImportProduct++] = listProduct.createProduct(idImportProduct);
                     new Validate().clearBuffer();
                     choice = new Validate().checkStringUser("Tiếp tục thêm sản phẩm (y/n)");
                 } while (choice.charAt(0) == 'y');
             }
             // nguoc lai thi nhap du lieu tu file
             // luc nay hay vi them tung chi tiet hoa don vao thi ta gan nguyen danh sach chi tiet hoa don
-            else {
-                listDetailsImport = listProduct.createProduct(path);
+            else if (choice.charAt(0) == 'n'){
+
+                listDetailsImport = listProduct.createProduct(idImportProduct, path);
                 totalImportProduct = listDetailsImport.length;
             }
         }
         else {
-            listDetailsImport = listProduct.restock();
+            listDetailsImport = listProduct.restock(idImportProduct);
             totalImportProduct = listDetailsImport.length;
         }
         totalPriceImportProduct = sumMoney();

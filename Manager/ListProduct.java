@@ -14,7 +14,7 @@ public class ListProduct implements ServiceFile {
         listProduct = new Product[totalProduct];
     }
 
-    public DetailsImport[] createProduct(String path) {
+    public DetailsImport[] createProduct(String idBillImport, String path) {
         int count = 0;
         DetailsImport[] listDetailsImport = new DetailsImport[count];
         try {
@@ -42,7 +42,7 @@ public class ListProduct implements ServiceFile {
                         }
                         Product product = listProduct[totalProduct - 1];
                         listDetailsImport = Arrays.copyOf(listDetailsImport, count + 1);
-                        listDetailsImport[count++] = new DetailsImport(product.getID(), product.getNameProduct(), product.getUnit(), product.getQuantity(), priceImport);
+                        listDetailsImport[count++] = new DetailsImport(idBillImport, product.getID(), product.getNameProduct(), product.getUnit(), product.getQuantity(), priceImport);
                     }
                 }
             }
@@ -59,7 +59,7 @@ public class ListProduct implements ServiceFile {
     }
 
 
-    public DetailsImport createProduct() {
+    public DetailsImport createProduct(String idImportProduct) {
         System.out.println("1. Thực phẩm");
         System.out.println("2. Thức uống");
         int type = new Validate().checkNumberInput("Nhập loại sản phẩm", "Loại sản phẩm > 0, vui lòng nhập lại");
@@ -80,14 +80,14 @@ public class ListProduct implements ServiceFile {
             if (amount != -1) {
                 listProduct = Arrays.copyOf(listProduct, totalProduct + 1);
                 listProduct[totalProduct++] = new Foods(type, nameProduct, unit, quantity, priceProduct, typeFood, amount, priceImport);
-                return new DetailsImport(listProduct[totalProduct - 1].getID(), nameProduct, unit, quantity, priceImport);
+                return new DetailsImport(idImportProduct, listProduct[totalProduct - 1].getID(), nameProduct, unit, quantity, priceImport);
             }
         } else if (type == 2) {
             int volume = new Validate().checkNumberInput("Nhập thể tích", "Thể tích > 0, vui lòng nhập lại");
 
             listProduct = Arrays.copyOf(listProduct, totalProduct + 1);
             listProduct[totalProduct++] = new Drinks(type, nameProduct, unit, quantity, priceProduct, volume, priceImport);
-            return new DetailsImport(listProduct[totalProduct - 1].getID(), nameProduct, unit, quantity, priceImport);
+            return new DetailsImport(idImportProduct, listProduct[totalProduct - 1].getID(), nameProduct, unit, quantity, priceImport);
         }
         return null;
     }
@@ -158,7 +158,7 @@ public class ListProduct implements ServiceFile {
         }
     }
 
-    public DetailsImport[] restock() {
+    public DetailsImport[] restock(String idImportProduct) {
         int totalDetailsImport = 0;
         DetailsImport[] listDetailsImports = new DetailsImport[totalDetailsImport];
         System.out.println("1. Thêm số lượng sản phẩm ");
@@ -184,7 +184,7 @@ public class ListProduct implements ServiceFile {
                             listProduct[i].setDelete(false);
                         }
                         listDetailsImports = Arrays.copyOf(listDetailsImports, totalDetailsImport + 1);
-                        listDetailsImports[totalDetailsImport++] = new DetailsImport(listProduct[i].getID(), listProduct[i].getNameProduct(), listProduct[i].getUnit(), newQuantity, listProduct[i].getPriceImport());
+                        listDetailsImports[totalDetailsImport++] = new DetailsImport(idImportProduct, listProduct[i].getID(), listProduct[i].getNameProduct(), listProduct[i].getUnit(), newQuantity, listProduct[i].getPriceImport());
                         System.out.println("Thêm số lượng thành công");
                         new Validate().clearBuffer();
                         break;
@@ -393,19 +393,24 @@ public class ListProduct implements ServiceFile {
     public void reportProductCurrent() {
         int countFD = 0;
         int countDK = 0;
+        int countQuantityFD = 0;
+        int countQuantityDK = 0;
         for (Product p : listProduct) {
             if (p.getIsDelete() == false) {
                 if (p instanceof Foods) {
                     countFD++;
+                    countQuantityFD += p.getQuantity();
                 }
                 if (p instanceof Drinks) {
                     countDK++;
+                    countQuantityDK += p.getQuantity();
+
                 }
             }
         }
-        System.out.format("%-15s %-15s \n", "Loại sản phẩm", "Số lượng");
-        System.out.format("%-15s %-15s \n", "Thực phẩm", countFD);
-        System.out.format("%-15s %-15s \n", "Đồ uống", countDK);
+        System.out.format("%-15s %-15s %-15s \n", "Phân loại", "Số lượng", "Tổng số lượng sản phẩm");
+        System.out.format("%-15s %-15s %-15s \n", "Thực phẩm", countFD, countQuantityFD);
+        System.out.format("%-15s %-15s %-15s \n", "Đồ uống", countDK, countQuantityDK);
         String choice;
         do {
             System.out.println("=====================================");
