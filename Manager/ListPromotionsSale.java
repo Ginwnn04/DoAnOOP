@@ -98,52 +98,6 @@ public class ListPromotionsSale implements ServiceFile {
         }
     }
 
-    //Hàm sửa tên CTKM
-    public void fixNamePromotions() {
-        int count = 0;
-        String idPromotionsUser = new Validate().checkStringUser("Nhap ma Chuong Trinh Khuyen Mai");
-        String namePromotions = new Validate().checkStringUser("Nhap ten thay doi");
-        for (int i = 0; i < totalPromotionsSale; i++) {
-            if (idPromotionsUser.equals((listPromotionsSale[i]).getidPromotions())) {
-                listPromotionsSale[i].setnamePromotions(namePromotions);
-                System.out.println("Thay doi ten thanh cong !");
-                count++;
-            }
-        }
-        if (count == 0) {
-            System.out.println("Khong tim thay Chuong Trinh Khuyen Mai !");
-        }
-    }
-
-    //Hàm tìm kiếm Voucher
-    public void findVoucher() {
-        int count = 0;
-        String idPromotionsUser = new Validate().checkStringUser("\nNhập ma CTKM cần tìm");
-        for (int i = 0; i < totalPromotionsSale; i++) {
-            if ((listPromotionsSale[i].getidPromotions()).equals(idPromotionsUser)) {
-                listPromotionsSale[i].findIdVoucher();
-                count++;
-            }
-        }
-        if (count == 0) {
-            System.out.println("Khong tim thay CTKM !");
-        }
-    }
-
-    //Hàm tìm kiếm CTKM
-    public void findPromotions() {
-        int count = 0;
-        String idPromotionsUser = new Validate().checkStringUser("\nNhập ma CTKM cua voucher cần tìm");
-        for (int i = 0; i < totalPromotionsSale; i++) {
-            if ((listPromotionsSale[i].getidPromotions()).equals(idPromotionsUser)) {
-                listPromotionsSale[i].print();
-                count++;
-            }
-        }
-        if (count == 0) {
-            System.out.println("Khong tim thay CTKM !");
-        }
-    }
 
     //Hàm lấy giá trị tiền giảm
     public int transMoneyDiscount(String idPromotions, String idVoucher, Date printDate) {
