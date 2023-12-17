@@ -77,9 +77,9 @@ public class ListBill implements ServiceFile {
     }
 
     @Override
-    public void writeData(boolean flag) {
+    public void writeData() {
         try {
-            FileWriter fileWriter = new FileWriter(path, flag);
+            FileWriter fileWriter = new FileWriter(path);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             for( Bill x : bill){
                 bufferedWriter.write(x.printToFile());

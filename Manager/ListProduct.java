@@ -376,9 +376,9 @@ public class ListProduct implements ServiceFile {
 
 
     @Override
-    public void writeData(boolean flag) {
+    public void writeData() {
         try {
-            FileWriter fileWriter = new FileWriter(path, flag);
+            FileWriter fileWriter = new FileWriter(path);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             for (Product x : listProduct) {
                 bufferedWriter.write(x.printToFile());

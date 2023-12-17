@@ -166,9 +166,9 @@ public class ListPromotionsSale implements ServiceFile {
 
 
     @Override
-    public void writeData(boolean flag) {
+    public void writeData() {
         try {
-            FileWriter fileWriter = new FileWriter(path, true);
+            FileWriter fileWriter = new FileWriter(path);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             for (PromotionsSale x : listPromotionsSale) {
                 bufferedWriter.write(x.printToFile());

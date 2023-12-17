@@ -43,9 +43,9 @@ public class ListStaff implements ServiceFile {
     }
 
     @Override
-    public void writeData(boolean flag) {
+    public void writeData() {
         try {
-            FileWriter fileWriter = new FileWriter(path, flag);
+            FileWriter fileWriter = new FileWriter(path);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             for (Staff staff : listStaff) {
                 bufferedWriter.write(staff.printToFile());

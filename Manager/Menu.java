@@ -66,13 +66,13 @@ public class Menu {
                     break;
             }
         } while(choice != 0);
-        listProduct.writeData(false);
-        listPromotionsSale.writeData(false);
-        listBill.writeData(false);
-        listBillImport.writeData(false);
-        listCustomer.writeData(false);
-        listStaff.writeData(false);
-        listSupplier.writeData(false);
+        listProduct.writeData();
+        listPromotionsSale.writeData();
+        listBill.writeData();
+        listBillImport.writeData();
+        listCustomer.writeData();
+        listStaff.writeData();
+        listSupplier.writeData();
     }
 
 
@@ -86,9 +86,6 @@ public class Menu {
             System.out.println("3. Xóa chương trình khuyến mãi.");
             System.out.println("4. Thêm voucher.");
             System.out.println("5. Xóa voucher.");
-            System.out.println("6. Tìm kiếm chương trình khuyến mãi.");
-            System.out.println("7. Tìm kiếm voucher.");
-            System.out.println("8. Thay đổi tên chương trình khuyến mãi.");
             choice = new Validate().checkChoiceUser(0,8);
             switch (choice) {
                 case 1:
@@ -105,15 +102,6 @@ public class Menu {
                     break;
                 case 5:
                     listPromotionsSale.deleteVoucher();
-                    break;
-                case 6:
-                    listPromotionsSale.findPromotions();
-                    break;
-                case 7:
-                    listPromotionsSale.findVoucher();
-                    break;
-                case 8:
-                    listPromotionsSale.fixNamePromotions();
                     break;
             }
 
